@@ -13,24 +13,17 @@ Widget textoInicial(){
   return Align(
     alignment: Alignment.topLeft,
     child: Container(
-      padding: EdgeInsets.only(left: 20.0),
+      padding: EdgeInsets.only(left: 20.0, right: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Hello,',
+            'Hello Night Club Owner!',
             style: TextStyle(
-              color: Colors.grey,
-              fontSize: 30,
-            ),
-          ),
-          Text(
-            'Sign up!',
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 50,
-                fontWeight: FontWeight.bold
+              color: Colors.black,
+              fontSize: 60,
+              fontWeight: FontWeight.bold
             ),
           ),
         ],
