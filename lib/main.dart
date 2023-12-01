@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontendapp/gradiente.dart';
-import 'package:frontendapp/register.dart';
+import 'package:frontendapp/login.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,9 +10,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Decibely',
+      title: 'RomeDance',
       debugShowCheckedModeBanner: false,
-      home: Register_page(), // Suponiendo que Gradiente es el nombre de tu widget
+      home: Login_page(), // Suponiendo que Gradiente es el nombre de tu widget
     );
   }
 }
