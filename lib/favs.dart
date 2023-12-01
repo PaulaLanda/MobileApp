@@ -2,50 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontendapp/colors.dart';
 
-class mainPage_page extends StatefulWidget {
-  static String id = 'mainPage';
+class fav_page extends StatefulWidget {
+  static String id = 'favPage';
 
   @override
-  mainPageState createState() => mainPageState();
+  favPageState createState() => favPageState();
 }
+
 Widget mainText(){
   return Align(
     alignment: Alignment.topLeft,
     child: Container(
-      padding: EdgeInsets.only(left: 20.0, right: 20),
+      padding: EdgeInsets.only(left: 20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  'Hi Maria Isabel Gutierrez!',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  Icon(Icons.settings, size: 20, color: Colors.black),
-                  SizedBox(width: 10),
-                  Icon(Icons.favorite, size: 20, color: Colors.black),
-                  SizedBox(width: 10),
-                  Icon(Icons.message, size: 20, color: Colors.black),
-                ],
-              ),
-            ],
-          ),
+          Icon(Icons.keyboard_return, size: 20, color: Colors.black), // Icono de mensajes
+          SizedBox(height: 10),
           Text(
-            'Where do you want to go today?',
+            'Favorites',
             style: TextStyle(
-              color: Colors.grey,
-              fontSize: 20,
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.bold
             ),
           ),
         ],
@@ -53,6 +33,8 @@ Widget mainText(){
     ),
   );
 }
+
+
 
 Widget club(BuildContext context) {
   return Container(
@@ -85,14 +67,14 @@ Widget club(BuildContext context) {
                     Container(
                       width: 150, // Ajusta el ancho máximo de la dirección
                       child:Text(
-                      "Qubeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-                      style: TextStyle(
-                        fontSize: 35,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.ellipsis,
+                        "Qubeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                        style: TextStyle(
+                          fontSize: 35,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
                     ),
                     SizedBox(height: 5),
                     Container(
@@ -145,7 +127,8 @@ Widget club(BuildContext context) {
 
 
 
-class mainPageState extends State<mainPage_page> {
+
+class favPageState extends State<fav_page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

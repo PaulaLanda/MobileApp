@@ -3,6 +3,8 @@ import 'package:frontendapp/gradiente.dart';
 import 'package:frontendapp/login.dart';
 import 'package:frontendapp/registerOwner.dart';
 
+import 'chat.dart';
+import 'favs.dart';
 import 'mainPageClient.dart';
 
 void main() {
