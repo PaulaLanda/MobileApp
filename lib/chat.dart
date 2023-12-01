@@ -9,7 +9,7 @@ class chat_page extends StatefulWidget {
   chatPageState createState() => chatPageState();
 }
 
-Widget mainText(){
+Widget mainText() {
   return Align(
     alignment: Alignment.topLeft,
     child: Container(
@@ -18,22 +18,19 @@ Widget mainText(){
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Icon(Icons.keyboard_return, size: 20, color: Colors.black), // Icono de mensajes
+          Icon(Icons.keyboard_return,
+              size: 20, color: Colors.black), // Icono de mensajes
           SizedBox(height: 10),
           Text(
             'Chats',
             style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-            ),
+                color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ],
       ),
     ),
   );
 }
-
 
 Widget chat(BuildContext context) {
   return Container(
@@ -54,13 +51,16 @@ Widget chat(BuildContext context) {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      "Nombre",
-                      style: TextStyle(
-                        fontSize: 35,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.ellipsis,
+                    Container(
+                      width: 150, // Ajusta el ancho máximo de la dirección
+                      child: Text(
+                        "Nombre",
+                        style: TextStyle(
+                          fontSize: 35,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                     SizedBox(height: 5),
