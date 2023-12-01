@@ -3,9 +3,8 @@ import 'package:frontendapp/gradiente.dart';
 import 'package:frontendapp/login.dart';
 import 'package:frontendapp/registerOwner.dart';
 
-import 'chat.dart';
-import 'favs.dart';
-import 'mainPageClient.dart';
+import 'clubInformation.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -17,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'RomeDance',
       debugShowCheckedModeBanner: false,
-      home: mainPage_page(), // Suponiendo que Gradiente es el nombre de tu widget
+      home: club_page(),
     );
   }
 }

@@ -125,9 +125,6 @@ Widget club(BuildContext context) {
   );
 }
 
-
-
-
 class favPageState extends State<fav_page> {
   @override
   Widget build(BuildContext context) {
