@@ -17,13 +17,11 @@ interface RemoteAPI {
 }
 
 object HelperClass {
-    fun getIstance(): RemoteAPI {
+    fun getInstance(): RemoteAPI {
 
         val mRemoteCloudService =
             Retrofit.Builder().baseUrl("https://mariagtlv.pythonanywhere.com/")
                 .addConverterFactory(GsonConverterFactory.create())
-                // we need to add converter factory to
-                // convert JSON object to Java object
                 .build().create(RemoteAPI::class.java)
 
 
