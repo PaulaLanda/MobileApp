@@ -1,15 +1,16 @@
-package model;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import model.User;
+import RemoteApi;
 public class UserValidator {
 
     private List<User> users;
-    private
+
     public UserValidator(){
         users = new ArrayList<User>();
-        var mRemoteService : RemoteAPI =HelperClass.getIstance()
+        var mRemoteService : RemoteAPI =HelperClass.getInstance()
         getAll();
     }
 

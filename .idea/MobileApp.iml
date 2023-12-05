@@ -7,6 +7,9 @@
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/backend/android/app/src/main" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/backend/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/backend/android/app/src/main/business" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/backend/android/app/src/main/db" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/backend/android/app/src/main/model" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
