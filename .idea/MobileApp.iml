@@ -10,9 +10,20 @@
       <sourceFolder url="file://$MODULE_DIR$/backend/android/app/src/main/business" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/backend/android/app/src/main/db" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/backend/android/app/src/main/model" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/app/backend/build" />
+      <excludeFolder url="file://$MODULE_DIR$/app/backend/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/app/backend/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/app/frontend/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/app/frontend/build" />
+      <excludeFolder url="file://$MODULE_DIR$/app/frontend/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/build" />
+      <excludeFolder url="file://$MODULE_DIR$/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/.dart_tool" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="library" name="Dart SDK" level="project" />
+    <orderEntry type="library" name="Dart Packages" level="project" />
   </component>
 </module>
