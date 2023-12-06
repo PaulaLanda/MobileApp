@@ -5,6 +5,8 @@ import 'package:frontendapp/colors.dart';
 class fav_page extends StatefulWidget {
   static String id = 'favPage';
 
+  const fav_page({super.key});
+
   @override
   favPageState createState() => favPageState();
 }
@@ -13,8 +15,8 @@ Widget mainText(){
   return Align(
     alignment: Alignment.topLeft,
     child: Container(
-      padding: EdgeInsets.only(left: 20.0),
-      child: Column(
+      padding: const EdgeInsets.only(left: 20.0),
+      child: const Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -38,9 +40,9 @@ Widget mainText(){
 
 Widget club(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 20.0),
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
     child: Container(
-      padding: EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(15.0),
       decoration: BoxDecoration(
         color: AppColors.greenApp,
         borderRadius: BorderRadius.circular(10.0),
@@ -60,11 +62,11 @@ Widget club(BuildContext context) {
                     height: 50,
                   ),
                 ),
-                SizedBox(width: 20),
-                Column(
+                const SizedBox(width: 20),
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
+                    SizedBox(
                       width: 150, // Ajusta el ancho máximo de la dirección
                       child:Text(
                         "Qubeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
@@ -77,7 +79,7 @@ Widget club(BuildContext context) {
                       ),
                     ),
                     SizedBox(height: 5),
-                    Container(
+                    SizedBox(
                       width: 150, // Ajusta el ancho máximo de la dirección
                       child: Text(
                         "direccionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
@@ -93,7 +95,7 @@ Widget club(BuildContext context) {
               ],
             ),
           ),
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Row(
@@ -134,19 +136,19 @@ class favPageState extends State<fav_page> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   mainText(),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   club(context),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   club(context),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   club(context),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   club(context),
                 ],
               ),

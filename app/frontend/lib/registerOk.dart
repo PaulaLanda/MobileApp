@@ -5,12 +5,14 @@ import 'package:frontendapp/colors.dart';
 class Register_ok extends StatefulWidget {
   static String id = 'Register_ok_page';
 
+  const Register_ok({super.key});
+
   @override
   _Register_okPageState createState() => _Register_okPageState();
 }
 
 Widget textSuccesfully(){
-  return Center(
+  return const Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,7 +44,7 @@ Widget textSuccesfully(){
 
 Widget buttonOk(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 30.0),
+    padding: const EdgeInsets.symmetric(horizontal: 30.0),
     width: double.infinity,
     child: ElevatedButton(
       onPressed: () => print("Continue pressed"),
@@ -52,7 +54,7 @@ Widget buttonOk(BuildContext context) {
           borderRadius: BorderRadius.circular(10.0),
         ),
       ),
-      child: Text(
+      child: const Text(
         'Continue',
         style: TextStyle(
           color: Colors.white,
@@ -72,13 +74,13 @@ class _Register_okPageState extends State<Register_ok> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
-                  SizedBox(height: 200),
+                  const SizedBox(height: 200),
                   textSuccesfully(),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   buttonOk(context),
 
                 ],

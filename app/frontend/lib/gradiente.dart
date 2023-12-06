@@ -5,11 +5,13 @@ import 'colors.dart';
 class gradiente extends StatelessWidget {
   static String id = 'gradiente_page';
 
+  const gradiente({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               AppColors.greenApp, // Color verde con cierta transparencia
@@ -27,7 +29,7 @@ class gradiente extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'DanceROMA',
                     style: TextStyle(
                       color: Color(0xFFFFFFFF),
@@ -35,12 +37,20 @@ class gradiente extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, 'login');
                     },
-                    child: Text(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 90, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
                       'Sign up',
                       style: TextStyle(
                         color:AppColors.greenApp,
@@ -48,21 +58,21 @@ class gradiente extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 90, vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, 'login');
                     },
-                    child: Text(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 90, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
                       'Log in',
                       style: TextStyle(
                         color:AppColors.greenApp,
@@ -70,16 +80,8 @@ class gradiente extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 90, vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
                   ),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                 ],
               ),
             ),

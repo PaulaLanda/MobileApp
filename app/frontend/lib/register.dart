@@ -5,6 +5,8 @@ import 'package:frontendapp/colors.dart';
 class Register_page extends StatefulWidget {
   static String id = 'Register_page';
 
+  const Register_page({super.key});
+
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -13,8 +15,8 @@ Widget textoInicial(){
   return Align(
     alignment: Alignment.topLeft,
     child: Container(
-      padding: EdgeInsets.only(left: 20.0),
-      child: Column(
+      padding: const EdgeInsets.only(left: 20.0),
+      child: const Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -41,15 +43,15 @@ Widget textoInicial(){
 
 Widget buildEmail() {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 40.0),
+    padding: const EdgeInsets.symmetric(horizontal: 40.0),
     child: Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 1.0, color:AppColors.greenApp,),
         ),
       ),
       height: 40,
-      child: TextField(
+      child: const TextField(
         keyboardType: TextInputType.emailAddress,
         style: TextStyle(
           color: Colors.black,
@@ -68,15 +70,15 @@ Widget buildEmail() {
 
 Widget buildData() {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 40.0),
+    padding: const EdgeInsets.symmetric(horizontal: 40.0),
     child: Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 1.0, color:AppColors.greenApp,),
         ),
       ),
       height: 40,
-      child: TextField(
+      child: const TextField(
         keyboardType: TextInputType.emailAddress,
         style: TextStyle(
           color: Colors.black,
@@ -96,15 +98,15 @@ Widget buildData() {
 
 Widget buildContrasegna() {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 40.0),
+    padding: const EdgeInsets.symmetric(horizontal: 40.0),
     child: Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 1.0, color: AppColors.greenApp,),
         ),
       ),
       height: 40,
-      child: TextField(
+      child: const TextField(
         obscureText: true,
         style: TextStyle(
           color: Colors.black,
@@ -123,15 +125,15 @@ Widget buildContrasegna() {
 
 Widget buildConfirmContrasegna() {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 40.0),
+    padding: const EdgeInsets.symmetric(horizontal: 40.0),
     child: Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 1.0, color: AppColors.greenApp,),
         ),
       ),
       height: 40,
-      child: TextField(
+      child: const TextField(
         obscureText: true,
         style: TextStyle(
           color: Colors.black,
@@ -151,7 +153,7 @@ Widget buildConfirmContrasegna() {
 
 Widget registerButton(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 30.0),
+    padding: const EdgeInsets.symmetric(horizontal: 30.0),
     width: double.infinity,
     child: ElevatedButton(
       onPressed: () => print("Iniciar sesión pressed"),
@@ -161,7 +163,7 @@ Widget registerButton(BuildContext context) {
           borderRadius: BorderRadius.circular(10.0),
         ),
       ),
-      child: Text(
+      child: const Text(
         'REGISTER',
         style: TextStyle(
           color: Colors.white,
@@ -178,7 +180,7 @@ Widget ownerText(BuildContext context) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
+        const Text(
           'Are you an owner?',
           style: TextStyle(
             color: Colors.grey,
@@ -188,7 +190,7 @@ Widget ownerText(BuildContext context) {
         TextButton(
           onPressed: () => print("Registrarse preses"),
           //Navigator.pushNamed(context, Registro.id);
-          child: Text(
+          child: const Text(
             'Sign up as owner',
             style: TextStyle(
               color:AppColors.greenApp,
@@ -208,7 +210,7 @@ Widget loginText(BuildContext context) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
+        const Text(
           'Do you have account?',
           style: TextStyle(
             color: Colors.grey,
@@ -218,7 +220,7 @@ Widget loginText(BuildContext context) {
         TextButton(
           onPressed: () => print("Registrarse preses"),
           //Navigator.pushNamed(context, Registro.id);
-          child: Text(
+          child: const Text(
             'Log in',
             style: TextStyle(
               color:AppColors.greenApp,
@@ -241,21 +243,21 @@ class _RegisterPageState extends State<Register_page> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
-                  SizedBox(height: 100),
+                  const SizedBox(height: 100),
                   textoInicial(),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   buildEmail(),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   buildData(),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   buildContrasegna(),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   buildConfirmContrasegna(),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   registerButton(context),
                   ownerText(context),
                   loginText(context),

@@ -5,6 +5,8 @@ import 'package:frontendapp/colors.dart';
 class review_page extends StatefulWidget {
   static String id = 'reviewPage';
 
+  const review_page({super.key});
+
   @override
   reviewPageState createState() => reviewPageState();
 }
@@ -15,7 +17,7 @@ Widget photo(BuildContext context) {
       Container(
         height: 150,
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 20), // Padding horizontal de 20
+        padding: const EdgeInsets.symmetric(horizontal: 20), // Padding horizontal de 20
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20), // Bordes curvos de radio 20
           child: Image.network(
@@ -24,7 +26,7 @@ Widget photo(BuildContext context) {
           ),
         ),
       ),
-      Positioned(
+      const Positioned(
         top: 50,
         left: 30,
         right: 20,
@@ -44,49 +46,49 @@ Widget photo(BuildContext context) {
 
 Widget review(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 20.0),
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start, // Alineación horizontal a la izquierda
       children: [
-        Text(
+        const Text(
           'Write a Review',
           style: TextStyle(
             fontSize: 24,
           ),
         ),
-        SizedBox(height: 10), // Espacio entre el texto y el campo de entrada
+        const SizedBox(height: 10), // Espacio entre el texto y el campo de entrada
         Container(
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: TextFormField(
               maxLines: 8,
-              decoration: InputDecoration.collapsed(
+              decoration: const InputDecoration.collapsed(
                 hintText: 'Write your review here...',
               ),
             ),
           ),
         ),
-        SizedBox(height: 10), // Espacio entre el campo de entrada y el botón
+        const SizedBox(height: 10), // Espacio entre el campo de entrada y el botón
         Center(
           child: ElevatedButton(
             onPressed: () {
               // Acción a realizar al presionar el botón "Submit"
             },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-              child: Text(
-                'SUBMIT',
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.greenApp,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              child: Text(
+                'SUBMIT',
+                style: TextStyle(fontSize: 20),
               ),
             ),
           ),
@@ -108,13 +110,13 @@ class reviewPageState extends State<review_page> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   photo(context),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   review(context)
                 ],
               ),

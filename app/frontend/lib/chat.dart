@@ -5,6 +5,8 @@ import 'package:frontendapp/colors.dart';
 class chat_page extends StatefulWidget {
   static String id = 'chatPage';
 
+  const chat_page({super.key});
+
   @override
   chatPageState createState() => chatPageState();
 }
@@ -13,8 +15,8 @@ Widget mainText() {
   return Align(
     alignment: Alignment.topLeft,
     child: Container(
-      padding: EdgeInsets.only(left: 20.0),
-      child: Column(
+      padding: const EdgeInsets.only(left: 20.0),
+      child: const Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -34,14 +36,14 @@ Widget mainText() {
 
 Widget chat(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 20.0),
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
     child: Container(
-      padding: EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(15.0),
       decoration: BoxDecoration(
         color: AppColors.greenApp,
         borderRadius: BorderRadius.circular(10.0),
       ),
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Expanded(
@@ -51,7 +53,7 @@ Widget chat(BuildContext context) {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
+                    SizedBox(
                       width: 150, // Ajusta el ancho máximo de la dirección
                       child: Text(
                         "Nombre",
@@ -64,7 +66,7 @@ Widget chat(BuildContext context) {
                       ),
                     ),
                     SizedBox(height: 5),
-                    Container(
+                    SizedBox(
                       width: 150, // Ajusta el ancho máximo de la dirección
                       child: Text(
                         "Mensaje",
@@ -101,13 +103,13 @@ class chatPageState extends State<chat_page> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   mainText(),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   chat(context)
                 ],
               ),

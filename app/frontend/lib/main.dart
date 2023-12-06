@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:frontendapp/gradiente.dart';
-import 'package:frontendapp/login.dart';
-import 'package:frontendapp/registerOwner.dart';
 import 'package:frontendapp/reviewPage.dart';
 
-import 'clubInformation.dart';
 
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

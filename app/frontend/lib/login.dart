@@ -5,6 +5,8 @@ import 'package:frontendapp/colors.dart';
 class Login_page extends StatefulWidget {
   static String id = 'login_page';
 
+  const Login_page({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -13,8 +15,8 @@ Widget textoInicial(){
   return Align(
     alignment: Alignment.topLeft,
     child: Container(
-      padding: EdgeInsets.only(left: 20.0),
-      child: Column(
+      padding: const EdgeInsets.only(left: 20.0),
+      child: const Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -41,15 +43,15 @@ Widget textoInicial(){
 
 Widget buildEmail() {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 40.0),
+    padding: const EdgeInsets.symmetric(horizontal: 40.0),
     child: Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 1.0, color:AppColors.greenApp,),
         ),
       ),
       height: 40,
-      child: TextField(
+      child: const TextField(
         keyboardType: TextInputType.emailAddress,
         style: TextStyle(
           color: Colors.black,
@@ -68,15 +70,15 @@ Widget buildEmail() {
 
 Widget buildContrasegna() {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 40.0),
+    padding: const EdgeInsets.symmetric(horizontal: 40.0),
     child: Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 1.0, color: AppColors.greenApp,),
         ),
       ),
       height: 40,
-      child: TextField(
+      child: const TextField(
         obscureText: true,
         style: TextStyle(
           color: Colors.black,
@@ -95,11 +97,11 @@ Widget buildContrasegna() {
 
 Widget olvidarContrasegna(BuildContext context){
   return Container(
-    padding: EdgeInsets.only(left: 30),
+    padding: const EdgeInsets.only(left: 30),
     alignment: Alignment.centerLeft,
     child: TextButton(
         onPressed: () => print("Forgot Password pressed"),
-        child: Text(
+        child: const Text(
           'Forgot your password?',
           style: TextStyle(
               color:AppColors.greenApp,
@@ -111,7 +113,7 @@ Widget olvidarContrasegna(BuildContext context){
 
 Widget iniciarSesionButton(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 30.0),
+    padding: const EdgeInsets.symmetric(horizontal: 30.0),
     width: double.infinity,
     child: ElevatedButton(
       onPressed: () => print("Iniciar sesión pressed"),
@@ -121,7 +123,7 @@ Widget iniciarSesionButton(BuildContext context) {
           borderRadius: BorderRadius.circular(10.0),
         ),
       ),
-      child: Text(
+      child: const Text(
         'LOG IN',
         style: TextStyle(
           color: Colors.white,
@@ -138,7 +140,7 @@ Widget registerText(BuildContext context) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
+        const Text(
           'Not account?',
           style: TextStyle(
             color: Colors.grey,
@@ -148,7 +150,7 @@ Widget registerText(BuildContext context) {
         TextButton(
           onPressed: () => print("Registrarse preses"),
           //Navigator.pushNamed(context, Registro.id);
-          child: Text(
+          child: const Text(
             'Sign up',
             style: TextStyle(
               color:AppColors.greenApp,
@@ -171,18 +173,18 @@ class _LoginPageState extends State<Login_page> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
-                  SizedBox(height: 100),
+                  const SizedBox(height: 100),
                   textoInicial(),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   buildEmail(),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   buildContrasegna(),
                   olvidarContrasegna(context),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   iniciarSesionButton(context),
                   registerText(context),
                 ],

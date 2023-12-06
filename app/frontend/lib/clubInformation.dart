@@ -5,6 +5,8 @@ import 'package:frontendapp/colors.dart';
 class club_page extends StatefulWidget {
   static String id = 'clubPage';
 
+  const club_page({super.key});
+
   @override
   clubPageState createState() => clubPageState();
 }
@@ -25,7 +27,7 @@ Widget photo(BuildContext context) {
         top: 0,
         left: 0,
         child: IconButton(
-          icon: Icon(Icons.close, size: 30, color: Colors.redAccent),
+          icon: const Icon(Icons.close, size: 30, color: Colors.redAccent),
           onPressed: () {
             // Lógica para cerrar la pantalla o realizar alguna acción al presionar el botón de cierre
           },
@@ -36,7 +38,7 @@ Widget photo(BuildContext context) {
 }
 
 Widget mainText() {
-  return SingleChildScrollView(
+  return const SingleChildScrollView(
     padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +98,7 @@ Widget mainText() {
 
 Widget map(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(
+    padding: const EdgeInsets.symmetric(
         horizontal: 20.0), // Padding horizontal de 20 en cada lado
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -109,9 +111,9 @@ Widget map(BuildContext context) {
             fit: BoxFit.cover,
           ),
         ),
-        SizedBox(height: 10), // Espacio entre la imagen y el texto
+        const SizedBox(height: 10), // Espacio entre la imagen y el texto
         Container(
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
@@ -139,14 +141,14 @@ Widget map(BuildContext context) {
 
 Widget timetable(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 20.0),
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
     child: Container(
-      padding: EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(15.0),
       decoration: BoxDecoration(
         color: AppColors.greenApp,
         borderRadius: BorderRadius.circular(10.0),
       ),
-      child: Row(
+      child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -289,9 +291,9 @@ Widget timetable(BuildContext context) {
 
 Widget tickets(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 20.0),
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
     child: Container(
-      padding: EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(15.0),
       decoration: BoxDecoration(
         color: AppColors.greenApp,
         borderRadius: BorderRadius.circular(10.0),
@@ -302,14 +304,14 @@ Widget tickets(BuildContext context) {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Tickets",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               Column(
                 children: [
                   Row(
@@ -323,11 +325,11 @@ Widget tickets(BuildContext context) {
                           height: 25,
                         ),
                       ),
-                      SizedBox(width: 10),
-                      Column(
+                      const SizedBox(width: 10),
+                      const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
+                          SizedBox(
                             width: 150,
                             child: Text(
                               "Before 1:00 am",
@@ -340,7 +342,7 @@ Widget tickets(BuildContext context) {
                             ),
                           ),
                           SizedBox(height: 5),
-                          Container(
+                          SizedBox(
                             width: 150,
                             child: Text(
                               "5€ - 1 cup",
@@ -355,7 +357,7 @@ Widget tickets(BuildContext context) {
                       )
                     ],
                   ),
-                  SizedBox(height: 10), // Espacio entre los bloques
+                  const SizedBox(height: 10), // Espacio entre los bloques
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -370,11 +372,11 @@ Widget tickets(BuildContext context) {
                               height: 25,
                             ),
                           ),
-                          SizedBox(width: 10),
-                          Column(
+                          const SizedBox(width: 10),
+                          const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 150,
                                 child: Text(
                                   "Before 1:00 am",
@@ -387,7 +389,7 @@ Widget tickets(BuildContext context) {
                                 ),
                               ),
                               SizedBox(height: 5),
-                              Container(
+                              SizedBox(
                                 width: 150,
                                 child: Text(
                                   "5€ - 1 cup",
@@ -404,7 +406,7 @@ Widget tickets(BuildContext context) {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10), // Espacio entre los bloques
+                  const SizedBox(height: 10), // Espacio entre los bloques
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -419,11 +421,11 @@ Widget tickets(BuildContext context) {
                               height: 25,
                             ),
                           ),
-                          SizedBox(width: 10),
-                          Column(
+                          const SizedBox(width: 10),
+                          const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 150,
                                 child: Text(
                                   "Before 1:00 am",
@@ -436,7 +438,7 @@ Widget tickets(BuildContext context) {
                                 ),
                               ),
                               SizedBox(height: 5),
-                              Container(
+                              SizedBox(
                                 width: 150,
                                 child: Text(
                                   "5€ - 1 cup",
@@ -467,14 +469,14 @@ Widget tickets(BuildContext context) {
 
 Widget addAReview(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 20.0),
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         TextButton(
           onPressed: () => print("Review preses"),
           //Navigator.pushNamed(context, Registro.id);
-          child: Text(
+          child: const Text(
             'Add a review!',
             style: TextStyle(
               color:Colors.black,
@@ -496,22 +498,22 @@ class clubPageState extends State<club_page> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
                   photo(context),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   mainText(),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   map(context),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   timetable(context),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   tickets(context),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   addAReview(context),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                 ],
               ),
             ),
