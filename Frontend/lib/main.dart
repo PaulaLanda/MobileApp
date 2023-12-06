@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/chat.dart';
+import 'changePassword.dart';
+import 'editClub.dart';
+import 'editProfile.dart';
 import 'reviewPage.dart';
 
 
@@ -14,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'RomeDance',
       debugShowCheckedModeBanner: false,
-      home: chat_page(),
+      home: recup_pswd(),
     );
   }
 }
