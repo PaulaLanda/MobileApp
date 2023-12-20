@@ -4,11 +4,6 @@ import jakarta.persistence.Entity;
 
 import jakarta.persistence.*;
 
-
-
-
-
-
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
