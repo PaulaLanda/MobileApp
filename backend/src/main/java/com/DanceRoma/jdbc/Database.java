@@ -1,23 +1,37 @@
 package com.DanceRoma.jdbc;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Database {
 
     private static String USERNAME = "root";
     private static String PASSWORD = "mieres123";
-    private static String CONNECTION_STRING="jdbc:mysql://localhost:3306/jdbc?serverTimezone=UTC";
+    //private static String CONNECTION_STRING="jdbc:mysql://localhost:3306/jdbc?serverTimezone=UTC";
+    //private static String CONNECTION_STRING="jdbc:hsqldb:hsql://localhost/dr";
+
+    private static String CONNECTION_STRING="jdbc:mysql://localhost/dr?"
+            + "user=root&password=mieres123";
     public static void main(String[] args){
+        try {
+            demo();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void demo() throws SQLException {
+        Connection con = getConnection();
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery("SELECT * FROM user");
+        showResults(rs);
     }
 
     @SuppressWarnings("resource")
     private static Connection getConnection() throws SQLException {
-//        if(DriverManager.getDriver(CONNECTION_STRING) == null)
-//            DriverManager.registerDriver(new org.hsqldb.jdbc.JDBCDriver());
-        return DriverManager.getConnection(CONNECTION_STRING,USERNAME,PASSWORD);
+        if(DriverManager.getDriver(CONNECTION_STRING) == null)
+            DriverManager.registerDriver(new org.hsqldb.jdbc.JDBCDriver());
+        //return DriverManager.getConnection(CONNECTION_STRING,USERNAME,PASSWORD);
+        return DriverManager.getConnection(CONNECTION_STRING);
     }
 
     @SuppressWarnings("resource")
