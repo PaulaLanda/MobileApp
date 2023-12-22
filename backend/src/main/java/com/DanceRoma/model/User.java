@@ -1,4 +1,4 @@
-package com.DanceRoma.backend;
+package com.DanceRoma.model;
 
 import jakarta.persistence.Entity;
 
@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "usuarios")
-public class Usuario {
+public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

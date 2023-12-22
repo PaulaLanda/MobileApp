@@ -1,6 +1,7 @@
 package com.DanceRoma.jdbc;
 
 import java.sql.*;
+import java.util.logging.Logger;
 
 public class Database {
 
@@ -11,23 +12,23 @@ public class Database {
 
     private static String CONNECTION_STRING="jdbc:mysql://localhost/dr?"
             + "user=root&password=mieres123";
-    public static void main(String[] args){
-        try {
-            demo();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private static void demo() throws SQLException {
+
+    public static void demo() throws SQLException {
         Connection con = getConnection();
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM user");
         showResults(rs);
     }
 
+    public ResultSet executeQuery(String query) throws SQLException {
+        Connection con = getConnection();
+        Statement st = con.createStatement();
+        return st.executeQuery(query);
+    }
+
     @SuppressWarnings("resource")
-    private static Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         if(DriverManager.getDriver(CONNECTION_STRING) == null)
             DriverManager.registerDriver(new org.hsqldb.jdbc.JDBCDriver());
         //return DriverManager.getConnection(CONNECTION_STRING,USERNAME,PASSWORD);
@@ -35,7 +36,7 @@ public class Database {
     }
 
     @SuppressWarnings("resource")
-    private static void showResults(ResultSet rs) throws SQLException {
+    public static void showResults(ResultSet rs) throws SQLException {
         int columnCount = rs.getMetaData().getColumnCount();
         StringBuilder headers = new StringBuilder();
 
@@ -57,5 +58,14 @@ public class Database {
         if(result==null)
             System.out.println("No data found");
 
+    }
+
+
+    public void executeUpdate(String query) throws SQLException {
+        Connection con = getConnection();
+        PreparedStatement ps = con.prepareStatement(query);
+        ps.executeUpdate();
+        ps.close();
+        con.close();
     }
 }
