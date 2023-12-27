@@ -3,9 +3,11 @@ package com.DanceRoma.servicies;
 import com.DanceRoma.entities.User;
 import com.DanceRoma.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserService {
 
     @Autowired

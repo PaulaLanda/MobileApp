@@ -2,7 +2,9 @@ package com.DanceRoma.converters;
 
 import com.DanceRoma.dtos.UserDto;
 import com.DanceRoma.entities.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EntityToDtoConverter {
 
     public UserDto convert(User user) {
