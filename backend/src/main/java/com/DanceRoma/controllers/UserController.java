@@ -28,4 +28,9 @@ public class UserController {
         List<UserDto> usersDto = users.stream().map(user -> entityToDtoConverter.convert(user)).collect(Collectors.toList());
         return ResponseEntity.ok(usersDto);
     }
+
+    @GetMapping("/login")
+    public ResponseEntity<?> login() {
+        return ResponseEntity.ok("LOGIN OK");
+    }
 }
