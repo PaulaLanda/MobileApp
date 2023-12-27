@@ -1,4 +1,4 @@
-package com.DanceRoma.model;
+package com.DanceRoma.entities;
 
 import jakarta.persistence.Entity;
 
@@ -15,6 +15,11 @@ public class User {
   @Column(name = "nombre")
   private String nombre;
 
+  @Column(name = "correo")
+  private String correo;
+
+  // Getters y setters
+
   public String getCorreo() {
     return correo;
   }
@@ -22,11 +27,6 @@ public class User {
   public void setCorreo(String correo) {
     this.correo = correo;
   }
-
-  @Column(name = "correo")
-  private String correo;
-
-  // Getters y setters
 
   public Long getId() {
     return id;
