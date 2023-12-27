@@ -4,16 +4,19 @@ import com.DanceRoma.jdbc.DatabaseManager;
 
 public class UserManager {
 
-    public static int USER_DOESNT_EXIST = 1;
+    public final static int USER_DOESNT_EXIST = 1;
     /**The password is not correct*/
-    public static int WRONG_COMBINATION = 2;
-    /**Correct combination of username and password || user creation worked fine*/
-    public static int EVERYTHING_FINE = 0;
-    public static int USER_ALREADY_EXISTS=3;
+    public final static int WRONG_COMBINATION = 2;
+    /**User creation worked fine*/
+    public final static int EVERYTHING_FINE = 0;
+    public final static int USER_ALREADY_EXISTS=3;
     /**Some field (name, surname...) is empty*/
-    public static int EMPTY_FIELD=4;
+    public final static int EMPTY_FIELD=4;
     /**The password is not the same in 'Password' and 'Verify your password'*/
-    public static int NOT_MATCHING_PASS=5;
+    public final static int NOT_MATCHING_PASS=5;
+
+    public final static int CLIENT_USER = 6;
+    public final static int OWNER_USER = 7;
     DatabaseManager dbm;
 
     public UserManager(){
@@ -22,8 +25,11 @@ public class UserManager {
     public int exists(String username, String password) {
         if(!dbm.userExists(username))
             return USER_DOESNT_EXIST;
-        if(dbm.validUser(username,password))
-            return EVERYTHING_FINE;
+        if(dbm.validUser(username,password)) {
+            if (dbm.isOwner(username))
+                return OWNER_USER;
+            return CLIENT_USER;
+        }
         return WRONG_COMBINATION;
     }
 

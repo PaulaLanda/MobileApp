@@ -47,4 +47,22 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
+    public boolean isOwner(String username) {
+        ResultSet rs = null;
+        StringBuilder result = null;
+        String aux = null;
+        try{
+            rs = db.executeQuery("SELECT type from user where username='"+username+
+                    "'");
+            rs.next();
+            result = new StringBuilder();
+            result.append(rs.getObject(1));
+            aux = result.toString();
+            return aux.equalsIgnoreCase("OWNER");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
