@@ -21,20 +21,27 @@ class _LoginPageState extends State<Login_page> {
   Future<void> _login() async {
     String username = _emailController.text;
     String password = _passwordController.text;
-    print("Llego aqui");
-    String url = 'http://localhost:8082/users/login';
+    String url = 'http://192.168.1.33:8082/users/login';
 
     try {
-      final response = await http.post(
+
+      final response = await http.get(
         Uri.parse(url),
-        body: {
+        /*body: {
          /* 'username': username,
           'password': password,*/
-        },
+        },*/
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
-        int userExistsResult = int.parse(response.body);
+        String responseBody = response.body;
+
+        // Puedes imprimir los datos o hacer cualquier otra operación con ellos
+        print('Datos recibidos: $responseBody');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => mainPage_page()),
+        );
+        /*int userExistsResult = int.parse(response.body);
         
         // Hacer algo con el resultado de userExists según sea necesario
         if (userExistsResult == 0) {
@@ -80,7 +87,7 @@ class _LoginPageState extends State<Login_page> {
               );
             },
           );
-        }
+        }*/
       } else {
         throw Exception('Failed to load data');
       }
