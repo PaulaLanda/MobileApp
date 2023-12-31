@@ -3,6 +3,7 @@ import 'package:frontend/chat.dart';
 import 'changePassword.dart';
 import 'editClub.dart';
 import 'editProfile.dart';
+import 'login.dart';
 import 'reviewPage.dart';
 
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'RomeDance',
       debugShowCheckedModeBanner: false,
-      home: recup_pswd(),
+      home: Login_page(),
     );
   }
 }
