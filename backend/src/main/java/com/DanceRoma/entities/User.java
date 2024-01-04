@@ -29,6 +29,8 @@ public class User {
   @Column(name="TIPO_USUARIO")
   private String tipo;
 
+  @Column(name = "contra")
+  private String contra;
   // Getters y setters
 
   public String getCorreo() {
@@ -69,6 +71,14 @@ public class User {
 
   public void setTipo(String tipo) {
     this.tipo = tipo;
+  }
+
+  public String getContra() {
+    return contra;
+  }
+
+  public void setContra(String contra) {
+    this.contra = contra;
   }
 
 }
