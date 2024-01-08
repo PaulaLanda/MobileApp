@@ -4,72 +4,95 @@ import jakarta.persistence.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
-@Table(name = "usuarios")
+@Table(name = "users")
 public class User {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    public enum UserType {
+        CLIENT,
+        OWNER
+    }
 
-  @Column(name = "nombre",nullable = false)
-  private String nombre;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
 
-  @Column(name= "apellido",nullable = false)
-  private String apellido;
+    @Column(name = "surname", nullable = false)
+    private String surname;
 
-  @Column(name = "contrasena",unique = true,nullable = false)
-  private String contrasena;
+    @Column(name = "password", nullable = false)
+    private String password;
 
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
 
-  @Column(name = "correo")
-  private String correo;
+    @Column(name = "user_type", nullable = false)
+    private UserType userType;
 
-  @Column(name="TIPO_USUARIO")
-  private String tipo;
+    @OneToMany(mappedBy = "disco")
+    private List<Disco> favoriteDiscos;
 
-  // Getters y setters
+    // Getters y setters
 
-  public String getCorreo() {
-    return correo;
-  }
+    public String getEmail() {
+        return email;
+    }
 
-  public void setCorreo(String correo) {
-    this.correo = correo;
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-  public Long getId() {
-    return id;
-  }
+    public String getPassword() {
+        return password;
+    }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-  public String getNombre() {
-    return nombre;
-  }
+    public Long getId() {
+        return id;
+    }
 
-  public void setNombre(String nombre) {
-    this.nombre = nombre;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  public String getApellido() {
-    return apellido;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setApellido(String apellido) {
-    this.apellido = apellido;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public String getTipo() {
-    return tipo;
-  }
+    public String getSurname() {
+        return surname;
+    }
 
-  public void setTipo(String tipo) {
-    this.tipo = tipo;
-  }
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public List<Disco> getFavoriteDiscos() {
+        return favoriteDiscos;
+    }
+
+    public void setFavoriteDiscos(List<Disco> favoriteDiscos) {
+        this.favoriteDiscos = favoriteDiscos;
+    }
 }
 
