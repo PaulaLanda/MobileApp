@@ -1,55 +1,44 @@
 package com.DanceRoma.dtos;
 
+import jakarta.persistence.*;
+
 public class TicketDto {
 
-    //Can be: before 1 am, only women, etc
-    private String definition;
-    private float price;
-    //Number of drinks
-    private int amount;
-    private Long id;
-    private Long clubId;
+  private Long id;
+  private String descripcion;
+  private Integer precio;
+  private Integer numeroCopas;
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public Long getClubId() {
-        return clubId;
-    }
+  public String getDescripcion() {
+    return descripcion;
+  }
 
-    public void setClubId(Long clubId) {
-        this.clubId = clubId;
-    }
+  public void setDescripcion(String descripcion) {
+    this.descripcion = descripcion;
+  }
 
-    public String getDefinition() {
-        return definition;
-    }
+  public Integer getPrecio() {
+    return precio;
+  }
 
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
+  public void setPrecio(Integer precio) {
+    this.precio = precio;
+  }
 
-    public float getPrice() {
-        return price;
-    }
+  public Integer getNumeroCopas() {
+    return numeroCopas;
+  }
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-
-
+  public void setNumeroCopas(Integer numeroCopas) {
+    this.numeroCopas = numeroCopas;
+  }
 }
+

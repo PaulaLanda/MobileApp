@@ -5,9 +5,8 @@ public class UserDto {
     private Long id;
     private String nombre;
     private String correo;
-
     private String apellido;
-    private String contra;
+    private String contrasena;
     private String tipo;
 
     public Long getId() {
@@ -33,6 +32,7 @@ public class UserDto {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
     public String getApellido() {
         return apellido;
     }
@@ -41,19 +41,19 @@ public class UserDto {
         this.apellido = apellido;
     }
 
-    public String getContra() {
-        return contra;
+    public String getContrasena() {
+        return contrasena;
     }
 
-    public void setContra(String contra) {
-        this.contra = contra;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipo(String tipoDTO) {
+        this.tipo = tipoDTO;
     }
 }
