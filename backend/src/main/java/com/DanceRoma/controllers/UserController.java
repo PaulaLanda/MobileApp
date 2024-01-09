@@ -27,12 +27,14 @@ public class UserController {
     @Autowired
     private DtoToEntityConverter dtoToEntityConverter;
 
+
     @GetMapping("")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<User> users = userService.findAll();
         List<UserDto> usersDto = users.stream().map(user -> entityToDtoConverter.convert(user)).collect(Collectors.toList());
         return ResponseEntity.ok(usersDto);
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@RequestBody UserDto userDto) throws Exception {
@@ -42,9 +44,17 @@ public class UserController {
         return ResponseEntity.ok(toReturn);
     }
 
-    @GetMapping("/login")
+    @PutMapping("/update")
+    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto) throws Exception {
+        User toUpdate = dtoToEntityConverter.convert(userDto);
+        User userUpdated = userService.update(toUpdate);
+        UserDto toReturn = entityToDtoConverter.convert(userUpdated);
+        return ResponseEntity.ok(toReturn);
+    }
+
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) throws Exception {
         String userType = userService.login(loginDto);
-        return ResponseEntity.ok("Usuario de tipo <" + userType + " logueado");
+        return ResponseEntity.ok("Usuario de tipo <" + userType + "> logueado");
     }
 }

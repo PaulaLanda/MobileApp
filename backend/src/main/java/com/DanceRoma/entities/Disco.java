@@ -43,7 +43,15 @@ public class Disco {
   @Column(name = "sunday_schedule", nullable = false)
   private String sundaySchedule;
 
-  @OneToMany(mappedBy = "ticket")
+  @ManyToMany(mappedBy = "favoriteDiscos")
+  private List<User> favoritedByUsers;
+
+  @ManyToMany
+  @JoinTable(
+          name = "disco_ticket",
+          joinColumns = @JoinColumn(name = "disco_id"),
+          inverseJoinColumns = @JoinColumn(name = "ticket_id")
+  )
   private List<Ticket> tickets;
 
   public Long getId() {

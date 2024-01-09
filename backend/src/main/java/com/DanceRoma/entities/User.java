@@ -34,7 +34,12 @@ public class User {
     @Column(name = "user_type", nullable = false)
     private UserType userType;
 
-    @OneToMany(mappedBy = "disco")
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_discos",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "disco_id")
+    )
     private List<Disco> favoriteDiscos;
 
     // Getters y setters

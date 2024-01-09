@@ -2,22 +2,22 @@ package com.DanceRoma.dtos;
 
 public class LoginDto {
 
-    private String usuario;
-    private String contrasena;
+    private String user;
+    private String password;
 
-    public String getusuario() {
-        return usuario;
+    public String getUser() {
+        return user;
     }
 
-    public void setusuario(String usuario) {
-        this.usuario = usuario;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public String getContrasena() {
-        return contrasena;
+    public String getPassword() {
+        return password;
     }
 
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

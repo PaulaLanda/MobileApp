@@ -1,6 +1,7 @@
 package com.DanceRoma.servicies;
 
 import com.DanceRoma.dtos.LoginDto;
+import com.DanceRoma.dtos.UserDto;
 import com.DanceRoma.entities.User;
 import com.DanceRoma.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +28,17 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User update(Long id, User toUpdate) throws Exception {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty()) {
-            throw new Exception("There is not any user with id <" + id + ">");
+    public User update(User user) throws Exception {
+        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+        if (existingUser.isEmpty()) {
+            throw new Exception("There is not any user with email <" + user.getEmail() + ">");
         }
-        toUpdate.setId(id);
-        return userRepository.save(toUpdate);
+        user.setId(existingUser.get().getId());
+        return userRepository.save(user);
     }
 
     public String login(LoginDto loginDto) throws Exception {
-        Optional<User> userLogged = userRepository.findByEmailAndPassword(loginDto.getusuario(), loginDto.getContrasena());
+        Optional<User> userLogged = userRepository.findByEmailAndPassword(loginDto.getUser(), loginDto.getPassword());
         if (userLogged.isEmpty()) {
             throw new Exception("User or password incorrect");
         }

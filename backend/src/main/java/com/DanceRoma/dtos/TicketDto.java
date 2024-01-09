@@ -1,13 +1,11 @@
 package com.DanceRoma.dtos;
 
-import jakarta.persistence.*;
-
 public class TicketDto {
 
   private Long id;
-  private String descripcion;
-  private Integer precio;
-  private Integer numeroCopas;
+  private String description;
+  private Integer price;
+  private Integer drinksNumber;
 
   public Long getId() {
     return id;
@@ -17,28 +15,28 @@ public class TicketDto {
     this.id = id;
   }
 
-  public String getDescripcion() {
-    return descripcion;
+  public String getDescription() {
+    return description;
   }
 
-  public void setDescripcion(String descripcion) {
-    this.descripcion = descripcion;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
-  public Integer getPrecio() {
-    return precio;
+  public Integer getPrice() {
+    return price;
   }
 
-  public void setPrecio(Integer precio) {
-    this.precio = precio;
+  public void setPrice(Integer price) {
+    this.price = price;
   }
 
-  public Integer getNumeroCopas() {
-    return numeroCopas;
+  public Integer getDrinksNumber() {
+    return drinksNumber;
   }
 
-  public void setNumeroCopas(Integer numeroCopas) {
-    this.numeroCopas = numeroCopas;
+  public void setDrinksNumber(Integer drinksNumber) {
+    this.drinksNumber = drinksNumber;
   }
 }
 

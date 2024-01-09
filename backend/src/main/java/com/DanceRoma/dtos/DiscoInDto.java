@@ -2,12 +2,12 @@ package com.DanceRoma.dtos;
 
 import java.util.List;
 
-public class DiscoDto {
+public class DiscoInDto {
 
     private Long id;
     private String name;
     private String address;
-    private UserDto userDto;
+    private String userEmail;
     private String mondaySchedule;
     private String tuesdaySchedule;
     private String wednesdaySchedule;
@@ -41,12 +41,12 @@ public class DiscoDto {
         this.address = address;
     }
 
-    public UserDto getUserDto() {
-        return userDto;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getMondaySchedule() {

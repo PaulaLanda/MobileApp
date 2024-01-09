@@ -3,6 +3,7 @@ package com.DanceRoma.controllers;
 import com.DanceRoma.converters.DtoToEntityConverter;
 import com.DanceRoma.converters.EntityToDtoConverter;
 import com.DanceRoma.dtos.DiscoDto;
+import com.DanceRoma.dtos.DiscoInDto;
 import com.DanceRoma.entities.Disco;
 import com.DanceRoma.servicies.DiscoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,8 @@ public class DiscoController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<DiscoDto> create(@RequestBody DiscoDto discoDto) throws Exception {
-        Disco disco = dtoToEntityConverter.convert(discoDto);
-        Disco discoCreated = discoService.create(disco);
+    public ResponseEntity<DiscoDto> create(@RequestBody DiscoInDto discoDto) throws Exception {
+        Disco discoCreated = discoService.create(discoDto);
         DiscoDto toReturn = entityToDtoConverter.convert(discoCreated);
         return ResponseEntity.ok(toReturn);
     }

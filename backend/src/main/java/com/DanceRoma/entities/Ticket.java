@@ -2,6 +2,8 @@ package com.DanceRoma.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "ticket")
 public class Ticket {
@@ -18,6 +20,9 @@ public class Ticket {
 
   @Column(name = "drinks_number", nullable = false)
   private Integer drinksNumber;
+
+  @ManyToMany(mappedBy = "tickets")
+  private List<Disco> discos;
 
   public Long getId() {
     return id;
