@@ -43,4 +43,5 @@ public class UserService {
         }
         return userLogged.get().getUserType().name();
     }
+
 }

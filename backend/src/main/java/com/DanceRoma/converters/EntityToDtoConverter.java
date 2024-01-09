@@ -1,9 +1,11 @@
 package com.DanceRoma.converters;
 
 import com.DanceRoma.dtos.DiscoDto;
+import com.DanceRoma.dtos.MessageDto;
 import com.DanceRoma.dtos.TicketDto;
 import com.DanceRoma.dtos.UserDto;
 import com.DanceRoma.entities.Disco;
+import com.DanceRoma.entities.Message;
 import com.DanceRoma.entities.Ticket;
 import com.DanceRoma.entities.User;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,16 @@ public class EntityToDtoConverter {
         dto.setNombre(user.getName());
         dto.setCorreo(user.getEmail());
 
+        return dto;
+    }
+
+    public MessageDto convert(Message msg) {
+        MessageDto dto = new MessageDto();
+        dto.setId(msg.getId());
+        dto.setMessage(msg.getText());
+        dto.setSenderId(msg.getSenderId());
+        dto.setReceptorId(msg.getReceptorId());
+        dto.setDate(msg.getDate());
         return dto;
     }
 
