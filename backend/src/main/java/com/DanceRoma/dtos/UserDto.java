@@ -3,12 +3,11 @@ package com.DanceRoma.dtos;
 public class UserDto {
 
     private Long id;
-    private String nombre;
-    private String correo;
-
-    private String apellido;
-    private String contra;
-    private String tipo;
+    private String name;
+    private String email;
+    private String surname;
+    private String password;
+    private String userType;
 
     public Long getId() {
         return id;
@@ -18,42 +17,43 @@ public class UserDto {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-    public String getApellido() {
-        return apellido;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public String getSurname() {
+        return surname;
     }
 
-    public String getContra() {
-        return contra;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
-    public void setContra(String contra) {
-        this.contra = contra;
+    public String getPassword() {
+        return password;
     }
 
-    public String getTipo() {
-        return tipo;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String tipoDTO) {
+        this.userType = tipoDTO;
     }
 }

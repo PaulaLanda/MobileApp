@@ -1,6 +1,8 @@
 package com.DanceRoma.controllers;
 
+import com.DanceRoma.converters.DtoToEntityConverter;
 import com.DanceRoma.converters.EntityToDtoConverter;
+import com.DanceRoma.dtos.LoginDto;
 import com.DanceRoma.dtos.UserDto;
 import com.DanceRoma.entities.User;
 import com.DanceRoma.servicies.UserService;
@@ -22,15 +24,37 @@ public class UserController {
     @Autowired
     private EntityToDtoConverter entityToDtoConverter;
 
+    @Autowired
+    private DtoToEntityConverter dtoToEntityConverter;
+
+
     @GetMapping("")
     public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<User> users = userService.getAll();
+        List<User> users = userService.findAll();
         List<UserDto> usersDto = users.stream().map(user -> entityToDtoConverter.convert(user)).collect(Collectors.toList());
         return ResponseEntity.ok(usersDto);
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<?> login() {
-        return ResponseEntity.ok("LOGIN OK");
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> register(@RequestBody UserDto userDto) throws Exception {
+        User user = dtoToEntityConverter.convert(userDto);
+        User userCreated = userService.register(user);
+        UserDto toReturn = entityToDtoConverter.convert(userCreated);
+        return ResponseEntity.ok(toReturn);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto) throws Exception {
+        User toUpdate = dtoToEntityConverter.convert(userDto);
+        User userUpdated = userService.update(toUpdate);
+        UserDto toReturn = entityToDtoConverter.convert(userUpdated);
+        return ResponseEntity.ok(toReturn);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) throws Exception {
+        String userType = userService.login(loginDto);
+        return ResponseEntity.ok("Usuario de tipo <" + userType + "> logueado");
     }
 }
