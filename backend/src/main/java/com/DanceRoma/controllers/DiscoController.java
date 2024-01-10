@@ -42,16 +42,28 @@ public class DiscoController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<DiscoDto> create(@RequestBody DiscoInDto discoDto) throws Exception {
-        Disco discoCreated = discoService.create(discoDto);
-        DiscoDto toReturn = entityToDtoConverter.convert(discoCreated);
-        return ResponseEntity.ok(toReturn);
+    public ResponseEntity<?> create(@RequestBody DiscoInDto discoDto) throws Exception {
+        ResponseEntity<?> toReturn;
+        try {
+            Disco discoCreated = discoService.create(discoDto);
+            DiscoDto discoCreatedDto = entityToDtoConverter.convert(discoCreated);
+            toReturn = ResponseEntity.ok(discoCreatedDto);
+        } catch (Exception e) {
+            toReturn = ResponseEntity.internalServerError().body(e.getMessage());
+        }
+        return toReturn;
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<DiscoDto> update(@PathVariable Long id, @RequestBody DiscoInDto discoDto) throws Exception {
-        Disco discoUpdated = discoService.update(id, discoDto);
-        DiscoDto toReturn = entityToDtoConverter.convert(discoUpdated);
-        return ResponseEntity.ok(toReturn);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody DiscoInDto discoDto) throws Exception {
+        ResponseEntity<?> toReturn;
+        try {
+            Disco discoUpdated = discoService.update(id, discoDto);
+            DiscoDto discoUpdatedDto = entityToDtoConverter.convert(discoUpdated);
+            toReturn = ResponseEntity.ok(discoUpdatedDto);
+        } catch (Exception e) {
+            toReturn = ResponseEntity.internalServerError().body(e.getMessage());
+        }
+        return toReturn;
     }
 }

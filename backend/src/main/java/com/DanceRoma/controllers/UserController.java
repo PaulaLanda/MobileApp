@@ -7,6 +7,7 @@ import com.DanceRoma.dtos.UserDto;
 import com.DanceRoma.entities.User;
 import com.DanceRoma.servicies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,18 +43,30 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@RequestBody UserDto userDto) throws Exception {
-        User user = dtoToEntityConverter.convert(userDto);
-        User userCreated = userService.register(user);
-        UserDto toReturn = entityToDtoConverter.convert(userCreated);
-        return ResponseEntity.ok(toReturn);
+    public ResponseEntity<?> register(@RequestBody UserDto userDto) throws Exception {
+        ResponseEntity<?> toReturn;
+        try {
+            User user = dtoToEntityConverter.convert(userDto);
+            User userCreated = userService.register(user);
+            UserDto userCreatedDto = entityToDtoConverter.convert(userCreated);
+            toReturn = ResponseEntity.ok(userCreatedDto);
+        } catch (Exception e) {
+            toReturn = ResponseEntity.internalServerError().body(e.getMessage());
+        }
+        return toReturn;
     }
 
     @PutMapping("/update")
-    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto) throws Exception {
-        User toUpdate = dtoToEntityConverter.convert(userDto);
-        User userUpdated = userService.update(toUpdate);
-        UserDto toReturn = entityToDtoConverter.convert(userUpdated);
-        return ResponseEntity.ok(toReturn);
+    public ResponseEntity<?> update(@RequestBody UserDto userDto) throws Exception {
+        ResponseEntity<?> toReturn;
+        try {
+            User toUpdate = dtoToEntityConverter.convert(userDto);
+            User userUpdated = userService.update(toUpdate);
+            UserDto userUpdatedDto = entityToDtoConverter.convert(userUpdated);
+            toReturn = ResponseEntity.ok(userUpdatedDto);
+        } catch (Exception e) {
+            toReturn = ResponseEntity.internalServerError().body(e.getMessage());
+        }
+        return toReturn;
     }
 }
