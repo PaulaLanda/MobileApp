@@ -97,7 +97,7 @@ public class DiscoService {
      * @throws Exception no disco exists with that id
      */
     public Disco update(Long id, DiscoInDto disco) throws Exception {
-        Optional<User> owner = userRepository.findById(disco.getId());
+        Optional<User> owner = userRepository.findById(id);
         if (owner.isEmpty()) {
             throw new Exception("Owner not found with id <" + disco.getId() + ">");
         }
