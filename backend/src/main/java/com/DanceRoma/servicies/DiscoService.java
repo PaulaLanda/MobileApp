@@ -31,10 +31,20 @@ public class DiscoService {
     @Autowired
     private DtoToEntityConverter dtoToEntityConverter;
 
+    /**
+     * Returns a list with all discos
+     * @return list with all discos
+     */
     public List<Disco> findAll() {
         return (List<Disco>) discoRepository.findAll();
     }
 
+    /**
+     * Returns all the discos that a user has marked as favourites
+     * @param id of the user
+     * @return list with the discos
+     * @throws Exception if there's no user with that id
+     */
     public List<Disco> findAllByUserId(Long id) throws Exception {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
@@ -43,6 +53,13 @@ public class DiscoService {
         return discoRepository.findAllByUser_id(id);
     }
 
+    /**
+     * Creates a disco by passing a DiscoInDto instance
+     * @param disco with properties
+     * @return the created Disco instance
+     * @throws Exception if the owner does not exist, already is a disco
+     * with that name
+     */
     public Disco create(DiscoInDto disco) throws Exception {
         Optional<User> owner = userRepository.findByEmail(disco.getUserEmail());
         if (owner.isEmpty()) {
@@ -72,6 +89,13 @@ public class DiscoService {
         return discoRepository.save(toCreate);
     }
 
+    /**
+     * Updates some aspect of a disco
+     * @param id of the disco to update
+     * @param toUpdate disco with desired parameters
+     * @return Disco instance with new properties
+     * @throws Exception no disco exists with that id
+     */
     public Disco update(Long id, Disco toUpdate) throws Exception {
         Optional<Disco> disco = discoRepository.findById(id);
         if (disco.isEmpty()) {
