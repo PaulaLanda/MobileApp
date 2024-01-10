@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/disco")
+@RequestMapping("/discos")
 @CrossOrigin
 public class DiscoController {
 
@@ -28,7 +28,7 @@ public class DiscoController {
     private DtoToEntityConverter dtoToEntityConverter;
 
     @GetMapping("")
-    public ResponseEntity<List<DiscoDto>> getAllDisco() {
+    public ResponseEntity<List<DiscoDto>> getAllDiscos() {
         List<Disco> discos = discoService.findAll();
         List<DiscoDto> discoDto = discos.stream().map(disco -> entityToDtoConverter.convert(disco)).collect(Collectors.toList());
         return ResponseEntity.ok(discoDto);
@@ -49,9 +49,8 @@ public class DiscoController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<DiscoDto> update(@PathVariable Long id, @RequestBody DiscoDto discoDto) throws Exception {
-        Disco disco = dtoToEntityConverter.convert(discoDto);
-        Disco discoUpdated = discoService.update(id, disco);
+    public ResponseEntity<DiscoDto> update(@PathVariable Long id, @RequestBody DiscoInDto discoDto) throws Exception {
+        Disco discoUpdated = discoService.update(id, discoDto);
         DiscoDto toReturn = entityToDtoConverter.convert(discoUpdated);
         return ResponseEntity.ok(toReturn);
     }

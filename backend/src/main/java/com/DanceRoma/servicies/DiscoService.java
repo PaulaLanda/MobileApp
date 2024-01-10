@@ -92,16 +92,37 @@ public class DiscoService {
     /**
      * Updates some aspect of a disco
      * @param id of the disco to update
-     * @param toUpdate disco with desired parameters
+     * @param disco disco with desired parameters
      * @return Disco instance with new properties
      * @throws Exception no disco exists with that id
      */
-    public Disco update(Long id, Disco toUpdate) throws Exception {
-        Optional<Disco> disco = discoRepository.findById(id);
-        if (disco.isEmpty()) {
-            throw new Exception("There is not any disco with id <" + id + ">");
+    public Disco update(Long id, DiscoInDto disco) throws Exception {
+        Optional<User> owner = userRepository.findById(disco.getId());
+        if (owner.isEmpty()) {
+            throw new Exception("Owner not found with id <" + disco.getId() + ">");
         }
-        toUpdate.setId(id);
+
+        Optional<Disco> discoByName = discoRepository.findByName(disco.getName());
+        if (discoByName.isPresent()) {
+            throw new Exception("Already exists a disco with the name <" + disco.getName() + ">");
+        }
+
+        List<Ticket> tickets = new ArrayList<>();
+        for(TicketDto ticketDto: disco.getTicketDtos()) {
+            Optional<Ticket> existingTicket = ticketRepository.findByDescriptionAndPriceAndDrinksNumber(ticketDto.getDescription(), ticketDto.getPrice(), ticketDto.getDrinksNumber());
+
+            if (existingTicket.isPresent()) {
+                tickets.add(existingTicket.get());
+            } else {
+                Ticket toCreate = dtoToEntityConverter.convert(ticketDto);
+                tickets.add(ticketRepository.save(toCreate));
+            }
+        }
+
+        Disco toUpdate = dtoToEntityConverter.convert(disco);
+        toUpdate.setId(disco.getId());
+        toUpdate.setUser(owner.get());
+        toUpdate.setTickets(tickets);
         return discoRepository.save(toUpdate);
     }
 }

@@ -35,6 +35,11 @@ public class UserController {
         return ResponseEntity.ok(usersDto);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) throws Exception {
+        String userType = userService.login(loginDto);
+        return ResponseEntity.ok(userType);
+    }
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@RequestBody UserDto userDto) throws Exception {
@@ -50,11 +55,5 @@ public class UserController {
         User userUpdated = userService.update(toUpdate);
         UserDto toReturn = entityToDtoConverter.convert(userUpdated);
         return ResponseEntity.ok(toReturn);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) throws Exception {
-        String userType = userService.login(loginDto);
-        return ResponseEntity.ok("Usuario de tipo <" + userType + "> logueado");
     }
 }
