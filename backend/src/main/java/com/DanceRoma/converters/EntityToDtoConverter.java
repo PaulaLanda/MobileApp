@@ -63,6 +63,11 @@ public class EntityToDtoConverter {
         }
         dto.setTicketDtos(ticketDtos);
 
+        List<ReviewDto> rev = new ArrayList<>();
+        for(Review r: disco.getReviews())
+            rev.add(convert(r));
+        dto.setReviews(rev);
+
         return dto;
     }
 

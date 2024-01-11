@@ -46,6 +46,10 @@ public class Disco {
   @ManyToMany(mappedBy = "favoriteDiscos")
   private List<User> favoritedByUsers;
 
+
+  //@ManyToMany(mappedBy = "reviews")
+  private List<Review> reviews;
+
   @ManyToMany
   @JoinTable(
           name = "disco_ticket",
@@ -148,6 +152,14 @@ public class Disco {
 
   public void setTickets(List<Ticket> tickets) {
     this.tickets = tickets;
+  }
+
+  public List<Review> getReviews() {
+    return reviews;
+  }
+
+  public void setReviews(List<Review> reviews) {
+    this.reviews = reviews;
   }
 }
 

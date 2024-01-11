@@ -16,6 +16,7 @@ public class DiscoDto {
     private String saturdaySchedule;
     private String sundaySchedule;
     private List<TicketDto> ticketDtos;
+    private List<ReviewDto> reviews;
 
     public Long getId() {
         return id;
@@ -111,5 +112,13 @@ public class DiscoDto {
 
     public void setTicketDtos(List<TicketDto> ticketDtos) {
         this.ticketDtos = ticketDtos;
+    }
+
+    public List<ReviewDto> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewDto> reviews) {
+        this.reviews = reviews;
     }
 }
