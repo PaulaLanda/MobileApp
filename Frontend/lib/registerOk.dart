@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'colors.dart';
+import 'globals.dart';
+import 'mainPageClient.dart';
+import 'mainPageOwner.dart';
 
 class Register_ok extends StatefulWidget {
   static String id = 'Register_ok_page';
@@ -45,7 +48,16 @@ Widget buttonOk(BuildContext context) {
     padding: EdgeInsets.symmetric(horizontal: 30.0),
     width: double.infinity,
     child: ElevatedButton(
-      onPressed: () => print("Continue pressed"),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => (GlobalVariables.type == "CLIENT")
+                ? mainPage_page()
+                : mainPageOwner_page(),
+          ),
+        );
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.greenApp,
         shape: RoundedRectangleBorder(
@@ -62,6 +74,7 @@ Widget buttonOk(BuildContext context) {
     ),
   );
 }
+
 
 class _Register_okPageState extends State<Register_ok> {
   @override

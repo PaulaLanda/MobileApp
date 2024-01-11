@@ -11,17 +11,13 @@ import 'package:http/http.dart' as http;
 
 import 'globals.dart';
 
-class mainPage_page extends StatefulWidget {
-  static String id = 'mainPage';
+class mainPageOwner_page extends StatefulWidget {
+  static String id = 'mainPageOwner';
 
   @override
-  mainPageState createState() => mainPageState();
+  mainPageOwnerState createState() => mainPageOwnerState();
 }
-
-
-
-
-class mainPageState extends State<mainPage_page> {
+class mainPageOwnerState extends State<mainPageOwner_page> {
   String _usuario = "";
   Future<void> obtenerUsuario() async {
     try {
@@ -55,7 +51,7 @@ class mainPageState extends State<mainPage_page> {
 
   Future<List<dynamic>> obtenerClubs() async {
     final response = await http
-        .get(Uri.parse('http://192.168.1.33:8082/discos'));
+        .get(Uri.parse('http://192.168.1.33:8082/discos/${GlobalVariables.user}'));
     if (response.statusCode == 200) {
       final List<dynamic> clubs = jsonDecode(response.body);
       return clubs;
@@ -100,12 +96,9 @@ class mainPageState extends State<mainPage_page> {
 
                     SizedBox(width: 10),
                     IconButton(
-                      icon: Icon(Icons.favorite, size: 20, color: Colors.black),
+                      icon: Icon(Icons.add, size: 20, color: Colors.black),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => fav_page()),
-                        );
+
                       },
                     ),
 
@@ -125,7 +118,7 @@ class mainPageState extends State<mainPage_page> {
               ],
             ),
             Text(
-              'Where do you want to go today?',
+              'See your clubs',
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 20,
@@ -193,32 +186,6 @@ class mainPageState extends State<mainPage_page> {
                   ),
                 ],
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      "Distance: ",
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "15 km",
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                Icon(Icons.favorite, size: 50, color: Colors.redAccent),
-              ],
             ),
           ],
         ),

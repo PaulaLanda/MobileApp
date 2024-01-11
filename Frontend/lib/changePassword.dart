@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'colors.dart';
+import 'globals.dart';
 import 'mainPageClient.dart';
+import 'package:http/http.dart' as http;
 
 
 
@@ -17,7 +21,26 @@ class _recPswdPageState extends State<recup_pswd> {
   final TextEditingController _psswdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  void changePass(String psswd) async {
+    try {
+      final response = await http.put(
+        Uri.parse(
+            'http://192.168.1.33:8082/users/update/${GlobalVariables.user}'),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({
+          'password': psswd,
+        }),
+      );
 
+      if (response.statusCode == 200) {
+        print('ID de canción actualizado correctamente');
+      } else {
+        throw Exception('Error al actualizar el ID de la canción');
+      }
+    } catch (error) {
+      print('Error al actualizar el ID dd de la canción: $error');
+    }
+  }
   Widget atras(BuildContext context){
     return Align(
       alignment: Alignment.topLeft,
@@ -30,7 +53,7 @@ class _recPswdPageState extends State<recup_pswd> {
               icon: const Icon(Icons.arrow_back_ios),
               color: AppColors.greenApp,
               onPressed: () {
-
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -127,7 +150,7 @@ class _recPswdPageState extends State<recup_pswd> {
           String password = _passwordController.text;
 
           if(password == passwordR){
-
+            changePass(password);
           }else{
             showDialog(
               context: context,

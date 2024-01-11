@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'changePassword.dart';
 import 'colors.dart';
+import 'globals.dart';
+import 'package:http/http.dart' as http;
 import 'mainPageClient.dart';
+import 'mainPageOwner.dart';
 
 
 
@@ -15,7 +21,25 @@ class editarPerfil_page extends StatefulWidget {
 class _editarPerfil extends State<editarPerfil_page> {
   final TextEditingController _nombreController = TextEditingController();
 
-
+  void changeName(String name) async {
+    try {
+      final response = await http.put(
+        Uri.parse(
+            'http://192.168.1.33:8082/users/update/${GlobalVariables.user}'),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({
+          'name': name,
+        }),
+      );
+      if (response.statusCode == 200) {
+        print('Nombre de usuario actualizado correctamente');
+      } else {
+        throw Exception('Error al actualizar el nombre de usuario');
+      }
+    } catch (error) {
+      print('Error al actualizar el nombre de usuario: $error');
+    }
+  }
   Widget atras(BuildContext context) {
     return Align(
       alignment: Alignment.topLeft,
@@ -27,14 +51,9 @@ class _editarPerfil extends State<editarPerfil_page> {
             IconButton(
               icon: const Icon(Icons.arrow_back_ios),
               color: AppColors.greenApp,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          mainPage_page()),
-                );
-              },
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
             ),
           ],
         ),
@@ -78,7 +97,12 @@ class _editarPerfil extends State<editarPerfil_page> {
           children: <Widget>[
             TextButton(
                 onPressed: () {
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            recup_pswd()),
+                  );
                 },
                 child: Text(
                   'Change password',
@@ -98,6 +122,19 @@ class _editarPerfil extends State<editarPerfil_page> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
+          String newName = _nombreController.text;
+          if (newName.isNotEmpty) {
+            changeName(newName);
+          }
+
+          if (GlobalVariables.type == "CLIENT"){
+            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => mainPage_page()),);
+
+          }else{
+            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => mainPageOwner_page()),);
+
+          }
+
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.greenApp,

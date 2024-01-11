@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/login.dart';
+import 'package:frontend/register.dart';
 
 import 'colors.dart';
 
@@ -38,7 +40,8 @@ class gradiente extends StatelessWidget {
                   SizedBox(height: 50),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, 'login');
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Register_page()),);
+
                     },
                     child: Text(
                       'Sign up',
@@ -60,7 +63,8 @@ class gradiente extends StatelessWidget {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, 'login');
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Login_page()),);
+
                     },
                     child: Text(
                       'Log in',

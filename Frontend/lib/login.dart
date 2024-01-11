@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:frontend/globals.dart';
+import 'package:frontend/mainPageOwner.dart';
+import 'package:frontend/register.dart';
 import 'colors.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,70 +28,47 @@ class _LoginPageState extends State<Login_page> {
 
     try {
 
-      final response = await http.get(
+      final response = await http.post(
         Uri.parse(url),
-        /*body: {
-         /* 'username': username,
-          'password': password,*/
-        },*/
+        body: {
+         'user': username,
+          'password': password,
+        },
       );
       if (response.statusCode == 200) {
-        String responseBody = response.body;
+        GlobalVariables.user = username;
+        GlobalVariables.type = response.body;
 
-        // Puedes imprimir los datos o hacer cualquier otra operación con ellos
-        print('Datos recibidos: $responseBody');
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => mainPage_page()),
-        );
-        /*int userExistsResult = int.parse(response.body);
-        
-        // Hacer algo con el resultado de userExists según sea necesario
-        if (userExistsResult == 0) {
+        if (GlobalVariables.type == "CLIENT"){
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => mainPage_page()),
           );
-        } else if (userExistsResult == 1){
-          // Usuario no existe, mostrar un mensaje de error, por ejemplo
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Error'),
-                content: Text('Mail not registered'),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
+        }else{
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => mainPageOwner_page()),
           );
-        }else if (userExistsResult == 2){
-          // Usuario no existe, mostrar un mensaje de error, por ejemplo
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Error'),
-                content: Text('Incorrect password'),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        }*/
+        }
+
       } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Something was wrong'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
         throw Exception('Failed to load data');
       }
     } catch (e) {
@@ -183,21 +163,6 @@ class _LoginPageState extends State<Login_page> {
     );
   }
 
-  Widget olvidarContrasegna(BuildContext context){
-    return Container(
-      padding: EdgeInsets.only(left: 30),
-      alignment: Alignment.centerLeft,
-      child: TextButton(
-          onPressed: () => print("Forgot Password pressed"),
-          child: Text(
-            'Forgot your password?',
-            style: TextStyle(
-              color:AppColors.greenApp,
-            ),
-          )
-      ),
-    );
-  }
 
   Widget iniciarSesionButton(BuildContext context) {
     return Container(
@@ -236,8 +201,12 @@ class _LoginPageState extends State<Login_page> {
             ),
           ),
           TextButton(
-            onPressed: () => print("Registrarse preses"),
-            //Navigator.pushNamed(context, Registro.id);
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Register_page()),
+              );
+            },
             child: Text(
               'Sign up',
               style: TextStyle(
@@ -270,7 +239,6 @@ class _LoginPageState extends State<Login_page> {
                   buildEmail(),
                   SizedBox(height: 20),
                   buildContrasegna(),
-                  olvidarContrasegna(context),
                   SizedBox(height: 40),
                   iniciarSesionButton(context),
                   registerText(context),
