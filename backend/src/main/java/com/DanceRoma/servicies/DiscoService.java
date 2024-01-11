@@ -4,6 +4,7 @@ import com.DanceRoma.converters.DtoToEntityConverter;
 import com.DanceRoma.dtos.DiscoInDto;
 import com.DanceRoma.dtos.TicketDto;
 import com.DanceRoma.entities.Disco;
+import com.DanceRoma.entities.Review;
 import com.DanceRoma.entities.Ticket;
 import com.DanceRoma.entities.User;
 import com.DanceRoma.repositories.DiscoRepository;
@@ -125,4 +126,30 @@ public class DiscoService {
         toUpdate.setTickets(tickets);
         return discoRepository.save(toUpdate);
     }
+
+    public List<Disco> addToFav(Disco d, Long id) throws Exception {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new Exception("There is not any user with id <" + id + ">");
+        }
+        List<Disco> l = findAllByUserId(id);
+        if(l.contains(d))
+            throw new Exception("Disco with name "+ d.getName()+" already in fav");
+        l.add(d);
+        return l;
+    }
+
+    public List<Disco> deleteFromFav(Disco d, Long id) throws Exception {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new Exception("There is not any user with id <" + id + ">");
+        }
+        List<Disco> l = findAllByUserId(id);
+        if(!l.contains(d))
+            throw new Exception("Disco with name "+ d.getName()+" not in fav");
+        l.remove(d);
+        return l;
+    }
+
+
 }
