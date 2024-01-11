@@ -1,13 +1,7 @@
 package com.DanceRoma.converters;
 
-import com.DanceRoma.dtos.DiscoDto;
-import com.DanceRoma.dtos.MessageDto;
-import com.DanceRoma.dtos.TicketDto;
-import com.DanceRoma.dtos.UserDto;
-import com.DanceRoma.entities.Disco;
-import com.DanceRoma.entities.Message;
-import com.DanceRoma.entities.Ticket;
-import com.DanceRoma.entities.User;
+import com.DanceRoma.dtos.*;
+import com.DanceRoma.entities.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,6 +19,17 @@ public class EntityToDtoConverter {
         dto.setPassword(user.getPassword());
         dto.setUserType(user.getUserType().name());
 
+        return dto;
+    }
+
+    public ReviewDto convert(Review r) {
+        ReviewDto dto = new ReviewDto();
+        dto.setId(r.getId());
+        dto.setUserId(r.getUserId());
+        dto.setDiscoId(r.getClubId());
+        dto.setMark(r.getMark());
+        dto.setMessage(r.getText());
+        dto.setPhotoUrl(r.getPhotoUrl());
         return dto;
     }
 
