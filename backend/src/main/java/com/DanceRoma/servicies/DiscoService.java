@@ -127,6 +127,14 @@ public class DiscoService {
         return discoRepository.save(toUpdate);
     }
 
+    /**
+     * Adds to favourite some disco for some user and returns the list of
+     * discos the user has marked as favourites
+     * @param d disco to add
+     * @param id of the user
+     * @return list of favourite discos of that user
+     * @throws Exception no user with that id
+     */
     public List<Disco> addToFav(Disco d, Long id) throws Exception {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
@@ -139,6 +147,13 @@ public class DiscoService {
         return l;
     }
 
+    /**
+     * Deletes a certain disco from the list of favourite discos of that user
+     * @param d disco to delete
+     * @param id of the user
+     * @return list of favourite discos
+     * @throws Exception no user with that id
+     */
     public List<Disco> deleteFromFav(Disco d, Long id) throws Exception {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
@@ -156,6 +171,19 @@ public class DiscoService {
             throw new Exception("The review is for another disco");
         //save review in database
         return null; //return list with all reviews for that disco
+    }
+
+    /**
+     * Returns whether the user has marked that disco as favourite
+     * @param d disco
+     * @param id of the user
+     * @return true (disco is fav), false
+     * @throws Exception no user with that id
+     */
+    public boolean isFav(Disco d, long id) throws Exception {
+        Optional<User> user = userRepository.findById(id);
+        List<Disco> l = findAllByUserId(id);
+        return l.contains(d);
     }
 
 }
