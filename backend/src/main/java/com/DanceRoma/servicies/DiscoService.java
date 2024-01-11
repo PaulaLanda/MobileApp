@@ -151,5 +151,11 @@ public class DiscoService {
         return l;
     }
 
+    public List<Review> addReview(Disco d, Review r) throws Exception {
+        if(!d.getId().equals(r.getClubId()))
+            throw new Exception("The review is for another disco");
+        //save review in database
+        return null; //return list with all reviews for that disco
+    }
 
 }
