@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:frontend/MessageData.dart';
 import 'package:frontend/chat.dart';
 import 'package:frontend/gradiente.dart';
+import 'camera.dart';
 import 'changePassword.dart';
 import 'chatScreen.dart';
 import 'editClub.dart';
 
 import 'editProfile.dart';
+import 'galeria.dart';
 import 'login.dart';
 import 'reviewPage.dart';
 
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'RomeDance',
       debugShowCheckedModeBanner: false,
-      home: ChatScreen(messageData: messageData,),
+      home: MyHomePage(),
     );
   }
 }
