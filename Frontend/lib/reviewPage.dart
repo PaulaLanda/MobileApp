@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/globals.dart';
+import 'Club.dart';
+import 'Review.dart';
 import 'colors.dart';
 
 import 'package:http/http.dart' as http;
@@ -21,36 +23,72 @@ class reviewPageState extends State<review_page> {
   final TextEditingController _reviewController = TextEditingController();
 
   String photo = "";
-  String address = "";
-  String m = "";
-  String t = "";
-  String w = "";
-  String th = "";
-  String f = "";
-  String s = "";
-  String d = "";
-
-  List<dynamic> prices = [];
+  Club c = Club();
 
   Future<void> obtenerClub(String id) async {
     final response =
     await http.get(Uri.parse('http://192.168.1.33:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
+      c = Club(id: club["id"], name: club["name"], address: club["address"], userP: club["user_id"], m: club["monday_schedule"], t:club["tuesday_schedule"], w: club["wednesday_schedule"], th: club["thuesday_schedule"], f: club["friday_schedule"], s: club["saturday_schedule"], d: club["sunday_schedule"]);
       photo = club["photo"];
-      address = club["address"];
-      m = club["mondaySchedule"];
-      t = club["tuesdaySchedule"];
-      w = club["wednesdaySchedule"];
-      th = club["thursdaySchedule"];
-      f = club["fridaySchedule"];
-      s = club["saturdaySchedule"];
-      d = club["sundaySchedule"];
-      prices = club["ticketDtos"];
     } else {
-      throw Exception('Error al obtener las playlists');
+      throw Exception('Error al obtener el club');
     }
   }
+
+  Future<List<Review>> addReview(Club d, Review r) async {
+    const String apiUrl = 'tu_url_api_aqui';
+
+    final Map<String, dynamic> data = {
+      'name': d.name,
+      'review': {
+        'user': r.userId,
+        'club': r.clubId,
+        'text':r.text,
+
+      },
+    };
+
+    final response = await http.post(
+      Uri.parse('$apiUrl/addReview'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonResponse = jsonDecode(response.body);
+      final List<Review> reviews = jsonResponse.map((data) => Review.fromJson(data)).toList();
+      return reviews;
+    } else {
+      throw Exception('Failed to add review');
+    }
+  }
+
+  void submitReview() async {
+
+    String reviewText = _reviewController.text;
+
+    Review newReview = Review(
+      id: 0,
+      userId: GlobalVariables.user,
+      clubId: c.id, // Asigna el valor adecuado según tu lógica (puedes obtenerlo de alguna parte)
+      mark: 5, // Asigna el valor adecuado según tu lógica (puedes obtenerlo de alguna parte)
+      text: reviewText,
+    );
+
+
+    try {
+      List<Review> reviews = await addReview(c, newReview);
+
+      print('Review added successfully: $reviews');
+    } catch (e) {
+      print('Error adding review: $e');
+    }
+  }
+
   Widget Photo(BuildContext context) {
     return Stack(
       children: [
@@ -117,9 +155,7 @@ class reviewPageState extends State<review_page> {
           SizedBox(height: 10), // Espacio entre el campo de entrada y el botón
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                // Acción a realizar al presionar el botón "Submit"
-              },
+              onPressed: submitReview,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                 child: Text(
@@ -169,3 +205,4 @@ class reviewPageState extends State<review_page> {
     );
   }
 }
+
