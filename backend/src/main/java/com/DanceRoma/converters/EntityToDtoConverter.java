@@ -36,8 +36,8 @@ public class EntityToDtoConverter {
         MessageDto dto = new MessageDto();
         dto.setId(msg.getId());
         dto.setMessage(msg.getText());
-        dto.setSenderId(msg.getSenderId());
-        dto.setReceptorId(msg.getReceptorId());
+        dto.setSenderMail(msg.getSender());
+        dto.setReceptorMail(msg.getReceptor());
         dto.setDate(msg.getDate());
         return dto;
     }

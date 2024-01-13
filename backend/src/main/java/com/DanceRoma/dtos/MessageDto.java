@@ -5,8 +5,8 @@ import java.sql.Date;
 public class MessageDto {
     private String message;
     private Long id;
-    private Long senderId;
-    private Long receptorId;
+    private String senderMail;
+    private String receptorMail;
     private Date date;
 
     public String getMessage() {
@@ -25,27 +25,27 @@ public class MessageDto {
         this.id = id;
     }
 
-    public Long getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(Long senderId) {
-        this.senderId = senderId;
-    }
-
-    public Long getReceptorId() {
-        return receptorId;
-    }
-
-    public void setReceptorId(Long receptorId) {
-        this.receptorId = receptorId;
-    }
-
     public Date getDate() {
         return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getSenderMail() {
+        return senderMail;
+    }
+
+    public void setSenderMail(String senderMail) {
+        this.senderMail = senderMail;
+    }
+
+    public String getReceptorMail() {
+        return receptorMail;
+    }
+
+    public void setReceptorMail(String receptorMail) {
+        this.receptorMail = receptorMail;
     }
 }
