@@ -5,6 +5,7 @@ import com.DanceRoma.converters.EntityToDtoConverter;
 import com.DanceRoma.dtos.DiscoDto;
 import com.DanceRoma.dtos.DiscoInDto;
 import com.DanceRoma.entities.Disco;
+import com.DanceRoma.entities.User;
 import com.DanceRoma.servicies.DiscoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -55,10 +56,10 @@ public class DiscoController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody DiscoInDto discoDto) throws Exception {
+    public ResponseEntity<?> update(@RequestBody User u, @RequestBody DiscoInDto discoDto) throws Exception {
         ResponseEntity<?> toReturn;
         try {
-            Disco discoUpdated = discoService.update(id, discoDto);
+            Disco discoUpdated = discoService.update(u, discoDto);
             DiscoDto discoUpdatedDto = entityToDtoConverter.convert(discoUpdated);
             toReturn = ResponseEntity.ok(discoUpdatedDto);
         } catch (Exception e) {

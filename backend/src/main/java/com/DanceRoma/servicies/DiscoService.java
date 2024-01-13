@@ -42,10 +42,18 @@ public class DiscoService {
 
     /**
      * Returns all the discos that a user has marked as favourites
-     * @param id of the user
+     * @param u User instance
      * @return list with the discos
      * @throws Exception if there's no user with that id
      */
+    public List<Disco> findAllByUser(User u) throws Exception {
+        Optional<User> user = userRepository.findById(u.getId());
+        if (user.isEmpty()) {
+            throw new Exception("There is not any user with name <" + u.getName() + ">");
+        }
+        return discoRepository.findAllByUser_id(u.getId());
+    }
+
     public List<Disco> findAllByUserId(Long id) throws Exception {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
@@ -53,6 +61,7 @@ public class DiscoService {
         }
         return discoRepository.findAllByUser_id(id);
     }
+
 
     /**
      * Creates a disco by passing a DiscoInDto instance
@@ -92,20 +101,15 @@ public class DiscoService {
 
     /**
      * Updates some aspect of a disco
-     * @param id of the disco to update
+     * @param ow Owner of the disco
      * @param disco disco with desired parameters
      * @return Disco instance with new properties
      * @throws Exception no disco exists with that id
      */
-    public Disco update(Long id, DiscoInDto disco) throws Exception {
-        Optional<User> owner = userRepository.findById(id);
+    public Disco update(User ow, DiscoInDto disco) throws Exception {
+        Optional<User> owner = userRepository.findById(ow.getId());
         if (owner.isEmpty()) {
-            throw new Exception("Owner not found with id <" + disco.getId() + ">");
-        }
-
-        Optional<Disco> discoByName = discoRepository.findByName(disco.getName());
-        if (discoByName.isPresent()) {
-            throw new Exception("Already exists a disco with the name <" + disco.getName() + ">");
+            throw new Exception("Owner not found with name <" + ow.getName() + ">");
         }
 
         List<Ticket> tickets = new ArrayList<>();
@@ -131,16 +135,16 @@ public class DiscoService {
      * Adds to favourite some disco for some user and returns the list of
      * discos the user has marked as favourites
      * @param d disco to add
-     * @param id of the user
+     * @param u Instance of the user
      * @return list of favourite discos of that user
      * @throws Exception no user with that id
      */
-    public List<Disco> addToFav(Disco d, Long id) throws Exception {
-        Optional<User> user = userRepository.findById(id);
+    public List<Disco> addToFav(Disco d, User u) throws Exception {
+        Optional<User> user = userRepository.findById(u.getId());
         if (user.isEmpty()) {
-            throw new Exception("There is not any user with id <" + id + ">");
+            throw new Exception("There is not any user with name <" + u.getName() + ">");
         }
-        List<Disco> l = findAllByUserId(id);
+        List<Disco> l = findAllByUserId(u.getId());
         if(l.contains(d))
             throw new Exception("Disco with name "+ d.getName()+" already in fav");
         l.add(d);
@@ -150,16 +154,16 @@ public class DiscoService {
     /**
      * Deletes a certain disco from the list of favourite discos of that user
      * @param d disco to delete
-     * @param id of the user
+     * @param u Instance of the user
      * @return list of favourite discos
      * @throws Exception no user with that id
      */
-    public List<Disco> deleteFromFav(Disco d, Long id) throws Exception {
-        Optional<User> user = userRepository.findById(id);
+    public List<Disco> deleteFromFav(Disco d, User u) throws Exception {
+        Optional<User> user = userRepository.findById(u.getId());
         if (user.isEmpty()) {
-            throw new Exception("There is not any user with id <" + id + ">");
+            throw new Exception("There is not any user with name <" + u.getName() + ">");
         }
-        List<Disco> l = findAllByUserId(id);
+        List<Disco> l = findAllByUserId(u.getId());
         if(!l.contains(d))
             throw new Exception("Disco with name "+ d.getName()+" not in fav");
         l.remove(d);
@@ -176,14 +180,27 @@ public class DiscoService {
     /**
      * Returns whether the user has marked that disco as favourite
      * @param d disco
-     * @param id of the user
+     * @param u user
      * @return true (disco is fav), false
      * @throws Exception no user with that id
      */
-    public boolean isFav(Disco d, long id) throws Exception {
-        Optional<User> user = userRepository.findById(id);
-        List<Disco> l = findAllByUserId(id);
+    public boolean isFav(Disco d, User u) throws Exception {
+        Optional<User> user = userRepository.findById(u.getId());
+        List<Disco> l = findAllByUserId(u.getId());
         return l.contains(d);
     }
+
+    public List<Disco> discosOfOwner(User u) throws Exception {
+        if(!u.getUserType().equals(User.UserType.OWNER))
+            throw new Exception("The user is not an owner");
+        List<Disco> all = findAll();
+        List<Disco> owned = new ArrayList<>();
+        for(Disco d:all){
+            if(d.getUser().equals(u))
+                owned.add(d);
+        }
+        return owned;
+    }
+
 
 }
