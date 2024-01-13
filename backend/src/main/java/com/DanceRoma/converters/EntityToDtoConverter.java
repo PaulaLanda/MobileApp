@@ -27,7 +27,6 @@ public class EntityToDtoConverter {
         dto.setId(r.getId());
         dto.setUserId(r.getUserId());
         dto.setDiscoId(r.getClubId());
-        dto.setMark(r.getMark());
         dto.setMessage(r.getText());
         dto.setPhotoUrl(r.getPhotoUrl());
         return dto;

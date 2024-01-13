@@ -16,9 +16,6 @@ public class Review {
     @Column(name = "club", nullable = false)
     private Long clubId;
 
-    @Column(name = "mark", nullable = false)
-    private int mark;
-
     @Column(name = "text", nullable = false)
     private String text;
 
@@ -47,14 +44,6 @@ public class Review {
 
     public void setClubId(Long clubId) {
         this.clubId = clubId;
-    }
-
-    public int getMark() {
-        return mark;
-    }
-
-    public void setMark(int mark) {
-        this.mark = mark;
     }
 
     public String getText() {

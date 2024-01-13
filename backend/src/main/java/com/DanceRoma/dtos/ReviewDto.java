@@ -5,7 +5,6 @@ public class ReviewDto {
     private long id;
     private long userId;
     private long discoId;
-    private int mark;
     private String message;
     private String photoUrl;
 
@@ -31,14 +30,6 @@ public class ReviewDto {
 
     public void setDiscoId(long discoId) {
         this.discoId = discoId;
-    }
-
-    public int getMark() {
-        return mark;
-    }
-
-    public void setMark(int mark) {
-        this.mark = mark;
     }
 
     public String getMessage() {
