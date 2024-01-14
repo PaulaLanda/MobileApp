@@ -17,6 +17,7 @@ public class DiscoDto {
     private String sundaySchedule;
     private List<TicketDto> ticketDtos;
     private List<ReviewDto> reviews;
+    private String photoUrl;
 
     public Long getId() {
         return id;
@@ -94,6 +95,8 @@ public class DiscoDto {
         return saturdaySchedule;
     }
 
+
+
     public void setSaturdaySchedule(String saturdaySchedule) {
         this.saturdaySchedule = saturdaySchedule;
     }
@@ -120,5 +123,13 @@ public class DiscoDto {
 
     public void setReviews(List<ReviewDto> reviews) {
         this.reviews = reviews;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

@@ -27,7 +27,6 @@ public class EntityToDtoConverter {
         dto.setId(r.getId());
         dto.setUserId(r.getUserId());
         dto.setDiscoId(r.getClubId());
-        dto.setMark(r.getMark());
         dto.setMessage(r.getText());
         dto.setPhotoUrl(r.getPhotoUrl());
         return dto;
@@ -37,8 +36,8 @@ public class EntityToDtoConverter {
         MessageDto dto = new MessageDto();
         dto.setId(msg.getId());
         dto.setMessage(msg.getText());
-        dto.setSenderId(msg.getSenderId());
-        dto.setReceptorId(msg.getReceptorId());
+        dto.setSenderMail(msg.getSender());
+        dto.setReceptorMail(msg.getReceptor());
         dto.setDate(msg.getDate());
         return dto;
     }
@@ -56,6 +55,7 @@ public class EntityToDtoConverter {
         dto.setFridaySchedule(disco.getFridaySchedule());
         dto.setSaturdaySchedule(disco.getSaturdaySchedule());
         dto.setSundaySchedule(disco.getSundaySchedule());
+        dto.setPhotoUrl(disco.getPhoto());
 
         List<TicketDto> ticketDtos = new ArrayList<>();
         for (Ticket ticket : disco.getTickets()) {

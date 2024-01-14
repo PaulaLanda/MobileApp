@@ -16,10 +16,10 @@ public class Message {
     private String text;
 
     @Column(name = "sender", nullable = false)
-    private Long senderId;
+    private String sender;
 
     @Column(name = "receptor", nullable = false)
-    private Long receptorId;
+    private String receptor;
 
     @Column(name = "date", nullable = false)
     private Date date;
@@ -40,20 +40,20 @@ public class Message {
         this.text = text;
     }
 
-    public Long getSenderId() {
-        return senderId;
+    public String getSender() {
+        return sender;
     }
 
-    public void setSenderId(Long senderId) {
-        this.senderId = senderId;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
-    public Long getReceptorId() {
-        return receptorId;
+    public String getReceptor() {
+        return receptor;
     }
 
-    public void setReceptorId(Long receptorId) {
-        this.receptorId = receptorId;
+    public void setReceptor(String receptor) {
+        this.receptor = receptor;
     }
 
     public Date getDate() {

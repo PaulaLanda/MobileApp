@@ -42,6 +42,8 @@ public class Disco {
 
   @Column(name = "sunday_schedule", nullable = false)
   private String sundaySchedule;
+  @Column(name = "photo", nullable = false)
+  private String photo;
 
   @ManyToMany(mappedBy = "favoriteDiscos")
   private List<User> favoritedByUsers;
@@ -160,6 +162,14 @@ public class Disco {
 
   public void setReviews(List<Review> reviews) {
     this.reviews = reviews;
+  }
+
+  public String getPhoto() {
+    return photo;
+  }
+
+  public void setPhoto(String photo) {
+    this.photo = photo;
   }
 }
 
