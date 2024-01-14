@@ -22,13 +22,12 @@ public class EntityToDtoConverter {
         return dto;
     }
 
-    public ReviewDto convert(Review r) {
-        ReviewDto dto = new ReviewDto();
-        dto.setId(r.getId());
-        dto.setUserId(r.getUserId());
-        dto.setDiscoId(r.getClubId());
-        dto.setMessage(r.getText());
-        dto.setPhotoUrl(r.getPhotoUrl());
+    public ReviewOutDto convert(Review review) {
+        ReviewOutDto dto = new ReviewOutDto();
+        dto.setId(review.getId());
+        dto.setUserDto(convert(review.getUser()));
+        dto.setMessage(review.getText());
+        dto.setPhotoUrl(review.getPhotoUrl());
         return dto;
     }
 
@@ -36,8 +35,8 @@ public class EntityToDtoConverter {
         MessageDto dto = new MessageDto();
         dto.setId(msg.getId());
         dto.setMessage(msg.getText());
-        dto.setSenderMail(msg.getSender());
-        dto.setReceptorMail(msg.getReceptor());
+        dto.setSender(convert(msg.getSender()));
+        dto.setSender(convert(msg.getReceptor()));
         dto.setDate(msg.getDate());
         return dto;
     }
@@ -55,7 +54,7 @@ public class EntityToDtoConverter {
         dto.setFridaySchedule(disco.getFridaySchedule());
         dto.setSaturdaySchedule(disco.getSaturdaySchedule());
         dto.setSundaySchedule(disco.getSundaySchedule());
-        dto.setPhotoUrl(disco.getPhoto());
+        dto.setPhotoUrl(disco.getPhotoUrl());
 
         List<TicketDto> ticketDtos = new ArrayList<>();
         for (Ticket ticket : disco.getTickets()) {
@@ -63,10 +62,11 @@ public class EntityToDtoConverter {
         }
         dto.setTicketDtos(ticketDtos);
 
-        List<ReviewDto> rev = new ArrayList<>();
-        for(Review r: disco.getReviews())
-            rev.add(convert(r));
-        dto.setReviews(rev);
+        List<ReviewOutDto> reviewOutDtos = new ArrayList<>();
+        for (Review review : disco.getReviews()) {
+            reviewOutDtos.add(convert(review));
+        }
+        dto.setReviewDtos(reviewOutDtos);
 
         return dto;
     }

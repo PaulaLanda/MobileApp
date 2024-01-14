@@ -2,12 +2,12 @@ package com.DanceRoma.dtos;
 
 import java.time.LocalDate;
 
-public class MessageDto {
+public class MessageInDto{
 
     private String message;
     private Long id;
-    private UserDto sender;
-    private UserDto receptor;
+    private Long senderId;
+    private Long receptorId;
     private LocalDate date;
 
     public String getMessage() {
@@ -34,19 +34,19 @@ public class MessageDto {
         this.date = date;
     }
 
-    public UserDto getSender() {
-        return sender;
+    public Long getSenderMail() {
+        return senderId;
     }
 
-    public void setSender(UserDto senderMail) {
-        this.sender = senderMail;
+    public void setSenderMail(Long senderMail) {
+        this.senderId = senderMail;
     }
 
-    public UserDto getReceptor() {
-        return receptor;
+    public Long getReceptorMail() {
+        return receptorId;
     }
 
-    public void setReceptor(UserDto receptorMail) {
-        this.receptor = receptorMail;
+    public void setReceptorMail(Long receptorMail) {
+        this.receptorId = receptorMail;
     }
 }

@@ -2,7 +2,7 @@ package com.DanceRoma.entities;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "messages")
@@ -15,14 +15,16 @@ public class Message {
     @Column(name = "text", nullable = false)
     private String text;
 
-    @Column(name = "sender", nullable = false)
-    private String sender;
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
+    private User sender;
 
-    @Column(name = "receptor", nullable = false)
-    private String receptor;
+    @ManyToOne
+    @JoinColumn(name = "receptor_id")
+    private User receptor;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private LocalDate date;
 
     public Long getId() {
         return id;
@@ -40,27 +42,27 @@ public class Message {
         this.text = text;
     }
 
-    public String getSender() {
+    public User getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(User sender) {
         this.sender = sender;
     }
 
-    public String getReceptor() {
+    public User getReceptor() {
         return receptor;
     }
 
-    public void setReceptor(String receptor) {
+    public void setReceptor(User receptor) {
         this.receptor = receptor;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }

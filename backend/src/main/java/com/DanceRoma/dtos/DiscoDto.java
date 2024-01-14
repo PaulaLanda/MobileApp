@@ -16,7 +16,7 @@ public class DiscoDto {
     private String saturdaySchedule;
     private String sundaySchedule;
     private List<TicketDto> ticketDtos;
-    private List<ReviewDto> reviews;
+    private List<ReviewOutDto> reviewDtos;
     private String photoUrl;
 
     public Long getId() {
@@ -116,13 +116,12 @@ public class DiscoDto {
     public void setTicketDtos(List<TicketDto> ticketDtos) {
         this.ticketDtos = ticketDtos;
     }
-
-    public List<ReviewDto> getReviews() {
-        return reviews;
+    public List<ReviewOutDto> getReviewDtos() {
+        return reviewDtos;
     }
 
-    public void setReviews(List<ReviewDto> reviews) {
-        this.reviews = reviews;
+    public void setReviewDtos(List<ReviewOutDto> reviewDtos) {
+        this.reviewDtos = reviewDtos;
     }
 
     public String getPhotoUrl() {

@@ -1,13 +1,15 @@
-package com.DanceRoma.servicies;
+package com.DanceRoma.services;
 
 import com.DanceRoma.converters.DtoToEntityConverter;
 import com.DanceRoma.dtos.DiscoInDto;
+import com.DanceRoma.dtos.ReviewInDto;
 import com.DanceRoma.dtos.TicketDto;
 import com.DanceRoma.entities.Disco;
 import com.DanceRoma.entities.Review;
 import com.DanceRoma.entities.Ticket;
 import com.DanceRoma.entities.User;
 import com.DanceRoma.repositories.DiscoRepository;
+import com.DanceRoma.repositories.ReviewRepository;
 import com.DanceRoma.repositories.TicketRepository;
 import com.DanceRoma.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,28 +32,18 @@ public class DiscoService {
     private TicketRepository ticketRepository;
 
     @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
     private DtoToEntityConverter dtoToEntityConverter;
 
     /**
      * Returns a list with all discos
+     *
      * @return list with all discos
      */
     public List<Disco> findAll() {
         return (List<Disco>) discoRepository.findAll();
-    }
-
-    /**
-     * Returns all the discos that a user has marked as favourites
-     * @param u User instance
-     * @return list with the discos
-     * @throws Exception if there's no user with that id
-     */
-    public List<Disco> findAllByUser(User u) throws Exception {
-        Optional<User> user = userRepository.findById(u.getId());
-        if (user.isEmpty()) {
-            throw new Exception("There is not any user with name <" + u.getName() + ">");
-        }
-        return discoRepository.findAllByUser_id(u.getId());
     }
 
     public List<Disco> findAllByUserId(Long id) throws Exception {
@@ -65,10 +57,11 @@ public class DiscoService {
 
     /**
      * Creates a disco by passing a DiscoInDto instance
+     *
      * @param disco with properties
      * @return the created Disco instance
      * @throws Exception if the owner does not exist, already is a disco
-     * with that name
+     *                   with that name
      */
     public Disco create(DiscoInDto disco) throws Exception {
         Optional<User> owner = userRepository.findByEmail(disco.getUserEmail());
@@ -82,7 +75,7 @@ public class DiscoService {
         }
 
         List<Ticket> tickets = new ArrayList<>();
-        for(TicketDto ticketDto: disco.getTicketDtos()) {
+        for (TicketDto ticketDto : disco.getTicketDtos()) {
             Optional<Ticket> existingTicket = ticketRepository.findByDescriptionAndPriceAndDrinksNumber(ticketDto.getDescription(), ticketDto.getPrice(), ticketDto.getDrinksNumber());
 
             if (existingTicket.isPresent()) {
@@ -96,24 +89,26 @@ public class DiscoService {
         Disco toCreate = dtoToEntityConverter.convert(disco);
         toCreate.setUser(owner.get());
         toCreate.setTickets(tickets);
+        toCreate.setReviews(new ArrayList<>());
         return discoRepository.save(toCreate);
     }
 
     /**
      * Updates some aspect of a disco
-     * @param ow Owner of the disco
+     *
+     * @param id    ID of the disco
      * @param disco disco with desired parameters
      * @return Disco instance with new properties
      * @throws Exception no disco exists with that id
      */
-    public Disco update(User ow, DiscoInDto disco) throws Exception {
-        Optional<User> owner = userRepository.findById(ow.getId());
+    public Disco update(Long id, DiscoInDto disco) throws Exception {
+        Optional<User> owner = userRepository.findByEmail(disco.getUserEmail());
         if (owner.isEmpty()) {
-            throw new Exception("Owner not found with name <" + ow.getName() + ">");
+            throw new Exception("Owner not found with name <" + disco.getUserEmail() + ">");
         }
 
         List<Ticket> tickets = new ArrayList<>();
-        for(TicketDto ticketDto: disco.getTicketDtos()) {
+        for (TicketDto ticketDto : disco.getTicketDtos()) {
             Optional<Ticket> existingTicket = ticketRepository.findByDescriptionAndPriceAndDrinksNumber(ticketDto.getDescription(), ticketDto.getPrice(), ticketDto.getDrinksNumber());
 
             if (existingTicket.isPresent()) {
@@ -125,82 +120,39 @@ public class DiscoService {
         }
 
         Disco toUpdate = dtoToEntityConverter.convert(disco);
-        toUpdate.setId(disco.getId());
+        toUpdate.setId(id);
         toUpdate.setUser(owner.get());
         toUpdate.setTickets(tickets);
+
+        if (toUpdate.getReviews() == null) {
+            toUpdate.setReviews(new ArrayList<>());
+        }
+
         return discoRepository.save(toUpdate);
     }
 
-    /**
-     * Adds to favourite some disco for some user and returns the list of
-     * discos the user has marked as favourites
-     * @param d disco to add
-     * @param u Instance of the user
-     * @return list of favourite discos of that user
-     * @throws Exception no user with that id
-     */
-    public List<Disco> addToFav(Disco d, User u) throws Exception {
-        Optional<User> user = userRepository.findById(u.getId());
+    public List<Review> addReview(ReviewInDto reviewInDto) throws Exception {
+        Optional<Disco> disco = discoRepository.findById(reviewInDto.getDiscoId());
+        if (disco.isEmpty()) {
+            throw new Exception("There is not any disco with ID <" + reviewInDto.getDiscoId() + ">");
+        }
+
+        Optional<User> user = userRepository.findById(reviewInDto.getUserId());
         if (user.isEmpty()) {
-            throw new Exception("There is not any user with name <" + u.getName() + ">");
+            throw new Exception("There is not any user with ID <" + reviewInDto.getUserId() + ">");
         }
-        List<Disco> l = findAllByUserId(u.getId());
-        if(l.contains(d))
-            throw new Exception("Disco with name "+ d.getName()+" already in fav");
-        l.add(d);
-        return l;
-    }
 
-    /**
-     * Deletes a certain disco from the list of favourite discos of that user
-     * @param d disco to delete
-     * @param u Instance of the user
-     * @return list of favourite discos
-     * @throws Exception no user with that id
-     */
-    public List<Disco> deleteFromFav(Disco d, User u) throws Exception {
-        Optional<User> user = userRepository.findById(u.getId());
-        if (user.isEmpty()) {
-            throw new Exception("There is not any user with name <" + u.getName() + ">");
-        }
-        List<Disco> l = findAllByUserId(u.getId());
-        if(!l.contains(d))
-            throw new Exception("Disco with name "+ d.getName()+" not in fav");
-        l.remove(d);
-        return l;
-    }
+        Disco toUpdate = disco.get();
 
-    public List<Review> addReview(Disco d, Review r) throws Exception {
-        if(!d.getId().equals(r.getClubId()))
-            throw new Exception("The review is for another disco");
-        //save review in database
-        return null; //return list with all reviews for that disco
-    }
+        Review reviewToAdd = dtoToEntityConverter.convert(reviewInDto);
+        reviewToAdd.setDisco(toUpdate);
+        reviewToAdd.setUser(user.get());
+        reviewRepository.save(reviewToAdd);
 
-    /**
-     * Returns whether the user has marked that disco as favourite
-     * @param d disco
-     * @param u user
-     * @return true (disco is fav), false
-     * @throws Exception no user with that id
-     */
-    public boolean isFav(Disco d, User u) throws Exception {
-        Optional<User> user = userRepository.findById(u.getId());
-        List<Disco> l = findAllByUserId(u.getId());
-        return l.contains(d);
+        List<Review> actualReviews = toUpdate.getReviews();
+        actualReviews.add(reviewToAdd);
+        toUpdate.setReviews(actualReviews);
+        return discoRepository.save(toUpdate).getReviews();
     }
-
-    public List<Disco> discosOfOwner(User u) throws Exception {
-        if(!u.getUserType().equals(User.UserType.OWNER))
-            throw new Exception("The user is not an owner");
-        List<Disco> all = findAll();
-        List<Disco> owned = new ArrayList<>();
-        for(Disco d:all){
-            if(d.getUser().equals(u))
-                owned.add(d);
-        }
-        return owned;
-    }
-
 
 }

@@ -1,35 +1,26 @@
 package com.DanceRoma.dtos;
 
-public class ReviewDto {
+public class ReviewOutDto {
 
-    private long id;
-    private long userId;
-    private long discoId;
+    private Long id;
+    private UserDto userDto;
     private String message;
     private String photoUrl;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getUserId() {
-        return userId;
+    public UserDto getUserDto() {
+        return userDto;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public long getDiscoId() {
-        return discoId;
-    }
-
-    public void setDiscoId(long discoId) {
-        this.discoId = discoId;
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
 
     public String getMessage() {

@@ -35,6 +35,12 @@ public class User {
     @Column(name = "user_type", nullable = false)
     private UserType userType;
 
+    @OneToMany(mappedBy = "sender")
+    private List<Message> sentMessages;
+
+    @OneToMany(mappedBy = "receptor")
+    private List<Message> receivedMessages;
+
     @ManyToMany
     @JoinTable(
             name = "user_favorite_discos",

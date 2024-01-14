@@ -2,6 +2,7 @@ package com.DanceRoma.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,15 +43,16 @@ public class Disco {
 
   @Column(name = "sunday_schedule", nullable = false)
   private String sundaySchedule;
-  @Column(name = "photo", nullable = false)
-  private String photo;
+
+  @Column(name = "photo_url")
+  private String photoUrl;
 
   @ManyToMany(mappedBy = "favoriteDiscos")
   private List<User> favoritedByUsers;
 
-
-  //@ManyToMany(mappedBy = "reviews")
+  @OneToMany(mappedBy = "disco")
   private List<Review> reviews;
+
 
   @ManyToMany
   @JoinTable(
@@ -164,12 +166,13 @@ public class Disco {
     this.reviews = reviews;
   }
 
-  public String getPhoto() {
-    return photo;
+  public String getPhotoUrl() {
+    return photoUrl;
   }
 
-  public void setPhoto(String photo) {
-    this.photo = photo;
+  public void setPhotoUrl(String photoUrl) {
+    this.photoUrl = photoUrl;
   }
+
 }
 

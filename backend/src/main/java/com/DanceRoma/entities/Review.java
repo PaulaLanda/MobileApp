@@ -10,11 +10,13 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user", nullable = false)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "club", nullable = false)
-    private Long clubId;
+    @ManyToOne
+    @JoinColumn(name = "disco_id")
+    private Disco disco;
 
     @Column(name = "text", nullable = false)
     private String text;
@@ -30,20 +32,20 @@ public class Review {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Long getClubId() {
-        return clubId;
+    public Disco getDisco() {
+        return disco;
     }
 
-    public void setClubId(Long clubId) {
-        this.clubId = clubId;
+    public void setDisco(Disco disco) {
+        this.disco = disco;
     }
 
     public String getText() {
