@@ -40,26 +40,7 @@ class _editarPerfil extends State<editarPerfil_page> {
       print('Error al actualizar el nombre de usuario: $error');
     }
   }
-  /*Widget atras(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Container(
-        padding: EdgeInsets.only(left: 20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
-              color: AppColors.greenApp,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-            ),
-          ],
-        ),
-      ),
-    );
-  }*/
+
 
   Widget cambiarNom() {
     return Padding(

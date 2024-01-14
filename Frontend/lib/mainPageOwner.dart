@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:frontend/chat.dart';
 import 'package:frontend/editProfile.dart';
 import 'package:frontend/favs.dart';
+import 'addNewClub.dart';
 import 'colors.dart';
 
 
@@ -98,7 +99,10 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
                     IconButton(
                       icon: Icon(Icons.add, size: 20, color: Colors.black),
                       onPressed: () {
-
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => addClub_page()),
+                        );
                       },
                     ),
 

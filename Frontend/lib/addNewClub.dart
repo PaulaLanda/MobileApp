@@ -1,32 +1,31 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/globals.dart';
-
-import 'package:image_picker/image_picker.dart';
+import 'package:frontend/reviewPage.dart';
 import 'Club.dart';
-
+import 'chat.dart';
 import 'colors.dart';
 import 'dart:io';
-
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-import 'dart:convert';
 import 'package:http/http.dart' as http;
-
 import 'package:http_parser/http_parser.dart';
 
 import 'dart:convert';
 
-class editClub_page extends StatefulWidget {
+
+class addClub_page extends StatefulWidget {
   static String id = 'clubPage';
 
   @override
-  editClubPageState createState() => editClubPageState();
+  addClubPageState createState() => addClubPageState();
 }
 
-class editClubPageState extends State<editClub_page> {
+class addClubPageState extends State<addClub_page> {
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController mController = TextEditingController();
@@ -38,57 +37,90 @@ class editClubPageState extends State<editClub_page> {
   final TextEditingController dController = TextEditingController();
   final List<List<TextEditingController>> ticketControllerMatrix = [];
 
+
+  Club miClub = Club();
+
   late ImagePicker _imagePicker;
   XFile? _image;
 
-  Club miClub = Club();
-  bool fav = false;
+  @override
+  void initState() {
+    super.initState();
+    _imagePicker = ImagePicker();
+  }
 
-  /*String photo = "";
-  String address = "";
-  String m = "";
-  String t = "";
-  String w = "";
-  String th = "";
-  String f = "";
-  String s = "";
-  String d = "";
-
-  List<dynamic> prices = [];*/
-
-  Future<void> obtenerClub(String id) async {
-    final response =
-        await http.get(Uri.parse('http://192.168.1.33:8082/discos/$id'));
-    if (response.statusCode == 200) {
-      final dynamic club = jsonDecode(response.body);
-      setState(() {
-        miClub = Club(
-          photo: club["photo"],
-          address: club["address"],
-          m: club["mondaySchedule"],
-          t: club["tuesdaySchedule"],
-          w: club["wednesdaySchedule"],
-          th: club["thursdaySchedule"],
-          f: club["fridaySchedule"],
-          s: club["saturdaySchedule"],
-          d: club["sundaySchedule"],
-          prices: club["ticketDtos"],
-        );
-      });
-      /*photo = club["photo"];
-      address = club["address"];
-      m = club["mondaySchedule"];
-      t = club["tuesdaySchedule"];
-      w = club["wednesdaySchedule"];
-      th = club["thursdaySchedule"];
-      f = club["fridaySchedule"];
-      s = club["saturdaySchedule"];
-      d = club["sundaySchedule"];
-      prices = club["ticketDtos"];*/
-    } else {
-      throw Exception('Error el club');
+  Future<void> _pickImage() async {
+    try {
+      XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        setState(() {
+          _image = image;
+        });
+      }
+    } catch (e) {
+      print(e);
     }
   }
+
+  Future<void> _takePhoto() async {
+    try {
+      XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (image != null) {
+        setState(() {
+          _image = image;
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+ /* Future<void> updateDisco(BuildContext context) async {
+    final url = 'http://192.168.1.33:8082/discos/${GlobalVariables.club}';
+
+    // Aquí deberías construir el cuerpo de la solicitud POST con los parámetros actualizados.
+    // Puedes usar el método jsonEncode para convertir un mapa a una cadena JSON.
+    final Map<String, dynamic> requestBody = {
+     'name': _nombreController.text,
+      'address': _addressController.text,
+      'mondaySchedule': mController.text,
+      'tuesdaySchedule': tController.text,
+      'wednesdaySchedule': wController.text,
+      'thursdaySchedule': thController.text,
+      'fridaySchedule': fController.text,
+      'saturdaySchedule': sController.text,
+      'sundaySchedule': dController.text,
+      'ticketDtos': ticketControllerMatrix.map((rowControllers) {
+        return {
+          'time': rowControllers[0].text,
+          'price': rowControllers[1].text,
+        };
+      }).toList(),
+
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        // La solicitud fue exitosa, puedes manejar la respuesta según sea necesario.
+        print('Datos actualizados con éxito');
+        // Puedes agregar lógica adicional aquí, como navegar a otra pantalla o mostrar un mensaje de éxito.
+      } else {
+        // La solicitud no fue exitosa, maneja el error según sea necesario.
+        print('Error al actualizar los datos: ${response.statusCode}');
+      }
+    } catch (error) {
+      // Maneja errores de red u otros errores aquí.
+      print('Error: $error');
+    }
+  }*/
 
   Future<void> updateDisco(BuildContext context) async {
     final url = 'http://192.168.1.33:8082/discos/${GlobalVariables.club}';
@@ -143,41 +175,6 @@ class editClubPageState extends State<editClub_page> {
       // Maneja errores de red u otros errores aquí.
       print('Error: $error');
     }
-  }
-
-  Future<void> _pickImage() async {
-    try {
-      XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() {
-          _image = image;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> _takePhoto() async {
-    try {
-      XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image != null) {
-        setState(() {
-          _image = image;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _imagePicker = ImagePicker();
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      obtenerClub(GlobalVariables.club);
-    });
   }
 
   Widget addPhoto(BuildContext context) {
@@ -262,7 +259,7 @@ class editClubPageState extends State<editClub_page> {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    'Edit the club information',
+                    'Register a new club',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
@@ -449,6 +446,7 @@ class editClubPageState extends State<editClub_page> {
     );
   }
 
+
   Widget tickets(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -495,6 +493,7 @@ class editClubPageState extends State<editClub_page> {
               itemBuilder: (context, rowIndex) {
                 Map<String, dynamic> ticketInfo = miClub.prices[rowIndex];
 
+                // Agregar una nueva fila a la matriz de controladores de texto
                 if (ticketControllerMatrix.length <= rowIndex) {
                   ticketControllerMatrix.add([
                     TextEditingController(text: ticketInfo['time']),
@@ -538,6 +537,7 @@ class editClubPageState extends State<editClub_page> {
                             border: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                             ),
+                            hintText: 'Price',
                             hintStyle: TextStyle(
                               color: AppColors.greenApp,
                             ),
@@ -550,7 +550,6 @@ class editClubPageState extends State<editClub_page> {
                       icon: Icon(Icons.delete),
                       onPressed: () {
                         setState(() {
-                          // Elimina la entrada correspondiente al índice actual
                           miClub.prices.removeAt(rowIndex);
                           ticketControllerMatrix.removeAt(rowIndex);
                         });
@@ -583,7 +582,9 @@ class editClubPageState extends State<editClub_page> {
                           TextField(
                             controller: newTimeController,
                             decoration: InputDecoration(labelText: 'Time'),
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              // Puedes realizar acciones adicionales si es necesario
+                            },
                           ),
                           TextField(
                             controller: newPriceController,
@@ -682,7 +683,7 @@ class editClubPageState extends State<editClub_page> {
                   mainText(),
                   SizedBox(height: 20),
                   addPhoto(context),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   changeName(),
                   SizedBox(height: 10),
                   changeAddress(),

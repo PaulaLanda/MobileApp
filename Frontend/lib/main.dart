@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/MessageData.dart';
 import 'package:frontend/chat.dart';
 import 'package:frontend/gradiente.dart';
+import 'addNewClub.dart';
 import 'camera.dart';
 import 'changePassword.dart';
 import 'chatScreen.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'RomeDance',
       debugShowCheckedModeBanner: false,
-      home: editClub_page(),
+      home: review_page(),
     );
   }
 }

@@ -447,7 +447,6 @@ class clubPageState extends State<club_page> {
     );
   }
 
-
   Widget addAReview(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
