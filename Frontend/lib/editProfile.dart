@@ -40,7 +40,7 @@ class _editarPerfil extends State<editarPerfil_page> {
       print('Error al actualizar el nombre de usuario: $error');
     }
   }
-  Widget atras(BuildContext context) {
+  /*Widget atras(BuildContext context) {
     return Align(
       alignment: Alignment.topLeft,
       child: Container(
@@ -59,7 +59,7 @@ class _editarPerfil extends State<editarPerfil_page> {
         ),
       ),
     );
-  }
+  }*/
 
   Widget cambiarNom() {
     return Padding(
@@ -153,7 +153,6 @@ class _editarPerfil extends State<editarPerfil_page> {
     );
   }
 
-  int selectedIndex = 3;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,8 +165,8 @@ class _editarPerfil extends State<editarPerfil_page> {
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
-                  SizedBox(height: 10),
-                  atras(context),
+                  //SizedBox(height: 10),
+                  //atras(context),
                   SizedBox(height: 40),
                   cambiarNom(),
                   SizedBox(height: 10),

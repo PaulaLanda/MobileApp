@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/globals.dart';
 import 'Club.dart';
@@ -19,6 +20,13 @@ class review_page extends StatefulWidget {
 
 class reviewPageState extends State<review_page> {
 
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      obtenerClub(GlobalVariables.club);
+    });
+  }
 
   final TextEditingController _reviewController = TextEditingController();
 
@@ -72,10 +80,8 @@ class reviewPageState extends State<review_page> {
     String reviewText = _reviewController.text;
 
     Review newReview = Review(
-      id: 0,
       userId: GlobalVariables.user,
       clubId: c.id, // Asigna el valor adecuado según tu lógica (puedes obtenerlo de alguna parte)
-      mark: 5, // Asigna el valor adecuado según tu lógica (puedes obtenerlo de alguna parte)
       text: reviewText,
     );
 

@@ -5,8 +5,10 @@ import 'package:frontend/gradiente.dart';
 import 'camera.dart';
 import 'changePassword.dart';
 import 'chatScreen.dart';
-import 'editClub.dart';
+import 'clubInformation.dart';
+import 'ProperyInfoClub.dart';
 
+import 'editClub.dart';
 import 'editProfile.dart';
 import 'galeria.dart';
 import 'login.dart';
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'RomeDance',
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      home: editClub_page(),
     );
   }
 }

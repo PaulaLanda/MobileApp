@@ -1,7 +1,12 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/globals.dart';
+import 'package:frontend/reviewPage.dart';
+import 'Club.dart';
+import 'chat.dart';
 import 'colors.dart';
 
 import 'dart:convert';
@@ -15,7 +20,11 @@ class club_page extends StatefulWidget {
 }
 
 class clubPageState extends State<club_page> {
-  String photo = "";
+
+  Club miClub = Club();
+  bool fav = false;
+
+  /*String photo = "";
   String address = "";
   String m = "";
   String t = "";
@@ -25,14 +34,28 @@ class clubPageState extends State<club_page> {
   String s = "";
   String d = "";
 
-  List<dynamic> prices = [];
+  List<dynamic> prices = [];*/
 
   Future<void> obtenerClub(String id) async {
     final response =
         await http.get(Uri.parse('http://192.168.1.33:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
-      photo = club["photo"];
+      setState(() {
+        miClub = Club(
+          photo: club["photo"],
+          address: club["address"],
+          m: club["mondaySchedule"],
+          t: club["tuesdaySchedule"],
+          w: club["wednesdaySchedule"],
+          th: club["thursdaySchedule"],
+          f: club["fridaySchedule"],
+          s: club["saturdaySchedule"],
+          d: club["sundaySchedule"],
+          prices: club["ticketDtos"],
+        );
+      });
+      /*photo = club["photo"];
       address = club["address"];
       m = club["mondaySchedule"];
       t = club["tuesdaySchedule"];
@@ -41,13 +64,13 @@ class clubPageState extends State<club_page> {
       f = club["fridaySchedule"];
       s = club["saturdaySchedule"];
       d = club["sundaySchedule"];
-      prices = club["ticketDtos"];
+      prices = club["ticketDtos"];*/
     } else {
       throw Exception('Error al obtener las playlists');
     }
   }
 
-  @override
+@override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -64,11 +87,11 @@ class clubPageState extends State<club_page> {
               .width, // Ancho igual al de la pantalla
           height: 250,
           child: Image.network(
-            photo,
+            miClub.photo,
             fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
           ),
         ),
-        Positioned(
+        /*Positioned(
           top: 0,
           left: 0,
           child: IconButton(
@@ -77,7 +100,7 @@ class clubPageState extends State<club_page> {
               Navigator.of(context).pop();
             },
           ),
-        ),
+        ),*/
       ],
     );
   }
@@ -107,9 +130,25 @@ class clubPageState extends State<club_page> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Icon(Icons.favorite, size: 33, color: Colors.black),
-                  SizedBox(height: 10),
-                  Icon(Icons.messenger, size: 33, color: Colors.black),
+
+                  IconButton(
+                    icon: Icon(Icons.favorite, size: 33, color: fav ? Colors.red : Colors.black,),
+                    onPressed: () {
+                      /*Navigator.push(
+                        context
+                        //Actualizar base de datos de fav
+                      );*/
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.messenger, size: 33, color: Colors.black),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => chat_page()),
+                      );
+                    },
+                  ),
                 ],
               ),
             ],
@@ -126,7 +165,7 @@ class clubPageState extends State<club_page> {
               ),
               Expanded(
                 child: Text(
-                  address,
+                  miClub.address,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -148,15 +187,6 @@ class clubPageState extends State<club_page> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 150,
-            child: Image.network(
-              'https://via.placeholder.com/500x500',
-              fit: BoxFit.cover,
-            ),
-          ),
-          SizedBox(height: 10), // Espacio entre la imagen y el texto
           Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -216,7 +246,7 @@ class clubPageState extends State<club_page> {
                       ),
                     ),
                     Text(
-                      m,
+                      miClub.m,
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -233,7 +263,7 @@ class clubPageState extends State<club_page> {
                       ),
                     ),
                     Text(
-                      t,
+                      miClub.t,
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -250,7 +280,7 @@ class clubPageState extends State<club_page> {
                       ),
                     ),
                     Text(
-                      w,
+                      miClub.w,
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -267,7 +297,7 @@ class clubPageState extends State<club_page> {
                       ),
                     ),
                     Text(
-                      th,
+                      miClub.th,
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -284,7 +314,7 @@ class clubPageState extends State<club_page> {
                       ),
                     ),
                     Text(
-                      f,
+                      miClub.f,
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -301,7 +331,7 @@ class clubPageState extends State<club_page> {
                       ),
                     ),
                     Text(
-                      s,
+                      miClub.s,
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -318,7 +348,7 @@ class clubPageState extends State<club_page> {
                       ),
                     ),
                     Text(
-                      d,
+                      miClub.d,
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -356,9 +386,9 @@ class clubPageState extends State<club_page> {
             ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: prices.length,
+              itemCount: miClub.prices.length,
               itemBuilder: (context, index) {
-                Map<String, dynamic> ticketInfo = prices[index];
+                Map<String, dynamic> ticketInfo = miClub.prices[index];
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -425,13 +455,18 @@ class clubPageState extends State<club_page> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           TextButton(
-            onPressed: () => print("Review preses"),
-            //Navigator.pushNamed(context, Registro.id);
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => review_page()),
+              );
+            },
             child: Text(
               'Add a review!',
               style: TextStyle(color: Colors.black, fontSize: 18.0),
             ),
           ),
+
         ],
       ),
     );
