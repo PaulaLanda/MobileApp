@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:frontend/gradiente.dart';
 import 'changePassword.dart';
 import 'colors.dart';
 import 'globals.dart';
@@ -68,6 +69,30 @@ class _editarPerfil extends State<editarPerfil_page> {
     );
   }
 
+  Widget cerrarSesion(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 30.0),
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () async {
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => gradiente()),);
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.greenApp,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+        child: Text(
+          'Log out',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 15.0,
+          ),
+        ),
+      ),
+    );
+  }
   Widget cambiarContrasena(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
@@ -154,6 +179,8 @@ class _editarPerfil extends State<editarPerfil_page> {
                   cambiarContrasena(context),
                   SizedBox(height: 40),
                   guardarButton(context),
+                  SizedBox(height: 10),
+                  cerrarSesion(context)
                 ],
               ),
             ),

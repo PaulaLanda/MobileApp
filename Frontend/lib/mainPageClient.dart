@@ -23,14 +23,16 @@ class mainPage_page extends StatefulWidget {
 
 class mainPageState extends State<mainPage_page> {
   String _usuario = "";
+  String _surname = "";
   Future<void> obtenerUsuario() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.1.33:8082/users/${GlobalVariables.user}'));
+          'http://192.168.56.1:8082/users/${GlobalVariables.idUsuario}'));
       if (response.statusCode == 200) {
         final dynamic user = json.decode(response.body);
         setState(() {
           _usuario = user['username'];
+          _surname = user['surname'];
         });
 
       }
@@ -44,7 +46,7 @@ class mainPageState extends State<mainPage_page> {
 
   Future<dynamic> obtenerClub(String id) async {
     final response = await http.get(
-        Uri.parse('http://192.168.1.33:8082/discos/$id'));
+        Uri.parse('http://192.168.56.1:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       return club;
@@ -55,7 +57,7 @@ class mainPageState extends State<mainPage_page> {
 
   Future<List<dynamic>> obtenerClubs() async {
     final response = await http
-        .get(Uri.parse('http://192.168.1.33:8082/discos'));
+        .get(Uri.parse('http://192.168.56.1:8082/discos'));
     if (response.statusCode == 200) {
       final List<dynamic> clubs = jsonDecode(response.body);
       return clubs;
@@ -77,7 +79,7 @@ class mainPageState extends State<mainPage_page> {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    'Hi $_usuario',
+                    'Hi $_usuario $_surname',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
@@ -248,7 +250,7 @@ class mainPageState extends State<mainPage_page> {
                   children: snapshot.data!.map((clubData) {
                     return club(
                       context,
-                      clubData['photo'],
+                      clubData['photoUrl'],
                       clubData['name'],
                       clubData['address'],
                     );

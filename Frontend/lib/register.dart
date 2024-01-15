@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/login.dart';
@@ -19,8 +21,8 @@ class Register_page extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<Register_page> {
-
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -29,21 +31,34 @@ class _RegisterPageState extends State<Register_page> {
     String password = _passwordController.text;
     String name = _emailController.text;
     String surname = _passwordController.text;
-    String url = 'http://192.168.1.33:8082/users/register';
+    final url = Uri.parse('http://192.168.56.1:8082/users/register');
+    print("Llegó aquí");
+
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final Map<String, dynamic> data = {
+      'name': name,
+      'email': username,
+      'surname': surname,
+      'password': password,
+      'userType': "CLIENT",
+    };
 
     try {
+      final response =
+          await http.post(url, headers: headers, body: json.encode(data));
 
-      final response = await http.post(
-        Uri.parse(url),
-        body: {
-          'email': username,
-          'password': password,
-          'name': name,
-          'username': username,
-          'userType': "CLIENT"
-        },
-      );
+      print(response.statusCode);
+
       if (response.statusCode == 200) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        String userId = jsonResponse['id'].toString();
+
+        // Almacena el id en la variable global
+        GlobalVariables.idUsuario = userId;
+
         GlobalVariables.user = username;
         GlobalVariables.type = "CLIENT";
 
@@ -51,7 +66,24 @@ class _RegisterPageState extends State<Register_page> {
           context,
           MaterialPageRoute(builder: (context) => Register_ok()),
         );
-
+      } else if (response.statusCode == 500) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('A user with this email already exist'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
       } else {
         showDialog(
           context: context,
@@ -78,7 +110,7 @@ class _RegisterPageState extends State<Register_page> {
     }
   }
 
-  Widget textoInicial(){
+  Widget textoInicial() {
     return Align(
       alignment: Alignment.topLeft,
       child: Container(
@@ -99,8 +131,7 @@ class _RegisterPageState extends State<Register_page> {
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 50,
-                  fontWeight: FontWeight.bold
-              ),
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -114,7 +145,10 @@ class _RegisterPageState extends State<Register_page> {
       child: Container(
         decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(width: 1.0, color:AppColors.greenApp,),
+            bottom: BorderSide(
+              width: 1.0,
+              color: AppColors.greenApp,
+            ),
           ),
         ),
         height: 40,
@@ -142,7 +176,10 @@ class _RegisterPageState extends State<Register_page> {
       child: Container(
         decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(width: 1.0, color:AppColors.greenApp,),
+            bottom: BorderSide(
+              width: 1.0,
+              color: AppColors.greenApp,
+            ),
           ),
         ),
         height: 40,
@@ -164,13 +201,47 @@ class _RegisterPageState extends State<Register_page> {
     );
   }
 
+  Widget buildSurname() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 40.0),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              width: 1.0,
+              color: AppColors.greenApp,
+            ),
+          ),
+        ),
+        height: 40,
+        child: TextField(
+          keyboardType: TextInputType.emailAddress,
+          style: TextStyle(
+            color: Colors.black,
+          ),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: 'Surname',
+            hintStyle: TextStyle(
+              color: Colors.grey,
+            ),
+          ),
+          controller: _surnameController,
+        ),
+      ),
+    );
+  }
+
   Widget buildContrasegna() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 40.0),
       child: Container(
         decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(width: 1.0, color: AppColors.greenApp,),
+            bottom: BorderSide(
+              width: 1.0,
+              color: AppColors.greenApp,
+            ),
           ),
         ),
         height: 40,
@@ -238,7 +309,7 @@ class _RegisterPageState extends State<Register_page> {
             child: Text(
               'Sign up as owner',
               style: TextStyle(
-                color:AppColors.greenApp,
+                color: AppColors.greenApp,
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -272,7 +343,7 @@ class _RegisterPageState extends State<Register_page> {
             child: Text(
               'Log in',
               style: TextStyle(
-                color:AppColors.greenApp,
+                color: AppColors.greenApp,
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -282,7 +353,6 @@ class _RegisterPageState extends State<Register_page> {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -302,6 +372,8 @@ class _RegisterPageState extends State<Register_page> {
                   buildEmail(),
                   SizedBox(height: 20),
                   buildName(),
+                  SizedBox(height: 20),
+                  buildSurname(),
                   SizedBox(height: 20),
                   buildContrasegna(),
                   SizedBox(height: 20),

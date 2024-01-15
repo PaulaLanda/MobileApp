@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/globals.dart';
@@ -24,20 +26,34 @@ class _LoginPageState extends State<Login_page> {
   Future<void> _login() async {
     String username = _emailController.text;
     String password = _passwordController.text;
-    String url = 'http://192.168.1.33:8082/users/login';
+    final url = Uri.parse('http://192.168.56.1:8082/users/login');
+    print("Llegó aquí");
+    print(username);
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final Map<String, dynamic> data = {
+      'user': username,
+      'password': password,
+    };
 
     try {
+      final response =
+      await http.post(url, headers: headers, body: json.encode(data));
 
-      final response = await http.post(
-        Uri.parse(url),
-        body: {
-         'user': username,
-          'password': password,
-        },
-      );
+      print(response.statusCode);
+
       if (response.statusCode == 200) {
+
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        String userId = jsonResponse['id'].toString();
+
+        // Almacena el id en la variable global
+        GlobalVariables.idUsuario = userId;
+
         GlobalVariables.user = username;
-        GlobalVariables.type = response.body;
+        GlobalVariables.type = jsonResponse['userType'];
 
         if (GlobalVariables.type == "CLIENT"){
           Navigator.push(
