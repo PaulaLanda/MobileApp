@@ -159,4 +159,12 @@ public class UserService {
         return favDiscos.stream().anyMatch(favDisco -> Objects.equals(favDisco.getId(), discoId));
     }
 
+    public User findById(Long id) throws Exception {
+        Optional<User> byId = userRepository.findById(id);
+        if(byId.isEmpty()){
+            throw new Exception("El usuario " + id + " no ha sido encontrado");
+        }
+        return byId.get();
+    }
+
 }

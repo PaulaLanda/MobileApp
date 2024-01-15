@@ -37,6 +37,13 @@ public class UserController {
         return ResponseEntity.ok(usersDto);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable Long id) throws Exception {
+          User byId = userService.findById(id);
+          UserDto toReturn = entityToDtoConverter.convert(byId);
+          return ResponseEntity.ok(toReturn);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
         ResponseEntity<?> toReturn;
