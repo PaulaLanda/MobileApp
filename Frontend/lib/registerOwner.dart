@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/register.dart';
@@ -28,21 +30,34 @@ class _RegisterOwnerPageState extends State<RegisterOwner_page> {
     String password = _passwordController.text;
     String name = _emailController.text;
     String surname = _passwordController.text;
-    String url = 'http://192.168.1.33:8082/users/register';
+    final url = Uri.parse('http://192.168.56.1:8082/users/register');
+    print("Llegó aquí");
+
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final Map<String, dynamic> data = {
+      'name': name,
+      'email': username,
+      'surname': surname,
+      'password': password,
+      'userType': "OWNER",
+    };
 
     try {
+      final response =
+      await http.post(url, headers: headers, body: json.encode(data));
 
-      final response = await http.post(
-        Uri.parse(url),
-        body: {
-          'email': username,
-          'password': password,
-          'name': name,
-          'username': username,
-          'userType': "OWNER"
-        },
-      );
+      print(response.statusCode);
+
       if (response.statusCode == 200) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        String userId = jsonResponse['id'].toString();
+
+        // Almacena el id en la variable global
+        GlobalVariables.idUsuario = userId;
+
         GlobalVariables.user = username;
         GlobalVariables.type = "OWNER";
 
@@ -50,7 +65,24 @@ class _RegisterOwnerPageState extends State<RegisterOwner_page> {
           context,
           MaterialPageRoute(builder: (context) => Register_ok()),
         );
-
+      } else if (response.statusCode == 500) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('A user with this email already exist'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
       } else {
         showDialog(
           context: context,

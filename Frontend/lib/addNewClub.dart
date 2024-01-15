@@ -122,46 +122,36 @@ class addClubPageState extends State<addClub_page> {
     }
   }*/
 
-  Future<void> updateDisco(BuildContext context) async {
-    final url = 'http://192.168.1.33:8082/discos/${GlobalVariables.club}';
+  Future<void> addDisco(BuildContext context) async {
+    final url = Uri.parse('http://192.168.56.1:8082/discos/create');
 
     try {
-      var request = http.MultipartRequest('POST', Uri.parse(url));
+      var headers = {'Content-Type': 'application/json'};
+      var body = {
+        'name': _nombreController.text,
+        'address': _addressController.text,
+        'userEmail': GlobalVariables.user,
+        'mondaySchedule': mController.text,
+        'tuesdaySchedule': tController.text,
+        'wednesdaySchedule': wController.text,
+        'thursdaySchedule': thController.text,
+        'fridaySchedule': fController.text,
+        'saturdaySchedule': sController.text,
+        'sundaySchedule': dController.text,
+        'ticketDtos': ticketControllerMatrix.map((rowControllers) {
+          return {
+            'description': rowControllers[0].text,
+            'price': rowControllers[1].text,
+            'drinksNumber': rowControllers[2].text,
+          };
+        }).toList(),
+        'photoUrl': 'https://via.placeholder.com/200', // Puedes ajustar esto según tus necesidades
 
-      // Agregar campos de texto al cuerpo de la solicitud
-      request.fields['name'] = _nombreController.text;
-      request.fields['address'] = _addressController.text;
-      request.fields['mondaySchedule'] = mController.text;
-      request.fields['tuesdaySchedule'] = tController.text;
-      request.fields['wednesdaySchedule'] = wController.text;
-      request.fields['thursdaySchedule'] = thController.text;
-      request.fields['fridaySchedule'] = fController.text;
-      request.fields['saturdaySchedule'] = sController.text;
-      request.fields['sundaySchedule'] = dController.text;
+      };
 
-      // Agregar la imagen al cuerpo de la solicitud como un campo de archivo
-      if (_image != null) {
-        var imageFile = await http.MultipartFile.fromPath(
-          'photo',
-          _image!.path,
-          contentType: MediaType('image', 'jpeg'), // Ajusta el tipo de contenido según tu imagen
-        );
-        request.files.add(imageFile);
-      } else {
-        // Si la imagen está vacía, usa la URL de relleno
-        request.fields['photo'] = 'https://via.placeholder.com/200';
-      }
+      print('Cuerpo de la solicitud: $body');
 
-      // Agregar los datos del ticket al cuerpo de la solicitud
-      request.fields['ticketDtos'] = jsonEncode(ticketControllerMatrix.map((rowControllers) {
-        return {
-          'time': rowControllers[0].text,
-          'price': rowControllers[1].text,
-        };
-      }).toList());
-
-      // Enviar la solicitud
-      var response = await request.send();
+      var response = await http.post(url, headers: headers, body: jsonEncode(body));
 
       if (response.statusCode == 200) {
         // La solicitud fue exitosa, puedes manejar la respuesta según sea necesario.
@@ -176,6 +166,7 @@ class addClubPageState extends State<addClub_page> {
       print('Error: $error');
     }
   }
+
 
   Widget addPhoto(BuildContext context) {
     return Row(
@@ -476,9 +467,17 @@ class addClubPageState extends State<addClub_page> {
                     fontSize: 14,
                   ),
                 ),
-                SizedBox(width: 115),
+                SizedBox(width: 50),
                 Text(
                   "Price",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(width: 50),
+                Text(
+                  "Drinks",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -496,8 +495,9 @@ class addClubPageState extends State<addClub_page> {
                 // Agregar una nueva fila a la matriz de controladores de texto
                 if (ticketControllerMatrix.length <= rowIndex) {
                   ticketControllerMatrix.add([
-                    TextEditingController(text: ticketInfo['time']),
+                    TextEditingController(text: ticketInfo['description']),
                     TextEditingController(text: ticketInfo['price']),
+                    TextEditingController(text: ticketInfo['drinksNumber']),
                   ]);
                 }
 
@@ -518,7 +518,7 @@ class addClubPageState extends State<addClub_page> {
                             ),
                             hintText: 'Time',
                             hintStyle: TextStyle(
-                              color: AppColors.greenApp,
+                              color: Colors.white,
                             ),
                           ),
                           controller: ticketControllerMatrix[rowIndex][0],
@@ -539,10 +539,31 @@ class addClubPageState extends State<addClub_page> {
                             ),
                             hintText: 'Price',
                             hintStyle: TextStyle(
-                              color: AppColors.greenApp,
+                              color: Colors.white,
                             ),
                           ),
                           controller: ticketControllerMatrix[rowIndex][1],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10),
+                        child: TextField(
+                          style: TextStyle(
+                            color: Colors.black,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            hintText: 'Drink number',
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          controller: ticketControllerMatrix[rowIndex][2],
                         ),
                       ),
                     ),
@@ -569,7 +590,8 @@ class addClubPageState extends State<addClub_page> {
                         TextEditingController();
                     TextEditingController newPriceController =
                         TextEditingController();
-
+                    TextEditingController drinkController =
+                    TextEditingController();
                     return AlertDialog(
                       title: Text(
                         'Add new Ticket',
@@ -581,7 +603,7 @@ class addClubPageState extends State<addClub_page> {
                         children: [
                           TextField(
                             controller: newTimeController,
-                            decoration: InputDecoration(labelText: 'Time'),
+                            decoration: InputDecoration(labelText: 'Description'),
                             onChanged: (value) {
                               // Puedes realizar acciones adicionales si es necesario
                             },
@@ -593,6 +615,13 @@ class addClubPageState extends State<addClub_page> {
                               // Puedes realizar acciones adicionales si es necesario
                             },
                           ),
+                          TextField(
+                            controller: drinkController,
+                            decoration: InputDecoration(labelText: 'Drinks Number'),
+                            onChanged: (value) {
+                              // Puedes realizar acciones adicionales si es necesario
+                            },
+                          ),
                         ],
                       ),
                       actions: [
@@ -600,19 +629,22 @@ class addClubPageState extends State<addClub_page> {
                           onPressed: () {
                             setState(() {
                               // Agregar un nuevo objeto a la lista de precios solo si ambos campos tienen contenido
-                              String time = newTimeController.text;
+                              String description = newTimeController.text;
                               String price = newPriceController.text;
+                              String driks = drinkController.text;
 
-                              if (time.isNotEmpty && price.isNotEmpty) {
+                              if (description.isNotEmpty && price.isNotEmpty) {
                                 miClub.prices.add({
-                                  'time': time,
+                                  'description': description,
                                   'price': price,
+                                  'drinksNumber': driks
                                 });
 
                                 // Agregar una nueva fila a la matriz de controladores de texto
                                 ticketControllerMatrix.add([
-                                  TextEditingController(text: time),
+                                  TextEditingController(text: description),
                                   TextEditingController(text: price),
+                                  TextEditingController(text: driks),
                                 ]);
                               }
                             });
@@ -647,7 +679,7 @@ class addClubPageState extends State<addClub_page> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
-          updateDisco(context);
+          addDisco(context);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.greenApp,
