@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/chat.dart';
 import 'package:frontend/editProfile.dart';
 import 'package:frontend/favs.dart';
+import 'clubInformation.dart';
 import 'colors.dart';
 
 
@@ -22,6 +24,15 @@ class mainPage_page extends StatefulWidget {
 
 
 class mainPageState extends State<mainPage_page> {
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      obtenerUsuario();
+    });
+  }
+
   String _usuario = "";
   String _surname = "";
   Future<void> obtenerUsuario() async {
@@ -29,12 +40,12 @@ class mainPageState extends State<mainPage_page> {
       final response = await http.get(Uri.parse(
           'http://192.168.56.1:8082/users/${GlobalVariables.idUsuario}'));
       if (response.statusCode == 200) {
-        final dynamic user = json.decode(response.body);
+        final dynamic user = jsonDecode(response.body);
         setState(() {
-          _usuario = user['username'];
-          _surname = user['surname'];
+          _usuario = user['body']['name'];
+          _surname = user['body']['surname'];
         });
-
+        print("object" + _usuario + _surname);
       }
       else {
         throw Exception('Error al obtener el usuario');
@@ -139,94 +150,87 @@ class mainPageState extends State<mainPage_page> {
     );
   }
 
-  Widget club(BuildContext context, String photo, String name, String address) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+  Widget club(BuildContext context, String photo, String name, String address, int id) {
+    return GestureDetector(
+      onTap: () {
+        GlobalVariables.idDisco = id;
+        GlobalVariables.club=name;
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => club_page()),
+          );
+
+      },
       child: Container(
-        padding: EdgeInsets.all(15.0),
-        decoration: BoxDecoration(
-          color: AppColors.greenApp,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: Image.network(
-                      photo,
-                      width: 50,
-                      height: 50,
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        width: 150, // Ajusta el ancho máximo de la dirección
-                        child:Text(
-                          name,
-                          style: TextStyle(
-                            fontSize: 35,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 150, // Ajusta el ancho máximo de la dirección
-                        child: Text(
-                          address,
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.black,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        child: Container(
+          padding: EdgeInsets.all(15.0),
+          decoration: BoxDecoration(
+            color: AppColors.greenApp,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      "Distance: ",
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.network(
+                        photo,
+                        width: 50,
+                        height: 50,
                       ),
                     ),
-                    Text(
-                      "15 km",
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.black,
-                      ),
+                    SizedBox(width: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: 150, // Ajusta el ancho máximo de la dirección
+                          child: Text(
+                            name,
+                            style: TextStyle(
+                              fontSize: 35,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Container(
+                          width: 150, // Ajusta el ancho máximo de la dirección
+                          child: Text(
+                            address,
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                Icon(Icons.favorite, size: 50, color: Colors.redAccent),
-              ],
-            ),
-          ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Icon(Icons.favorite, size: 50, color: Colors.redAccent),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
 
   Widget clubs(BuildContext context) {
     return Align(
@@ -248,11 +252,17 @@ class mainPageState extends State<mainPage_page> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: snapshot.data!.map((clubData) {
-                    return club(
-                      context,
-                      clubData['photoUrl'],
-                      clubData['name'],
-                      clubData['address'],
+                    return Column(
+                      children: [
+                        club(
+                          context,
+                          clubData['photoUrl'],
+                          clubData['name'],
+                          clubData['address'],
+                          clubData['id']
+                        ),
+                        SizedBox(height: 10),
+                      ],
                     );
                   }).toList(),
                 ),

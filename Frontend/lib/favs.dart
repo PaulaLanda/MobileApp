@@ -18,8 +18,6 @@ Widget mainText(){
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Icon(Icons.keyboard_return, size: 20, color: Colors.black), // Icono de mensajes
-          SizedBox(height: 10),
           Text(
             'Favorites',
             style: TextStyle(
@@ -96,26 +94,6 @@ Widget club(BuildContext context) {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    "Distance: ",
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    "15 km",
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
               Icon(Icons.favorite, size: 50, color: Colors.redAccent),
             ],
           ),

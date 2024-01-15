@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/globals.dart';
+import 'package:frontend/mainPageOwner.dart';
 import 'package:frontend/reviewPage.dart';
 import 'Club.dart';
 import 'chat.dart';
@@ -680,6 +681,12 @@ class addClubPageState extends State<addClub_page> {
       child: ElevatedButton(
         onPressed: () async {
           addDisco(context);
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => mainPageOwner_page()),
+            );
+          };
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.greenApp,

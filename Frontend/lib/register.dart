@@ -29,8 +29,8 @@ class _RegisterPageState extends State<Register_page> {
   Future<void> register() async {
     String username = _emailController.text;
     String password = _passwordController.text;
-    String name = _emailController.text;
-    String surname = _passwordController.text;
+    String name = _nameController.text;
+    String surname = _surnameController.text;
     final url = Uri.parse('http://192.168.56.1:8082/users/register');
     print("Llegó aquí");
 

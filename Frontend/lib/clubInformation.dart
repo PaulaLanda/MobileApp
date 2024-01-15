@@ -24,26 +24,16 @@ class clubPageState extends State<club_page> {
   Club miClub = Club();
   bool fav = false;
 
-  /*String photo = "";
-  String address = "";
-  String m = "";
-  String t = "";
-  String w = "";
-  String th = "";
-  String f = "";
-  String s = "";
-  String d = "";
 
-  List<dynamic> prices = [];*/
-
-  Future<void> obtenerClub(String id) async {
+  Future<void> obtenerClub(int id) async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.33:8082/discos/$id'));
+        await http.get(Uri.parse('http://192.168.56.1:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       setState(() {
         miClub = Club(
-          photo: club["photo"],
+          photo: club["photoUrl"],
+          name: club['name'],
           address: club["address"],
           m: club["mondaySchedule"],
           t: club["tuesdaySchedule"],
@@ -66,7 +56,7 @@ class clubPageState extends State<club_page> {
       d = club["sundaySchedule"];
       prices = club["ticketDtos"];*/
     } else {
-      throw Exception('Error al obtener las playlists');
+      throw Exception('Error al obtener los clubs');
     }
   }
 
@@ -74,7 +64,7 @@ class clubPageState extends State<club_page> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      obtenerClub(GlobalVariables.club);
+      obtenerClub(GlobalVariables.idDisco);
     });
   }
 
@@ -174,40 +164,6 @@ class clubPageState extends State<club_page> {
                 ),
               ),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget map(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: 20.0), // Padding horizontal de 20 en cada lado
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Distance: ',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  '15 km',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                  ),
-                ),
-              ],
-            ),
           ),
         ],
       ),
@@ -486,8 +442,6 @@ class clubPageState extends State<club_page> {
                   Photo(context),
                   SizedBox(height: 5),
                   mainText(),
-                  SizedBox(height: 5),
-                  map(context),
                   SizedBox(height: 5),
                   timetable(context),
                   SizedBox(height: 8),

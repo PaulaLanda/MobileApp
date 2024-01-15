@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/chat.dart';
 import 'package:frontend/editProfile.dart';
@@ -19,17 +20,28 @@ class mainPageOwner_page extends StatefulWidget {
   mainPageOwnerState createState() => mainPageOwnerState();
 }
 class mainPageOwnerState extends State<mainPageOwner_page> {
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      obtenerUsuario();
+    });
+  }
+
   String _usuario = "";
+  String _surname = "";
   Future<void> obtenerUsuario() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.1.33:8082/users/${GlobalVariables.user}'));
+          'http://192.168.56.1:8082/users/${GlobalVariables.idUsuario}'));
       if (response.statusCode == 200) {
-        final dynamic user = json.decode(response.body);
+        final dynamic user = jsonDecode(response.body);
         setState(() {
-          _usuario = user['username'];
+          _usuario = user['body']['name'];
+          _surname = user['body']['surname'];
         });
-
+        print("object" + _usuario + _surname);
       }
       else {
         throw Exception('Error al obtener el usuario');
@@ -41,7 +53,7 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
 
   Future<dynamic> obtenerClub(String id) async {
     final response = await http.get(
-        Uri.parse('http://192.168.1.33:8082/discos/$id'));
+        Uri.parse('http://192.168.56.1:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       return club;
@@ -52,7 +64,7 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
 
   Future<List<dynamic>> obtenerClubs() async {
     final response = await http
-        .get(Uri.parse('http://192.168.1.33:8082/discos/${GlobalVariables.user}'));
+        .get(Uri.parse('http://192.168.56.1:8082/discos/${GlobalVariables.idUsuario}'));
     if (response.statusCode == 200) {
       final List<dynamic> clubs = jsonDecode(response.body);
       return clubs;
@@ -74,7 +86,7 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    'Hi $_usuario',
+                    'Hi $_usuario $_surname',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
@@ -217,11 +229,16 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: snapshot.data!.map((clubData) {
-                    return club(
-                      context,
-                      clubData['photo'],
-                      clubData['name'],
-                      clubData['address'],
+                    return Column(
+                      children: [
+                        club(
+                          context,
+                          clubData['photoUrl'],
+                          clubData['name'],
+                          clubData['address'],
+                        ),
+                        SizedBox(height: 10),
+                      ],
                     );
                   }).toList(),
                 ),
@@ -232,6 +249,7 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
       ),
     );
   }
+
 
 
 
