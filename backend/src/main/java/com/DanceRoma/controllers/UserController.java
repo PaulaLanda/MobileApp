@@ -38,10 +38,17 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable Long id) throws Exception {
-          User byId = userService.findById(id);
-          UserDto toReturn = entityToDtoConverter.convert(byId);
-          return ResponseEntity.ok(toReturn);
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        ResponseEntity<?> toReturn;
+        try {
+            User byId = userService.findById(id);
+            UserDto userDto = entityToDtoConverter.convert(byId);
+            return ResponseEntity.ok(ResponseEntity.ok(userDto));
+        } catch (Exception e) {
+            toReturn = ResponseEntity.internalServerError().body(e.getMessage());
+
+        }
+        return toReturn;
     }
 
     @PostMapping("/login")
