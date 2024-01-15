@@ -14,7 +14,7 @@ class gradiente extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              AppColors.greenApp, // Color verde con cierta transparencia
+              Color(0xFFFFFFFF), // Color verde con cierta transparencia
               Color(0xFFFFFFFF), // Color blanco sólido
             ],
             begin: Alignment.topCenter,
@@ -32,7 +32,7 @@ class gradiente extends StatelessWidget {
                   Text(
                     'DanceROMA',
                     style: TextStyle(
-                      color: Color(0xFFFFFFFF),
+                      color: Colors.black,
                       fontSize: 55,
                       fontWeight: FontWeight.bold,
                     ),
@@ -46,13 +46,13 @@ class gradiente extends StatelessWidget {
                     child: Text(
                       'Sign up',
                       style: TextStyle(
-                        color:AppColors.greenApp,
+                        color:Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
+                      backgroundColor: AppColors.greenApp,
                       padding:
                       EdgeInsets.symmetric(horizontal: 90, vertical: 15),
                       shape: RoundedRectangleBorder(
@@ -69,13 +69,13 @@ class gradiente extends StatelessWidget {
                     child: Text(
                       'Log in',
                       style: TextStyle(
-                        color:AppColors.greenApp,
+                        color:Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
+                      backgroundColor: AppColors.greenApp,
                       padding:
                       EdgeInsets.symmetric(horizontal: 90, vertical: 15),
                       shape: RoundedRectangleBorder(
