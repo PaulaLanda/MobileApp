@@ -21,7 +21,6 @@ class Register_page extends StatefulWidget {
 class _RegisterPageState extends State<Register_page> {
 
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -165,34 +164,6 @@ class _RegisterPageState extends State<Register_page> {
     );
   }
 
-  Widget buildSurname() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 40.0),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(width: 1.0, color:AppColors.greenApp,),
-          ),
-        ),
-        height: 40,
-        child: TextField(
-          keyboardType: TextInputType.emailAddress,
-          style: TextStyle(
-            color: Colors.black,
-          ),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: 'Surname',
-            hintStyle: TextStyle(
-              color: Colors.grey,
-            ),
-          ),
-          controller: _surnameController,
-        ),
-      ),
-    );
-  }
-
   Widget buildContrasegna() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 40.0),
@@ -331,8 +302,6 @@ class _RegisterPageState extends State<Register_page> {
                   buildEmail(),
                   SizedBox(height: 20),
                   buildName(),
-                  SizedBox(height: 20),
-                  buildSurname(),
                   SizedBox(height: 20),
                   buildContrasegna(),
                   SizedBox(height: 20),
