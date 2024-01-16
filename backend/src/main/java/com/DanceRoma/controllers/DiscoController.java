@@ -10,8 +10,10 @@ import com.DanceRoma.entities.Disco;
 import com.DanceRoma.entities.Review;
 import com.DanceRoma.services.DiscoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,9 +33,19 @@ public class DiscoController {
     private DtoToEntityConverter dtoToEntityConverter;
 
     @GetMapping("")
-    public ResponseEntity<List<DiscoDto>> getAllDiscos() {
+    public ResponseEntity<?> getAllDiscos() {
         List<Disco> discos = discoService.findAll();
-        List<DiscoDto> discoDto = discos.stream().map(disco -> entityToDtoConverter.convert(disco)).collect(Collectors.toList());
+        List<DiscoDto> discoDto = discos.stream().map(disco -> {
+            try {
+                return entityToDtoConverter.convert(disco);
+            } catch (Exception e) {
+                return null;
+            }
+        }).collect(Collectors.toList());
+
+        if (discoDto.contains(null)) {
+            return ResponseEntity.internalServerError().body("Error al procesar el archivo");
+        }
         return ResponseEntity.ok(discoDto);
     }
 
@@ -42,19 +54,30 @@ public class DiscoController {
         ResponseEntity<?> toReturn;
         try {
             List<Disco> discos = discoService.findAllByUserId(id);
-            List<DiscoDto> discosDto = discos.stream().map(disco -> entityToDtoConverter.convert(disco)).collect(Collectors.toList());
-            return ResponseEntity.ok(discosDto);
+            List<DiscoDto> discoDto = discos.stream().map(disco -> {
+                try {
+                    return entityToDtoConverter.convert(disco);
+                } catch (Exception e) {
+                    return null;
+                }
+            }).collect(Collectors.toList());
+
+            if (discoDto.contains(null)) {
+                return ResponseEntity.internalServerError().body("Error al procesar el archivo");
+            }
+            return ResponseEntity.ok(discoDto);
         } catch (Exception e) {
             toReturn = ResponseEntity.internalServerError().body(e.getMessage());
         }
         return toReturn;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody DiscoInDto discoDto) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> create(@RequestBody DiscoInDto discoDto,
+                                    @RequestPart("file") MultipartFile file) {
         ResponseEntity<?> toReturn;
         try {
-            Disco discoCreated = discoService.create(discoDto);
+            Disco discoCreated = discoService.create(discoDto, file);
             DiscoDto discoCreatedDto = entityToDtoConverter.convert(discoCreated);
             toReturn = ResponseEntity.ok(discoCreatedDto);
         } catch (Exception e) {
