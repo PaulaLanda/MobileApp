@@ -155,4 +155,10 @@ public class DiscoService {
         return discoRepository.save(toUpdate).getReviews();
     }
 
+    public Disco getDisco(Long id) throws Exception {
+        Optional<Disco> d = discoRepository.findByIdDisco(id);
+        if(d.isEmpty())
+            throw new Exception("No disco with that id");
+        return d.get();
+    }
 }

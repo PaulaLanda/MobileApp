@@ -88,4 +88,17 @@ public class DiscoController {
         }
         return toReturn;
     }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<?> getDiscoFromId(@PathVariable Long id) {
+        ResponseEntity<?> toReturn;
+        try {
+            Disco d = discoService.getDisco(id);
+            DiscoDto dto = entityToDtoConverter.convert(d);
+            toReturn = ResponseEntity.ok(dto);
+        } catch (Exception e) {
+            toReturn = ResponseEntity.internalServerError().body(e.getMessage());
+        }
+        return toReturn;
+    }
 }
