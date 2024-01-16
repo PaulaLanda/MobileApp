@@ -7,6 +7,7 @@ import 'package:frontend/globals.dart';
 import 'package:image_picker/image_picker.dart';
 import 'Club.dart';
 
+import 'clubInformation.dart';
 import 'colors.dart';
 import 'dart:io';
 
@@ -27,6 +28,16 @@ class editClub_page extends StatefulWidget {
 }
 
 class editClubPageState extends State<editClub_page> {
+
+  @override
+  void initState() {
+    super.initState();
+    _imagePicker = ImagePicker();
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      obtenerClub(GlobalVariables.club);
+    });
+  }
+
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController mController = TextEditingController();
@@ -44,21 +55,9 @@ class editClubPageState extends State<editClub_page> {
   Club miClub = Club();
   bool fav = false;
 
-  /*String photo = "";
-  String address = "";
-  String m = "";
-  String t = "";
-  String w = "";
-  String th = "";
-  String f = "";
-  String s = "";
-  String d = "";
-
-  List<dynamic> prices = [];*/
-
   Future<void> obtenerClub(String id) async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.33:8082/discos/$id'));
+        await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       setState(() {
@@ -75,28 +74,17 @@ class editClubPageState extends State<editClub_page> {
           prices: club["ticketDtos"],
         );
       });
-      /*photo = club["photo"];
-      address = club["address"];
-      m = club["mondaySchedule"];
-      t = club["tuesdaySchedule"];
-      w = club["wednesdaySchedule"];
-      th = club["thursdaySchedule"];
-      f = club["fridaySchedule"];
-      s = club["saturdaySchedule"];
-      d = club["sundaySchedule"];
-      prices = club["ticketDtos"];*/
     } else {
       throw Exception('Error el club');
     }
   }
 
   Future<void> updateDisco(BuildContext context) async {
-    final url = 'http://192.168.1.33:8082/discos/${GlobalVariables.club}';
+    final url = 'http://192.168.1.2:8082/discos/${GlobalVariables.club}';
 
     try {
       var request = http.MultipartRequest('POST', Uri.parse(url));
 
-      // Agregar campos de texto al cuerpo de la solicitud
       request.fields['name'] = _nombreController.text;
       request.fields['address'] = _addressController.text;
       request.fields['mondaySchedule'] = mController.text;
@@ -132,12 +120,17 @@ class editClubPageState extends State<editClub_page> {
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        // La solicitud fue exitosa, puedes manejar la respuesta según sea necesario.
         print('Datos actualizados con éxito');
-        // Puedes agregar lógica adicional aquí, como navegar a otra pantalla o mostrar un mensaje de éxito.
+
+        //redirectioned to the club page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => club_page()),
+        );
+
       } else {
-        // La solicitud no fue exitosa, maneja el error según sea necesario.
         print('Error al actualizar los datos: ${response.statusCode}');
+
       }
     } catch (error) {
       // Maneja errores de red u otros errores aquí.
@@ -169,15 +162,6 @@ class editClubPageState extends State<editClub_page> {
     } catch (e) {
       print(e);
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _imagePicker = ImagePicker();
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      obtenerClub(GlobalVariables.club);
-    });
   }
 
   Widget addPhoto(BuildContext context) {
