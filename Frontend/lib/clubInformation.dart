@@ -20,14 +20,12 @@ class club_page extends StatefulWidget {
 }
 
 class clubPageState extends State<club_page> {
-
   Club miClub = Club();
   bool fav = false;
 
-
   Future<void> obtenerClub(int id) async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
+        await http.get(Uri.parse('http://192.168.1.2:8082/discos/get/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       setState(() {
@@ -45,22 +43,12 @@ class clubPageState extends State<club_page> {
           prices: club["ticketDtos"],
         );
       });
-      /*photo = club["photo"];
-      address = club["address"];
-      m = club["mondaySchedule"];
-      t = club["tuesdaySchedule"];
-      w = club["wednesdaySchedule"];
-      th = club["thursdaySchedule"];
-      f = club["fridaySchedule"];
-      s = club["saturdaySchedule"];
-      d = club["sundaySchedule"];
-      prices = club["ticketDtos"];*/
     } else {
       throw Exception('Error getting current club info');
     }
   }
 
-@override
+  @override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -81,16 +69,6 @@ class clubPageState extends State<club_page> {
             fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
           ),
         ),
-        /*Positioned(
-          top: 0,
-          left: 0,
-          child: IconButton(
-            icon: Icon(Icons.close, size: 30, color: Colors.redAccent),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),*/
       ],
     );
   }
@@ -107,7 +85,7 @@ class clubPageState extends State<club_page> {
             children: <Widget>[
               Expanded(
                 child: Text(
-                  GlobalVariables.club,
+                  miClub.name,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 70,
@@ -120,27 +98,23 @@ class clubPageState extends State<club_page> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-
                   IconButton(
-                    icon: Icon(Icons.favorite, size: 33, color: fav ? Colors.red : Colors.black,),
-                    onPressed: () {
-                      String clubId = miClub.id.toString();
-                      String userId = GlobalVariables.idUsuario;
-
-                      if(fav){
-                        fav=false;
-                        final response =
-                         http.put(Uri.parse('http://192.168.1.2:8082/users/add-fav/$clubId/$userId'));
+                    icon: Icon(
+                      Icons.favorite,
+                      size: 33,
+                      color: fav ? Colors.red : Colors.black,
+                    ),
+                    onPressed: () async {
+                      if (fav) {
+                        fav = false;
+                        await http.get(Uri.parse('http://192.168.56.1:8082/'
+                            'users/delete-fav/${miClub.id}/${GlobalVariables.idUsuario}'));
+                      } else {
+                        fav = true;
+                        await http.get(Uri.parse('http://192.168.56.1:8082/users/'
+                            'add-fav/${miClub.id}/${GlobalVariables.idUsuario}'));
                       }
-                      else{
-                        fav=true;
-                        final response =
-                        http.put(Uri.parse('http://192.168.1.2:8082/users/delete-fav/$clubId/$userId'));
-
-                      }
-                      setState(() {
-
-                      });
+                      setState(() {});
                     },
                   ),
                   IconButton(
@@ -434,7 +408,6 @@ class clubPageState extends State<club_page> {
               style: TextStyle(color: Colors.black, fontSize: 18.0),
             ),
           ),
-
         ],
       ),
     );
