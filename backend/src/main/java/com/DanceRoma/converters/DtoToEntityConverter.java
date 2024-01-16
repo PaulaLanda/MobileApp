@@ -62,7 +62,7 @@ public class DtoToEntityConverter {
 
     public Ticket convert(TicketDto dto) {
         Ticket ticket = new Ticket();
-        ticket.setId(dto.getId());
+        //ticket.setId(dto.getId());
         ticket.setDescription(dto.getDescription());
         ticket.setDrinksNumber(dto.getDrinksNumber());
         ticket.setPrice(dto.getPrice());
