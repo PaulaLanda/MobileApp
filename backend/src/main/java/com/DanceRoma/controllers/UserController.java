@@ -96,7 +96,13 @@ public class UserController {
         ResponseEntity<?> toReturn;
         try {
             List<Disco> favDiscos = userService.addToFav(discoId, userId);
-            List<DiscoDto> favDiscosDto = favDiscos.stream().map(favDisco -> entityToDtoConverter.convert(favDisco)).collect(Collectors.toList());
+            List<DiscoDto> favDiscosDto = favDiscos.stream().map(favDisco -> {
+                try {
+                    return entityToDtoConverter.convert(favDisco);
+                } catch (Exception e) {
+                    return null;
+                }
+            }).collect(Collectors.toList());
             toReturn = ResponseEntity.ok(favDiscosDto);
         } catch (Exception e) {
             toReturn = ResponseEntity.internalServerError().body(e.getMessage());
@@ -109,7 +115,18 @@ public class UserController {
         ResponseEntity<?> toReturn;
         try {
             List<Disco> favDiscos = userService.deleteFromFav(discoId, userId);
-            List<DiscoDto> favDiscosDto = favDiscos.stream().map(favDisco -> entityToDtoConverter.convert(favDisco)).collect(Collectors.toList());
+            List<DiscoDto> favDiscosDto = favDiscos.stream().map(favDisco -> {
+                try {
+                    return entityToDtoConverter.convert(favDisco);
+                } catch (Exception e) {
+                    return null;
+                }
+            }).collect(Collectors.toList());
+
+            if (favDiscosDto.contains(null)) {
+                return ResponseEntity.internalServerError().body("Error al procesar el archivo");
+            }
+
             toReturn = ResponseEntity.ok(favDiscosDto);
         } catch (Exception e) {
             toReturn = ResponseEntity.internalServerError().body(e.getMessage());

@@ -23,6 +23,10 @@ public class Disco {
   @JoinColumn(name = "user_id")
   private User user;
 
+  @OneToOne
+  @JoinColumn(name = "file_id")
+  private File file;
+
   @Column(name = "monday_schedule", nullable = false)
   private String mondaySchedule;
 
@@ -43,9 +47,6 @@ public class Disco {
 
   @Column(name = "sunday_schedule", nullable = false)
   private String sundaySchedule;
-
-  @Column(name = "photo_url")
-  private String photoUrl;
 
   @ManyToMany(mappedBy = "favoriteDiscos")
   private List<User> favoritedByUsers;
@@ -166,13 +167,11 @@ public class Disco {
     this.reviews = reviews;
   }
 
-  public String getPhotoUrl() {
-    return photoUrl;
+  public File getFile() {
+    return file;
   }
 
-  public void setPhotoUrl(String photoUrl) {
-    this.photoUrl = photoUrl;
+  public void setFile(File file) {
+    this.file = file;
   }
-
 }
-

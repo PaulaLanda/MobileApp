@@ -1,5 +1,7 @@
 package com.DanceRoma.dtos;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public class DiscoDto {
@@ -17,7 +19,7 @@ public class DiscoDto {
     private String sundaySchedule;
     private List<TicketDto> ticketDtos;
     private List<ReviewOutDto> reviewDtos;
-    private String photoUrl;
+    private MultipartFile file;
 
     public Long getId() {
         return id;
@@ -124,11 +126,11 @@ public class DiscoDto {
         this.reviewDtos = reviewDtos;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public MultipartFile getFile() {
+        return file;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 }

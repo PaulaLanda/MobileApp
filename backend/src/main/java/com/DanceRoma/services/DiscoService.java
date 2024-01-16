@@ -9,15 +9,14 @@ import com.DanceRoma.repositories.DiscoRepository;
 import com.DanceRoma.repositories.ReviewRepository;
 import com.DanceRoma.repositories.TicketRepository;
 import com.DanceRoma.repositories.UserRepository;
-import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
 public class DiscoService {
@@ -63,7 +62,7 @@ public class DiscoService {
      * @throws Exception if the owner does not exist, already is a disco
      *                   with that name
      */
-    public Disco create(DiscoInDto disco) throws Exception {
+    public Disco create(DiscoInDto disco, MultipartFile file) throws Exception {
         Optional<User> owner = userRepository.findByEmail(disco.getUserEmail());
         if (owner.isEmpty()) {
             throw new Exception("Owner not found <" + disco.getUserEmail() + ">");
@@ -87,6 +86,15 @@ public class DiscoService {
         }
 
         Disco toCreate = dtoToEntityConverter.convert(disco);
+
+        try {
+            File photo = new File();
+            photo.setFile(file.getBytes());
+            toCreate.setFile(photo);
+        } catch (IOException e) {
+            throw new Exception("Error processing the photo");
+        }
+
         toCreate.setUser(owner.get());
         toCreate.setTickets(tickets);
         toCreate.setReviews(new ArrayList<>());
