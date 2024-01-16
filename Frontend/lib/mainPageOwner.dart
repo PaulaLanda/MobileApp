@@ -56,6 +56,7 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
   Future<List<dynamic>> obtenerClubs() async {
     final response = await http
         .get(Uri.parse('http://192.168.56.1:8082/discos/${GlobalVariables.idUsuario}'));
+    print('http://192.168.56.1:8082/discos/${GlobalVariables.idUsuario}');
     if (response.statusCode == 200) {
       final List<dynamic> clubs = jsonDecode(response.body);
       return clubs;

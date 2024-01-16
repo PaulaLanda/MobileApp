@@ -21,15 +21,21 @@ class club_page extends StatefulWidget {
 
 class clubPageState extends State<club_page> {
 
+  List<dynamic> clubFavs = [];
+
   Club miClub = Club();
   bool fav = false;
-
+  bool isFavorited = false;
 
   Future<void> obtenerClub(int id) async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
+        await http.get(Uri.parse('http://192.168.56.1:8082/discos/get/$id'));
+    print("llego aquo");
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
+      print("My club" );
+      print(club);
       setState(() {
         miClub = Club(
           photo: club["photoUrl"],
@@ -45,6 +51,8 @@ class clubPageState extends State<club_page> {
           prices: club["ticketDtos"],
         );
       });
+      print("My club" );
+      print(miClub.toString());
       /*photo = club["photo"];
       address = club["address"];
       m = club["mondaySchedule"];
@@ -60,10 +68,25 @@ class clubPageState extends State<club_page> {
     }
   }
 
+  Future<void> obtenerClubsFav() async {
+    final response = await http
+        .get(Uri.parse('http://192.168.56.1:8082/discos/${GlobalVariables.idUsuario}'));
+    if (response.statusCode == 200) {
+      final List<dynamic> favs = jsonDecode(response.body);
+      print(favs);
+      clubFavs = favs.map((fav) => fav['id']).toList();
+      isFavorited = clubFavs.contains(GlobalVariables.idDisco);
+      print(clubFavs);
+    } else {
+      throw Exception('Error al obtener los clubs');
+    }
+  }
+
 @override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      obtenerClubsFav();
       obtenerClub(GlobalVariables.idDisco);
     });
   }
@@ -96,6 +119,9 @@ class clubPageState extends State<club_page> {
   }
 
   Widget mainText() {
+
+
+
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Column(
@@ -121,36 +147,43 @@ class clubPageState extends State<club_page> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
 
-                  IconButton(
-                    icon: Icon(Icons.favorite, size: 33, color: fav ? Colors.red : Colors.black,),
-                    onPressed: () {
-                      String clubId = miClub.id.toString();
-                      String userId = GlobalVariables.idUsuario;
-
-                      if(fav){
-                        fav=false;
-                        final response =
-                         http.put(Uri.parse('http://192.168.1.2:8082/users/add-fav/$clubId/$userId'));
+                  GestureDetector(
+                    onTap: () async {
+                      if (isFavorited) {
+                        print('http://192.168.56.1:8082/users/delete-fav/${GlobalVariables.idDisco}/${GlobalVariables.idUsuario}');
+                        await http.get(Uri.parse('http://192.168.56.1:8082/users/delete-fav/${GlobalVariables.idDisco}/${GlobalVariables.idUsuario}'));
+                        print("object");
+                        isFavorited = false;
+                      } else {
+                        print('http://192.168.56.1:8082/users/add-fav/${GlobalVariables.idDisco}/${GlobalVariables.idUsuario}');
+                        await http.get(Uri.parse('http://192.168.56.1:8082/users/add-fav/${GlobalVariables.idDisco}/${GlobalVariables.idUsuario}'));
+                        print("object");
+                        isFavorited = true;
                       }
-                      else{
-                        fav=true;
-                        final response =
-                        http.put(Uri.parse('http://192.168.1.2:8082/users/delete-fav/$clubId/$userId'));
-
-                      }
-                      setState(() {
-
-                      });
+                      // Actualizar la lista de favoritos después de agregar/quitar
+                      await obtenerClubsFav();
+                      // Actualizar el estado para reflejar cambios en la interfaz de usuario
+                      setState(() {});
                     },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.messenger, size: 33, color: Colors.black),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => chat_page()),
-                      );
-                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Icon(
+                          Icons.favorite,
+                          size: 33,
+                          color: isFavorited ? Colors.redAccent : Colors.black,
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.messenger, size: 33, color: Colors.black),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => chat_page()),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -205,132 +238,44 @@ class clubPageState extends State<club_page> {
             SizedBox(width: 20),
             Column(
               children: [
-                Row(
-                  children: [
-                    Text(
-                      "Monday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.m,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Tuesday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.t,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Wednesday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.w,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Thurday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.th,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Fiday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.f,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Saturday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.s,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Sunday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.d,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                )
+                _buildTimetableRow("Monday", miClub.m),
+                _buildTimetableRow("Tuesday", miClub.t),
+                _buildTimetableRow("Wednesday", miClub.w),
+                _buildTimetableRow("Thursday", miClub.th),
+                _buildTimetableRow("Friday", miClub.f),
+                _buildTimetableRow("Saturday", miClub.s),
+                _buildTimetableRow("Sunday", miClub.d),
               ],
-            )
+            ),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildTimetableRow(String day, String schedule) {
+    return Row(
+      children: [
+        Text(
+          day + ":",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+          ),
+        ),
+        SizedBox(width: 10),
+        Text(
+          schedule,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.normal,
+            color: Colors.black,
+          ),
+        ),
+      ],
+    );
+  }
+
 
   Widget tickets(BuildContext context) {
     return Container(
@@ -351,61 +296,83 @@ class clubPageState extends State<club_page> {
                 fontSize: 18,
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 5),
+            Row(
+              children: [
+                Text(
+                  "Descripcion",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(width: 40),
+                Text(
+                  "Price",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(width: 70),
+                Text(
+                  "Drinks",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                )
+              ],
+            ),
             ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemCount: miClub.prices.length,
-              itemBuilder: (context, index) {
-                Map<String, dynamic> ticketInfo = miClub.prices[index];
+              itemBuilder: (context, rowIndex) {
+                Map<String, dynamic> ticketInfo = miClub.prices[rowIndex];
 
-                return Column(
+                return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Image.network(
-                            ticketInfo['image'],
-                            width: 25,
-                            height: 25,
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Text(
+                          ticketInfo['description'],
+                          style: TextStyle(
+                            color: Colors.black,
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 15,
                           ),
                         ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 150,
-                              child: Text(
-                                ticketInfo['time'],
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Container(
-                              width: 150,
-                              child: Text(
-                                ticketInfo['price'],
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
-                    SizedBox(height: 10), // Espacio entre los bloques
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
+                          ticketInfo['price'].toString(),
+                          style: TextStyle(
+                            color: Colors.black,
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
+                          ticketInfo['drinksNumber'].toString(),
+                          style: TextStyle(
+                            color: Colors.black,
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 );
               },
@@ -415,6 +382,7 @@ class clubPageState extends State<club_page> {
       ),
     );
   }
+
 
   Widget addAReview(BuildContext context) {
     return Container(

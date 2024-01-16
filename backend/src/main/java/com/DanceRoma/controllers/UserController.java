@@ -108,7 +108,7 @@ public class UserController {
     public ResponseEntity<?> deleteFromFavs(@PathVariable Long discoId, @PathVariable Long userId) {
         ResponseEntity<?> toReturn;
         try {
-            List<Disco> favDiscos = userService.deleteFromFav(discoId, userId);
+                List<Disco> favDiscos = userService.deleteFromFav(discoId, userId);
             List<DiscoDto> favDiscosDto = favDiscos.stream().map(favDisco -> entityToDtoConverter.convert(favDisco)).collect(Collectors.toList());
             toReturn = ResponseEntity.ok(favDiscosDto);
         } catch (Exception e) {

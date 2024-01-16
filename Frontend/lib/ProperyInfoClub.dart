@@ -211,7 +211,6 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
     );
   }
 
-
   Widget tickets(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -318,25 +317,6 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
     );
   }
 
-
-  Widget addAReview(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          TextButton(
-            onPressed: () => print("Review preses"),
-            //Navigator.pushNamed(context, Registro.id);
-            child: Text(
-              'Add a review!',
-              style: TextStyle(color: Colors.black, fontSize: 18.0),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

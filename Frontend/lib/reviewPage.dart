@@ -81,7 +81,7 @@ class reviewPageState extends State<review_page> {
   }
 
   Future<List<Review>> addReview(Club d, Review r) async {
-    const String apiUrl = 'tu_url_api_aqui';
+    const String apiUrl = 'http://192.168.56.1:8082/discos/addReview';
 
     final Map<String, dynamic> data = {
       'name': d.name,

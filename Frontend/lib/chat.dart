@@ -18,17 +18,30 @@ class chat_page extends StatefulWidget {
 
 class chatPageState extends State<chat_page> {
 
-  Club c = Club();
+  Club miClub = Club();
 
   Future<void> obtenerClub(String id) async {
     final response =
-    await http.get(Uri.parse('http://192.168.56.1:8082/discos/$id'));
+    await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
-      c = Club(id: club["id"], name: club["name"], address: club["address"], userP: club["user_id"], m: club["monday_schedule"], t:club["tuesday_schedule"], w: club["wednesday_schedule"], th: club["thuesday_schedule"], f: club["friday_schedule"], s: club["saturday_schedule"], d: club["sunday_schedule"]);
-
+      setState(() {
+        miClub = Club(
+          name: club["name"],
+          photo: club["photo"],
+          address: club["address"],
+          m: club["mondaySchedule"],
+          t: club["tuesdaySchedule"],
+          w: club["wednesdaySchedule"],
+          th: club["thursdaySchedule"],
+          f: club["fridaySchedule"],
+          s: club["saturdaySchedule"],
+          d: club["sundaySchedule"],
+          prices: club["ticketDtos"],
+        );
+      });
     } else {
-      throw Exception('Error al obtener el club');
+      throw Exception('Error al obtener las playlists');
     }
   }
 
@@ -41,8 +54,6 @@ class chatPageState extends State<chat_page> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Icon(Icons.keyboard_return,
-                size: 20, color: Colors.black), // Icono de mensajes
             SizedBox(height: 10),
             Text(
               'Chats',
