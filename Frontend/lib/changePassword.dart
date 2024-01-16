@@ -37,7 +37,7 @@ class _recPswdPageState extends State<recup_pswd> {
   Future<void> obtenerUsuario() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.56.1:8082/users/${GlobalVariables.idUsuario}'));
+          'http://192.168.1.2:8082/users/${GlobalVariables.idUsuario}'));
       if (response.statusCode == 200) {
         final dynamic user = jsonDecode(response.body);
         setState(() {
@@ -59,7 +59,7 @@ class _recPswdPageState extends State<recup_pswd> {
     try {
       final response = await http.put(
         Uri.parse(
-            'http://192.168.56.1:8082/users/update/${GlobalVariables.idUsuario}'),
+            'http://192.168.1.2:8082/users/update/${GlobalVariables.idUsuario}'),
         headers: {"Content-Type": "application/json"},
         body: json.encode({
           'name': _usuario,

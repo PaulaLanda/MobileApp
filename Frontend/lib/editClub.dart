@@ -631,6 +631,10 @@ class editClubPageState extends State<editClub_page> {
       child: ElevatedButton(
         onPressed: () async {
           updateDisco(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => club_page()),
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.greenApp,

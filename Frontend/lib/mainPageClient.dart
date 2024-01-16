@@ -38,7 +38,7 @@ class mainPageState extends State<mainPage_page> {
   Future<void> obtenerUsuario() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.56.1:8082/users/${GlobalVariables.idUsuario}'));
+          'http://192.168.1.2:8082/users/${GlobalVariables.idUsuario}'));
       if (response.statusCode == 200) {
         final dynamic user = jsonDecode(response.body);
         setState(() {
@@ -57,7 +57,7 @@ class mainPageState extends State<mainPage_page> {
 
   Future<dynamic> obtenerClub(String id) async {
     final response = await http.get(
-        Uri.parse('http://192.168.56.1:8082/discos/$id'));
+        Uri.parse('http://192.168.1.2:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       return club;
@@ -68,7 +68,7 @@ class mainPageState extends State<mainPage_page> {
 
   Future<List<dynamic>> obtenerClubs() async {
     final response = await http
-        .get(Uri.parse('http://192.168.56.1:8082/discos'));
+        .get(Uri.parse('http://192.168.1.2:8082/discos'));
     if (response.statusCode == 200) {
       final List<dynamic> clubs = jsonDecode(response.body);
       return clubs;
