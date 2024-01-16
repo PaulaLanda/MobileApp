@@ -27,7 +27,7 @@ class clubPageState extends State<club_page> {
 
   Future<void> obtenerClub(int id) async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.2:8082/discos/get/$id'));
+        await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       setState(() {
@@ -45,6 +45,16 @@ class clubPageState extends State<club_page> {
           prices: club["ticketDtos"],
         );
       });
+      /*photo = club["photo"];
+      address = club["address"];
+      m = club["mondaySchedule"];
+      t = club["tuesdaySchedule"];
+      w = club["wednesdaySchedule"];
+      th = club["thursdaySchedule"];
+      f = club["fridaySchedule"];
+      s = club["saturdaySchedule"];
+      d = club["sundaySchedule"];
+      prices = club["ticketDtos"];*/
     } else {
       throw Exception('Error getting current club info');
     }
@@ -71,6 +81,16 @@ class clubPageState extends State<club_page> {
             fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
           ),
         ),
+        /*Positioned(
+          top: 0,
+          left: 0,
+          child: IconButton(
+            icon: Icon(Icons.close, size: 30, color: Colors.redAccent),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),*/
       ],
     );
   }
@@ -87,7 +107,7 @@ class clubPageState extends State<club_page> {
             children: <Widget>[
               Expanded(
                 child: Text(
-                  miClub.name,
+                  GlobalVariables.club,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 70,
@@ -188,7 +208,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Monday: ",
+                      "Monday",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -205,7 +225,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Tuesday: ",
+                      "Tuesday",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -222,7 +242,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Wednesday: ",
+                      "Wednesday",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -239,7 +259,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Thurday: ",
+                      "Thurday",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -256,7 +276,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Friday: ",
+                      "Fiday",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -273,7 +293,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Saturday: ",
+                      "Saturday",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -290,7 +310,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Sunday: ",
+                      "Sunday",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,

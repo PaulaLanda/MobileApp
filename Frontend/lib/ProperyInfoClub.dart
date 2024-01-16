@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:frontend/editClub.dart';
 import 'package:frontend/globals.dart';
 import 'Club.dart';
+import 'User.dart';
 import 'colors.dart';
 
 import 'dart:convert';
@@ -20,10 +21,22 @@ class ProperyInfoClub_page extends StatefulWidget {
 class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
 
   Club miClub = Club();
+  User prop = User();
+  /*String photo = "";
+  String address = "";
+  String m = "";
+  String t = "";
+  String w = "";
+  String th = "";
+  String f = "";
+  String s = "";
+  String d = "";
+
+  List<dynamic> prices = [];*/
 
   Future<void> obtenerClub(String id) async {
     final response =
-    await http.get(Uri.parse('http://192.168.1.2:8082/discos/get/$id'));
+    await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       setState(() {
@@ -47,12 +60,12 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
   }
 
   @override
-  /*void initState() {
+  void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       obtenerClub(GlobalVariables.club);
     });
-  }*/
+  }
 
   Widget Photo(BuildContext context) {
     return Stack(
@@ -67,16 +80,6 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
             fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
           ),
         ),
-        /*Positioned(
-          top: 0,
-          left: 0,
-          child: IconButton(
-            icon: Icon(Icons.close, size: 30, color: Colors.redAccent),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),*/
       ],
     );
   }
@@ -93,7 +96,7 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
             children: <Widget>[
               Expanded(
                 child: Text(
-                  GlobalVariables.club,
+                  miClub.name,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 70,
@@ -170,132 +173,44 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
             SizedBox(width: 20),
             Column(
               children: [
-                Row(
-                  children: [
-                    Text(
-                      "Monday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.m,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Tuesday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.t,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Wednesday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.w,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Thurday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.th,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Fiday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.f,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Saturday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.s,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Sunday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      miClub.d,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                )
+                _buildTimetableRow("Monday", miClub.m),
+                _buildTimetableRow("Tuesday", miClub.t),
+                _buildTimetableRow("Wednesday", miClub.w),
+                _buildTimetableRow("Thursday", miClub.th),
+                _buildTimetableRow("Friday", miClub.f),
+                _buildTimetableRow("Saturday", miClub.s),
+                _buildTimetableRow("Sunday", miClub.d),
               ],
-            )
+            ),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildTimetableRow(String day, String schedule) {
+    return Row(
+      children: [
+        Text(
+          day + ":",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+          ),
+        ),
+        SizedBox(width: 10),
+        Text(
+          schedule,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.normal,
+            color: Colors.black,
+          ),
+        ),
+      ],
+    );
+  }
+
 
   Widget tickets(BuildContext context) {
     return Container(
@@ -316,61 +231,83 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
                 fontSize: 18,
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 5),
+            Row(
+              children: [
+                Text(
+                  "Descripcion",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(width: 40),
+                Text(
+                  "Price",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(width: 70),
+                Text(
+                  "Drinks",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                )
+              ],
+            ),
             ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemCount: miClub.prices.length,
-              itemBuilder: (context, index) {
-                Map<String, dynamic> ticketInfo = miClub.prices[index];
+              itemBuilder: (context, rowIndex) {
+                Map<String, dynamic> ticketInfo = miClub.prices[rowIndex];
 
-                return Column(
+                return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Image.network(
-                            ticketInfo['image'],
-                            width: 25,
-                            height: 25,
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Text(
+                          ticketInfo['description'],
+                          style: TextStyle(
+                            color: Colors.black,
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 15,
                           ),
                         ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 150,
-                              child: Text(
-                                ticketInfo['time'],
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Container(
-                              width: 150,
-                              child: Text(
-                                ticketInfo['price'],
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
-                    SizedBox(height: 10), // Espacio entre los bloques
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
+                          ticketInfo['price'].toString(),
+                          style: TextStyle(
+                            color: Colors.black,
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
+                          ticketInfo['drinksNumber'].toString(),
+                          style: TextStyle(
+                            color: Colors.black,
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 );
               },

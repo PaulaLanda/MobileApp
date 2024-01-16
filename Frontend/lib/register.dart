@@ -31,7 +31,7 @@ class _RegisterPageState extends State<Register_page> {
     String password = _passwordController.text;
     String name = _nameController.text;
     String surname = _surnameController.text;
-    final url = Uri.parse('http://192.168.1.2:8082/users/register');
+    final url = Uri.parse('http://192.168.56.1:8082/users/register');
     print("Llegó aquí");
 
     final Map<String, String> headers = {

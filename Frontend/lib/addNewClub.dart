@@ -124,7 +124,7 @@ class addClubPageState extends State<addClub_page> {
   }*/
 
   Future<void> addDisco(BuildContext context) async {
-    final url = Uri.parse('http://192.168.1.2:8082/discos/create');
+    final url = Uri.parse('http://192.168.56.1:8082/discos/create');
 
     try {
       var headers = {'Content-Type': 'application/json'};
@@ -157,6 +157,10 @@ class addClubPageState extends State<addClub_page> {
       if (response.statusCode == 200) {
         // La solicitud fue exitosa, puedes manejar la respuesta según sea necesario.
         print('Datos actualizados con éxito');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => mainPageOwner_page()),
+        );
         // Puedes agregar lógica adicional aquí, como navegar a otra pantalla o mostrar un mensaje de éxito.
       } else {
         // La solicitud no fue exitosa, maneja el error según sea necesario.

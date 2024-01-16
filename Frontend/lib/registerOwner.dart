@@ -30,7 +30,7 @@ class _RegisterOwnerPageState extends State<RegisterOwner_page> {
     String password = _passwordController.text;
     String name = _emailController.text;
     String surname = _passwordController.text;
-    final url = Uri.parse('http://192.168.1.2:8082/users/register');
+    final url = Uri.parse('http://192.168.56.1:8082/users/register');
     print("Llegó aquí");
 
     final Map<String, String> headers = {

@@ -4,20 +4,20 @@ import com.DanceRoma.converters.DtoToEntityConverter;
 import com.DanceRoma.dtos.DiscoInDto;
 import com.DanceRoma.dtos.ReviewInDto;
 import com.DanceRoma.dtos.TicketDto;
-import com.DanceRoma.entities.Disco;
-import com.DanceRoma.entities.Review;
-import com.DanceRoma.entities.Ticket;
-import com.DanceRoma.entities.User;
+import com.DanceRoma.entities.*;
 import com.DanceRoma.repositories.DiscoRepository;
 import com.DanceRoma.repositories.ReviewRepository;
 import com.DanceRoma.repositories.TicketRepository;
 import com.DanceRoma.repositories.UserRepository;
+import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class DiscoService {
@@ -153,6 +153,14 @@ public class DiscoService {
         actualReviews.add(reviewToAdd);
         toUpdate.setReviews(actualReviews);
         return discoRepository.save(toUpdate).getReviews();
+    }
+
+    public Disco getDisco(Long id) throws Exception {
+        Optional<Disco> d = discoRepository.findById(id);
+        if (d.isEmpty()) {
+            throw new Exception("No disco with that id");
+        }
+        return d.get();
     }
 
 }
