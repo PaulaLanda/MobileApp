@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/globals.dart';
+import 'package:frontend/mainPageOwner.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'Club.dart';
@@ -44,26 +45,158 @@ class editClubPageState extends State<editClub_page> {
   Club miClub = Club();
   bool fav = false;
 
-  /*String photo = "";
-  String address = "";
-  String m = "";
-  String t = "";
-  String w = "";
-  String th = "";
-  String f = "";
-  String s = "";
-  String d = "";
+  @override
+  void initState() {
+    print("Hola" + GlobalVariables.idDisco.toString());
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      obtenerClub(GlobalVariables.idDisco);
+    });
+  }
 
-  List<dynamic> prices = [];*/
+  /*Future<void> updateDisco(BuildContext context) async {
+    final url = 'http://192.168.56.1:8082/discos/update/${GlobalVariables.idDisco}';
 
-  Future<void> obtenerClub(String id) async {
+    try {
+      var request = http.MultipartRequest('PUT', Uri.parse(url));
+      request.fields['id'] = GlobalVariables.idDisco.toString();
+      request.fields['name'] = _nombreController.text;
+      request.fields['address'] = _addressController.text;
+      request.fields['mondaySchedule'] = mController.text;
+      request.fields['tuesdaySchedule'] = tController.text;
+      request.fields['wednesdaySchedule'] = wController.text;
+      request.fields['thursdaySchedule'] = thController.text;
+      request.fields['fridaySchedule'] = fController.text;
+      request.fields['saturdaySchedule'] = sController.text;
+      request.fields['sundaySchedule'] = dController.text;
+      request.fields['photoUrl'] = 'https://via.placeholder.com/200';
+      // Agregar la imagen al cuerpo de la solicitud como un campo de archivo
+    /*  if (_image != null) {
+        var imageFile = await http.MultipartFile.fromPath(
+          'photo',
+          _image!.path,
+          contentType: MediaType('image', 'jpeg'), // Ajusta el tipo de contenido según tu imagen
+        );
+        request.files.add(imageFile);
+      } else {
+        // Si la imagen está vacía, usa la URL de relleno
+        request.fields['photo'] = 'https://via.placeholder.com/200';
+      }*/
+
+      // Agregar los datos del ticket al cuerpo de la solicitud
+      request.fields['ticketDtos'] = jsonEncode(ticketControllerMatrix.map((rowControllers) {
+        return {
+          'description': rowControllers[0].text,
+          'price': rowControllers[1].text,
+          'drinksNumber': rowControllers[2].text,
+        };
+      }).toList());
+
+      // Enviar la solicitud
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('Datos actualizados con éxito');
+
+        //redirectioned to the club page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => mainPageOwner_page()),
+        );
+
+      } else {
+        print('Error al actualizar los datos: ${response.statusCode}');
+
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Fail in club update'),
+            content: Text(
+                'Something went wrong, try again'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+
+      }
+    } catch (error) {
+      // Maneja errores de red u otros errores aquí.
+      print('Error: $error');
+    }
+  }*/
+
+  Future<void> updateDisco(BuildContext context) async {
+    final url = Uri.parse('http://192.168.56.1:8082/discos/update/${GlobalVariables.idDisco}');
+
+    try {
+      var headers = {'Content-Type': 'application/json'};
+      var body = {
+        'name': _nombreController.text.isEmpty ? miClub.name : _nombreController.text,
+        'address': _addressController.text.isEmpty ? miClub.address : _addressController.text,
+        'userEmail': GlobalVariables.user,
+        'mondaySchedule': mController.text.isEmpty ? miClub.m : mController.text,
+        'tuesdaySchedule': tController.text.isEmpty ? miClub.t : tController.text,
+        'wednesdaySchedule': wController.text.isEmpty ? miClub.w : wController.text,
+        'thursdaySchedule': thController.text.isEmpty ? miClub.th : thController.text,
+        'fridaySchedule': fController.text.isEmpty ? miClub.f : fController.text,
+        'saturdaySchedule': sController.text.isEmpty ? miClub.s : sController.text,
+        'sundaySchedule': dController.text.isEmpty ? miClub.d : dController.text,
+        'photoUrl': 'https://via.placeholder.com/200',
+        'ticketDtos': ticketControllerMatrix.map((rowControllers) {
+          return {
+            'description': rowControllers[0].text.isNotEmpty ? rowControllers[0].text : miClub.prices[ticketControllerMatrix.indexOf(rowControllers)]['description'],
+            'price': rowControllers[1].text.isNotEmpty ? rowControllers[1].text : miClub.prices[ticketControllerMatrix.indexOf(rowControllers)]['price'],
+            'drinksNumber': rowControllers[2].text.isNotEmpty ? rowControllers[2].text : miClub.prices[ticketControllerMatrix.indexOf(rowControllers)]['drinksNumber'],
+          };
+        }).toList(),
+      };
+
+      print('Cuerpo de la solicitud: $body');
+
+      var response = await http.put(url, headers: headers, body: jsonEncode(body));
+
+      if (response.statusCode == 200) {
+        print('Datos actualizados con éxito');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => mainPageOwner_page()),
+        );
+      } else {
+        print('Error al actualizar los datos: ${response.statusCode}');
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Error en la actualización del club'),
+            content: Text('Algo salió mal, inténtalo de nuevo'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (error) {
+      // Maneja errores de red u otros errores aquí.
+      print('Error: $error');
+    }
+  }
+
+
+  Future<void> obtenerClub(int id) async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.33:8082/discos/$id'));
+        await http.get(Uri.parse('http://192.168.56.1:8082/discos/${GlobalVariables.idDisco.toString()}'));
+    print("Llego aqui");
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       setState(() {
         miClub = Club(
-          photo: club["photo"],
+          photo: club["photoUrl"],
           address: club["address"],
           m: club["mondaySchedule"],
           t: club["tuesdaySchedule"],
@@ -75,6 +208,9 @@ class editClubPageState extends State<editClub_page> {
           prices: club["ticketDtos"],
         );
       });
+
+      print("Llego aqui");
+      print(miClub);
       /*photo = club["photo"];
       address = club["address"];
       m = club["mondaySchedule"];
@@ -87,61 +223,6 @@ class editClubPageState extends State<editClub_page> {
       prices = club["ticketDtos"];*/
     } else {
       throw Exception('Error el club');
-    }
-  }
-
-  Future<void> updateDisco(BuildContext context) async {
-    final url = 'http://192.168.1.33:8082/discos/${GlobalVariables.club}';
-
-    try {
-      var request = http.MultipartRequest('POST', Uri.parse(url));
-
-      // Agregar campos de texto al cuerpo de la solicitud
-      request.fields['name'] = _nombreController.text;
-      request.fields['address'] = _addressController.text;
-      request.fields['mondaySchedule'] = mController.text;
-      request.fields['tuesdaySchedule'] = tController.text;
-      request.fields['wednesdaySchedule'] = wController.text;
-      request.fields['thursdaySchedule'] = thController.text;
-      request.fields['fridaySchedule'] = fController.text;
-      request.fields['saturdaySchedule'] = sController.text;
-      request.fields['sundaySchedule'] = dController.text;
-
-      // Agregar la imagen al cuerpo de la solicitud como un campo de archivo
-      if (_image != null) {
-        var imageFile = await http.MultipartFile.fromPath(
-          'photo',
-          _image!.path,
-          contentType: MediaType('image', 'jpeg'), // Ajusta el tipo de contenido según tu imagen
-        );
-        request.files.add(imageFile);
-      } else {
-        // Si la imagen está vacía, usa la URL de relleno
-        request.fields['photo'] = 'https://via.placeholder.com/200';
-      }
-
-      // Agregar los datos del ticket al cuerpo de la solicitud
-      request.fields['ticketDtos'] = jsonEncode(ticketControllerMatrix.map((rowControllers) {
-        return {
-          'time': rowControllers[0].text,
-          'price': rowControllers[1].text,
-        };
-      }).toList());
-
-      // Enviar la solicitud
-      var response = await request.send();
-
-      if (response.statusCode == 200) {
-        // La solicitud fue exitosa, puedes manejar la respuesta según sea necesario.
-        print('Datos actualizados con éxito');
-        // Puedes agregar lógica adicional aquí, como navegar a otra pantalla o mostrar un mensaje de éxito.
-      } else {
-        // La solicitud no fue exitosa, maneja el error según sea necesario.
-        print('Error al actualizar los datos: ${response.statusCode}');
-      }
-    } catch (error) {
-      // Maneja errores de red u otros errores aquí.
-      print('Error: $error');
     }
   }
 
@@ -171,14 +252,6 @@ class editClubPageState extends State<editClub_page> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _imagePicker = ImagePicker();
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      obtenerClub(GlobalVariables.club);
-    });
-  }
 
   Widget addPhoto(BuildContext context) {
     return Row(
@@ -309,7 +382,7 @@ class editClubPageState extends State<editClub_page> {
                 border: InputBorder.none,
                 hintText: miClub.name,
                 hintStyle: TextStyle(
-                  color: Colors.grey,
+                  color: Colors.black,
                 ),
               ),
               controller: _nombreController,
@@ -478,9 +551,17 @@ class editClubPageState extends State<editClub_page> {
                     fontSize: 14,
                   ),
                 ),
-                SizedBox(width: 115),
+                SizedBox(width: 50),
                 Text(
                   "Price",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(width: 50),
+                Text(
+                  "Drinks",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -495,10 +576,12 @@ class editClubPageState extends State<editClub_page> {
               itemBuilder: (context, rowIndex) {
                 Map<String, dynamic> ticketInfo = miClub.prices[rowIndex];
 
+                // Agregar una nueva fila a la matriz de controladores de texto
                 if (ticketControllerMatrix.length <= rowIndex) {
                   ticketControllerMatrix.add([
-                    TextEditingController(text: ticketInfo['time']),
+                    TextEditingController(text: ticketInfo['description']),
                     TextEditingController(text: ticketInfo['price']),
+                    TextEditingController(text: ticketInfo['drinksNumber']),
                   ]);
                 }
 
@@ -519,7 +602,7 @@ class editClubPageState extends State<editClub_page> {
                             ),
                             hintText: 'Time',
                             hintStyle: TextStyle(
-                              color: AppColors.greenApp,
+                              color: Colors.white,
                             ),
                           ),
                           controller: ticketControllerMatrix[rowIndex][0],
@@ -538,11 +621,33 @@ class editClubPageState extends State<editClub_page> {
                             border: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                             ),
+                            hintText: 'Price',
                             hintStyle: TextStyle(
-                              color: AppColors.greenApp,
+                              color: Colors.white,
                             ),
                           ),
                           controller: ticketControllerMatrix[rowIndex][1],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10),
+                        child: TextField(
+                          style: TextStyle(
+                            color: Colors.black,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            hintText: 'Drink number',
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          controller: ticketControllerMatrix[rowIndex][2],
                         ),
                       ),
                     ),
@@ -550,7 +655,6 @@ class editClubPageState extends State<editClub_page> {
                       icon: Icon(Icons.delete),
                       onPressed: () {
                         setState(() {
-                          // Elimina la entrada correspondiente al índice actual
                           miClub.prices.removeAt(rowIndex);
                           ticketControllerMatrix.removeAt(rowIndex);
                         });
@@ -567,10 +671,11 @@ class editClubPageState extends State<editClub_page> {
                   context: context,
                   builder: (BuildContext context) {
                     TextEditingController newTimeController =
-                        TextEditingController();
+                    TextEditingController();
                     TextEditingController newPriceController =
-                        TextEditingController();
-
+                    TextEditingController();
+                    TextEditingController drinkController =
+                    TextEditingController();
                     return AlertDialog(
                       title: Text(
                         'Add new Ticket',
@@ -582,12 +687,21 @@ class editClubPageState extends State<editClub_page> {
                         children: [
                           TextField(
                             controller: newTimeController,
-                            decoration: InputDecoration(labelText: 'Time'),
-                            onChanged: (value) {},
+                            decoration: InputDecoration(labelText: 'Description'),
+                            onChanged: (value) {
+                              // Puedes realizar acciones adicionales si es necesario
+                            },
                           ),
                           TextField(
                             controller: newPriceController,
                             decoration: InputDecoration(labelText: 'Price'),
+                            onChanged: (value) {
+                              // Puedes realizar acciones adicionales si es necesario
+                            },
+                          ),
+                          TextField(
+                            controller: drinkController,
+                            decoration: InputDecoration(labelText: 'Drinks Number'),
                             onChanged: (value) {
                               // Puedes realizar acciones adicionales si es necesario
                             },
@@ -599,19 +713,22 @@ class editClubPageState extends State<editClub_page> {
                           onPressed: () {
                             setState(() {
                               // Agregar un nuevo objeto a la lista de precios solo si ambos campos tienen contenido
-                              String time = newTimeController.text;
+                              String description = newTimeController.text;
                               String price = newPriceController.text;
+                              String driks = drinkController.text;
 
-                              if (time.isNotEmpty && price.isNotEmpty) {
+                              if (description.isNotEmpty && price.isNotEmpty) {
                                 miClub.prices.add({
-                                  'time': time,
+                                  'description': description,
                                   'price': price,
+                                  'drinksNumber': driks
                                 });
 
                                 // Agregar una nueva fila a la matriz de controladores de texto
                                 ticketControllerMatrix.add([
-                                  TextEditingController(text: time),
+                                  TextEditingController(text: description),
                                   TextEditingController(text: price),
+                                  TextEditingController(text: driks),
                                 ]);
                               }
                             });

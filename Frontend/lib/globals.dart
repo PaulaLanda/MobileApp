@@ -4,5 +4,5 @@ class GlobalVariables{
   static String type = "";
   static String club = "";
 
-  static int idDisco = 0;
+  static int idDisco = 1;
 }

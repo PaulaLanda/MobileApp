@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:frontend/chat.dart';
 import 'package:frontend/editProfile.dart';
 import 'package:frontend/favs.dart';
+import 'ProperyInfoClub.dart';
 import 'addNewClub.dart';
 import 'colors.dart';
 
@@ -231,11 +232,22 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
                   children: snapshot.data!.map((clubData) {
                     return Column(
                       children: [
-                        club(
-                          context,
-                          clubData['photoUrl'],
-                          clubData['name'],
-                          clubData['address'],
+                        GestureDetector(
+                          onTap: () {
+                            // Actualizar la variable global GlobalVariables
+                            GlobalVariables.idDisco = clubData['id'];
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ProperyInfoClub_page()),
+                            );
+                            },
+                          child: club(
+                            context,
+                            clubData['photoUrl'],
+                            clubData['name'],
+                            clubData['address'],
+                          ),
                         ),
                         SizedBox(height: 10),
                       ],
@@ -249,6 +261,7 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
       ),
     );
   }
+
 
 
 
