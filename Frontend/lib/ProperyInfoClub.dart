@@ -34,7 +34,7 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
 
   Future<void> obtenerClub(String id) async {
     final response =
-    await http.get(Uri.parse('http://192.168.1.33:8082/discos/$id'));
+    await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       setState(() {

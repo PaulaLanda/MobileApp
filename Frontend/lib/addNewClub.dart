@@ -124,7 +124,7 @@ class addClubPageState extends State<addClub_page> {
   }*/
 
   Future<void> addDisco(BuildContext context) async {
-    final url = Uri.parse('http://192.168.56.1:8082/discos/create');
+    final url = Uri.parse('http://192.168.1.2:8082/discos/create');
 
     try {
       var headers = {'Content-Type': 'application/json'};

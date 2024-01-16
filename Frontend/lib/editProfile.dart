@@ -11,8 +11,6 @@ import 'package:http/http.dart' as http;
 import 'mainPageClient.dart';
 import 'mainPageOwner.dart';
 
-
-
 class editarPerfil_page extends StatefulWidget {
   static String id = 'editarPerfil_page';
 
@@ -21,7 +19,6 @@ class editarPerfil_page extends StatefulWidget {
 }
 
 class _editarPerfil extends State<editarPerfil_page> {
-
   @override
   void initState() {
     super.initState();
@@ -38,10 +35,11 @@ class _editarPerfil extends State<editarPerfil_page> {
   String _email = "";
   String _password = "";
   String _userType = "";
+
   Future<void> obtenerUsuario() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.56.1:8082/users/${GlobalVariables.idUsuario}'));
+          'http://192.168.1.2:8082/users/${GlobalVariables.idUsuario}'));
       if (response.statusCode == 200) {
         final dynamic user = jsonDecode(response.body);
         setState(() {
@@ -52,15 +50,13 @@ class _editarPerfil extends State<editarPerfil_page> {
           _userType = user['body']['userType'];
         });
         print('object');
-      }
-      else {
+      } else {
         throw Exception('Error al obtener el usuario');
       }
     } catch (error) {
       print('Error al obtener el usuario : $error');
     }
   }
-
 
   void changeInfo(String name, String surname) async {
     if (name.isEmpty) {
@@ -72,24 +68,25 @@ class _editarPerfil extends State<editarPerfil_page> {
 
     try {
       final response = await http.put(
-        Uri.parse('http://192.168.56.1:8082/users/update/${GlobalVariables.idUsuario}'),
+        Uri.parse(
+            'http://192.168.1.2:8082/users/update/${GlobalVariables.idUsuario}'),
         headers: {"Content-Type": "application/json"},
         body: json.encode({
           'name': name,
           'email': _email,
           'surname': surname,
           'password': _password,
-          'userType':_userType
+          'userType': _userType
         }),
       );
 
       if (response.statusCode == 200) {
-        if(GlobalVariables.type== 'OWNER'){
+        if (GlobalVariables.type == 'OWNER') {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => mainPageOwner_page()),
           );
-        }else{
+        } else {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => mainPage_page()),
@@ -102,8 +99,6 @@ class _editarPerfil extends State<editarPerfil_page> {
       print('Error al actualizar el nombre de usuario: $error');
     }
   }
-
-
 
   Widget cambiarNom() {
     return Padding(
@@ -165,7 +160,10 @@ class _editarPerfil extends State<editarPerfil_page> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
-          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => gradiente()),);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => gradiente()),
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.greenApp,
@@ -183,6 +181,7 @@ class _editarPerfil extends State<editarPerfil_page> {
       ),
     );
   }
+
   Widget cambiarContrasena(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
@@ -196,8 +195,7 @@ class _editarPerfil extends State<editarPerfil_page> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            recup_pswd()),
+                        builder: (BuildContext context) => recup_pswd()),
                   );
                 },
                 child: Text(
@@ -220,17 +218,21 @@ class _editarPerfil extends State<editarPerfil_page> {
         onPressed: () async {
           String newName = _nombreController.text;
           String newSurame = _surnameController.text;
-            changeInfo(newName, newSurame);
+          changeInfo(newName, newSurame);
 
-
-          if (GlobalVariables.type == "CLIENT"){
-            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => mainPage_page()),);
-
-          }else{
-            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => mainPageOwner_page()),);
-
+          if (GlobalVariables.type == "CLIENT") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => mainPage_page()),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => mainPageOwner_page()),
+            );
           }
-
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.greenApp,

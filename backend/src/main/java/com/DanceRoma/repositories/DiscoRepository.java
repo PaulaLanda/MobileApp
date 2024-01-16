@@ -12,4 +12,5 @@ public interface DiscoRepository extends CrudRepository<Disco, Long> {
 
     Optional<Disco> findByName(String name);
     List<Disco> findAllByUser_id(Long id);
+    Optional<Disco> findByIdDisco(Long id);
 }
