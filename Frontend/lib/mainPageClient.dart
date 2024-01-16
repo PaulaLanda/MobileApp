@@ -30,11 +30,16 @@ class mainPageState extends State<mainPage_page> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       obtenerUsuario();
+      obtenerClubsFav();
     });
   }
 
   String _usuario = "";
   String _surname = "";
+  List<dynamic> clubFavs = [];
+
+
+
   Future<void> obtenerUsuario() async {
     try {
       final response = await http.get(Uri.parse(
@@ -52,6 +57,19 @@ class mainPageState extends State<mainPage_page> {
       }
     } catch (error) {
       print('Error al obtener el usuario : $error');
+    }
+  }
+
+  Future<void> obtenerClubsFav() async {
+    final response = await http
+        .get(Uri.parse('http://192.168.56.1:8082/discos/${GlobalVariables.idUsuario}'));
+    if (response.statusCode == 200) {
+      final List<dynamic> favs = jsonDecode(response.body);
+      print(favs);
+      clubFavs = favs.map((fav) => fav['id']).toList();
+      print(clubFavs);
+    } else {
+      throw Exception('Error al obtener los clubs');
     }
   }
 
@@ -150,7 +168,7 @@ class mainPageState extends State<mainPage_page> {
     );
   }
 
-  Widget club(BuildContext context, String photo, String name, String address, int id) {
+  /*Widget club(BuildContext context, String photo, String name, String address, int id) {
     return GestureDetector(
       onTap: () {
         GlobalVariables.idDisco = id;
@@ -229,8 +247,123 @@ class mainPageState extends State<mainPage_page> {
         ),
       ),
     );
+  }*/
+
+  Widget club(BuildContext context, String photo, String name, String address, int id) {
+    bool isFavorited = clubFavs.contains(id);
+
+
+    return GestureDetector(
+      onTap: () {
+        GlobalVariables.idDisco = id;
+        GlobalVariables.club = name;
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => club_page()),
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        child: Container(
+          padding: EdgeInsets.all(15.0),
+          decoration: BoxDecoration(
+            color: AppColors.greenApp,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.network(
+                        photo,
+                        width: 50,
+                        height: 50,
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: 150,
+                          child: Text(
+                            name,
+                            style: TextStyle(
+                              fontSize: 35,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Container(
+                          width: 150,
+                          child: Text(
+                            address,
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  if (isFavorited) {
+                    print('http://192.168.56.1:8082/users/delete-fav/${id}/${GlobalVariables.idUsuario}');
+                    await http.get(Uri.parse('http://192.168.56.1:8082/users/delete-fav/${id}/${GlobalVariables.idUsuario}'));
+                    print("object");
+                    isFavorited = false;
+                  } else {
+                    print('http://192.168.56.1:8082/users/add-fav/${id}/${GlobalVariables.idUsuario}');
+                    await http.get(Uri.parse('http://192.168.56.1:8082/users/add-fav/${id}/${GlobalVariables.idUsuario}'));
+                    print("object");
+                    isFavorited = true;
+                  }
+                  // Actualizar la lista de favoritos después de agregar/quitar
+                  await obtenerClubsFav();
+                  // Actualizar el estado para reflejar cambios en la interfaz de usuario
+                  setState(() {});
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Icon(
+                      Icons.favorite,
+                      size: 50,
+                      color: isFavorited ? Colors.redAccent : Colors.black,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
+  Widget buildClubWidget(BuildContext context, String photoUrl, String name, String address, int id) {
+    return club(
+        context,
+        photoUrl,
+        name,
+        address,
+        id
+    );
+  }
 
   Widget clubs(BuildContext context) {
     return Align(
@@ -254,12 +387,14 @@ class mainPageState extends State<mainPage_page> {
                   children: snapshot.data!.map((clubData) {
                     return Column(
                       children: [
-                        club(
-                          context,
-                          clubData['photoUrl'],
-                          clubData['name'],
-                          clubData['address'],
-                          clubData['id']
+                        GestureDetector(
+                          child: buildClubWidget(
+                            context,
+                            clubData['photoUrl'],
+                            clubData['name'],
+                            clubData['address'],
+                            clubData['id']
+                          ),
                         ),
                         SizedBox(height: 10),
                       ],
@@ -273,6 +408,8 @@ class mainPageState extends State<mainPage_page> {
       ),
     );
   }
+
+
 
 
 

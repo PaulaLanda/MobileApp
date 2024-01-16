@@ -93,7 +93,7 @@ public class UserService {
             throw new Exception("There is not any disco with ID <" + discoId + ">");
         }
 
-        List<Disco> actualFavs = discoRepository.findAllByUser_id(userId);
+        List<Disco> actualFavs = user.get().getFavoriteDiscos();
 
         if(actualFavs.stream().anyMatch(favDisco -> Objects.equals(favDisco.getId(), discoId))) {
             throw new Exception("Disco with ID <" + discoId + "> is already in favs for user with ID <" + userId + ">");

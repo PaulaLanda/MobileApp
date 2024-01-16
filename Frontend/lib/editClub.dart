@@ -80,8 +80,6 @@ class editClubPageState extends State<editClub_page> {
         }).toList(),
       };
 
-      print('Cuerpo de la solicitud: $body');
-
       var response = await http.put(url, headers: headers, body: jsonEncode(body));
 
       if (response.statusCode == 200) {

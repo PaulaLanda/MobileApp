@@ -33,7 +33,6 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
   String _usuario = "";
   String _surname = "";
   Future<void> obtenerUsuario() async {
-    print("hola");
     try {
       final response = await http.get(Uri.parse(
           'http://192.168.56.1:8082/users/${GlobalVariables.idUsuario}'));
@@ -138,7 +137,7 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
     );
   }
 
-  Widget club(BuildContext context, String photo, String name, String address) {
+  Widget club(BuildContext context, String photo, String name, String address, int id) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Container(
@@ -224,20 +223,12 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
                     return Column(
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            // Actualizar la variable global GlobalVariables
-                            GlobalVariables.idDisco = clubData['id'];
-
-                            Navigator.push(
+                          child: buildClubWidget(
                               context,
-                              MaterialPageRoute(builder: (context) => ProperyInfoClub_page()),
-                            );
-                            },
-                          child: club(
-                            context,
-                            clubData['photoUrl'],
-                            clubData['name'],
-                            clubData['address'],
+                              clubData['photoUrl'],
+                              clubData['name'],
+                              clubData['address'],
+                              clubData['id']
                           ),
                         ),
                         SizedBox(height: 10),
@@ -253,7 +244,15 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
     );
   }
 
-
+  Widget buildClubWidget(BuildContext context, String photoUrl, String name, String address, int id) {
+    return club(
+        context,
+        photoUrl,
+        name,
+        address,
+        id
+    );
+  }
 
 
 

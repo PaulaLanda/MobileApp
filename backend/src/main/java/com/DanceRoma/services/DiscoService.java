@@ -51,7 +51,7 @@ public class DiscoService {
         if (user.isEmpty()) {
             throw new Exception("There is not any user with id <" + id + ">");
         }
-        return discoRepository.findAllByUser_id(id);
+        return user.get().getFavoriteDiscos();
     }
 
 
