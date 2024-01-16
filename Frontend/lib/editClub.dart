@@ -50,7 +50,7 @@ class editClubPageState extends State<editClub_page> {
     print("Hola" + GlobalVariables.idDisco.toString());
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      obtenerClub(GlobalVariables.idDisco);
+      obtenerClub(GlobalVariables.idDisco.toString());
     });
   }
 
@@ -188,14 +188,15 @@ class editClubPageState extends State<editClub_page> {
   }
 
 
-  Future<void> obtenerClub(int id) async {
+  Future<void> obtenerClub(String id) async {
     final response =
-        await http.get(Uri.parse('http://192.168.56.1:8082/discos/${GlobalVariables.idDisco.toString()}'));
-    print("Llego aqui");
+    await http.get(Uri.parse('http://192.168.56.1:8082/discos/get/${GlobalVariables.idDisco}'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
+      print(club);
       setState(() {
         miClub = Club(
+          name: club['name'],
           photo: club["photoUrl"],
           address: club["address"],
           m: club["mondaySchedule"],
@@ -208,9 +209,7 @@ class editClubPageState extends State<editClub_page> {
           prices: club["ticketDtos"],
         );
       });
-
-      print("Llego aqui");
-      print(miClub);
+      print(miClub.m);
       /*photo = club["photo"];
       address = club["address"];
       m = club["mondaySchedule"];
@@ -222,7 +221,7 @@ class editClubPageState extends State<editClub_page> {
       d = club["sundaySchedule"];
       prices = club["ticketDtos"];*/
     } else {
-      throw Exception('Error el club');
+      throw Exception('Error al obtener las playlists');
     }
   }
 

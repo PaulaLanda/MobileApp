@@ -70,7 +70,7 @@ class reviewPageState extends State<review_page> {
 
   Future<void> obtenerClub(String id) async {
     final response =
-    await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
+    await http.get(Uri.parse('http://192.168.56.1:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       c = Club(photo: club["photo"], id: club["id"], name: club["name"], address: club["address"], userP: club["user_id"], m: club["monday_schedule"], t:club["tuesday_schedule"], w: club["wednesday_schedule"], th: club["thuesday_schedule"], f: club["friday_schedule"], s: club["saturday_schedule"], d: club["sunday_schedule"]);
