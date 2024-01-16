@@ -3,6 +3,7 @@ package com.DanceRoma.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "messages")
@@ -24,7 +25,7 @@ public class Message {
     private User receptor;
 
     @Column(name = "date", nullable = false)
-    private LocalDate date;
+    private LocalDateTime date;
 
     public Long getId() {
         return id;
@@ -58,11 +59,11 @@ public class Message {
         this.receptor = receptor;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 }

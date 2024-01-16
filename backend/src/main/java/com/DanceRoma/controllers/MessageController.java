@@ -17,14 +17,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/messages")
 @CrossOrigin
-
 public class MessageController {
     @Autowired
     private EntityToDtoConverter entitytoDtoConverter;
     @Autowired
     private MessageService messageService;
 
-    @PostMapping()
+    @PostMapping("/create")
     public ResponseEntity<?> createMessage(@RequestBody MessageInDto messageDto){
         ResponseEntity<?> toReturn;
         try{
@@ -37,7 +36,7 @@ public class MessageController {
         return toReturn;
     }
 
-    @DeleteMapping("/{Id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMessage(@PathVariable Long id) {
         ResponseEntity<?> toReturn;
         try {
@@ -50,7 +49,7 @@ public class MessageController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/by-sender/{id}")
     public ResponseEntity<?> getMessageBySender(@PathVariable Long id) {
         ResponseEntity<?> toReturn;
         try {
@@ -64,7 +63,7 @@ public class MessageController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/by-receptor/{id}")
     public ResponseEntity<?> getMessageByReceptor(@PathVariable Long id) {
         ResponseEntity<?> toReturn;
         try {
