@@ -76,7 +76,7 @@ public class EntityToDtoConverter {
         //dto.setId(ticket.getId());
         dto.setDescription(ticket.getDescription());
         dto.setDrinksNumber(ticket.getDrinksNumber());
-        dto.setPrice(ticket.getDrinksNumber());
+        dto.setPrice(ticket.getPrice());
 
         return dto;
     }

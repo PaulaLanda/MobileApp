@@ -54,81 +54,6 @@ class editClubPageState extends State<editClub_page> {
     });
   }
 
-  /*Future<void> updateDisco(BuildContext context) async {
-    final url = 'http://192.168.56.1:8082/discos/update/${GlobalVariables.idDisco}';
-
-    try {
-      var request = http.MultipartRequest('PUT', Uri.parse(url));
-      request.fields['id'] = GlobalVariables.idDisco.toString();
-      request.fields['name'] = _nombreController.text;
-      request.fields['address'] = _addressController.text;
-      request.fields['mondaySchedule'] = mController.text;
-      request.fields['tuesdaySchedule'] = tController.text;
-      request.fields['wednesdaySchedule'] = wController.text;
-      request.fields['thursdaySchedule'] = thController.text;
-      request.fields['fridaySchedule'] = fController.text;
-      request.fields['saturdaySchedule'] = sController.text;
-      request.fields['sundaySchedule'] = dController.text;
-      request.fields['photoUrl'] = 'https://via.placeholder.com/200';
-      // Agregar la imagen al cuerpo de la solicitud como un campo de archivo
-    /*  if (_image != null) {
-        var imageFile = await http.MultipartFile.fromPath(
-          'photo',
-          _image!.path,
-          contentType: MediaType('image', 'jpeg'), // Ajusta el tipo de contenido según tu imagen
-        );
-        request.files.add(imageFile);
-      } else {
-        // Si la imagen está vacía, usa la URL de relleno
-        request.fields['photo'] = 'https://via.placeholder.com/200';
-      }*/
-
-      // Agregar los datos del ticket al cuerpo de la solicitud
-      request.fields['ticketDtos'] = jsonEncode(ticketControllerMatrix.map((rowControllers) {
-        return {
-          'description': rowControllers[0].text,
-          'price': rowControllers[1].text,
-          'drinksNumber': rowControllers[2].text,
-        };
-      }).toList());
-
-      // Enviar la solicitud
-      var response = await request.send();
-
-      if (response.statusCode == 200) {
-        print('Datos actualizados con éxito');
-
-        //redirectioned to the club page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => mainPageOwner_page()),
-        );
-
-      } else {
-        print('Error al actualizar los datos: ${response.statusCode}');
-
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Fail in club update'),
-            content: Text(
-                'Something went wrong, try again'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-
-      }
-    } catch (error) {
-      // Maneja errores de red u otros errores aquí.
-      print('Error: $error');
-    }
-  }*/
-
   Future<void> updateDisco(BuildContext context) async {
     final url = Uri.parse('http://192.168.56.1:8082/discos/update/${GlobalVariables.idDisco}');
 
@@ -187,7 +112,6 @@ class editClubPageState extends State<editClub_page> {
     }
   }
 
-
   Future<void> obtenerClub(String id) async {
     final response =
     await http.get(Uri.parse('http://192.168.56.1:8082/discos/get/${GlobalVariables.idDisco}'));
@@ -209,17 +133,8 @@ class editClubPageState extends State<editClub_page> {
           prices: club["ticketDtos"],
         );
       });
-      print(miClub.m);
-      /*photo = club["photo"];
-      address = club["address"];
-      m = club["mondaySchedule"];
-      t = club["tuesdaySchedule"];
-      w = club["wednesdaySchedule"];
-      th = club["thursdaySchedule"];
-      f = club["fridaySchedule"];
-      s = club["saturdaySchedule"];
-      d = club["sundaySchedule"];
-      prices = club["ticketDtos"];*/
+      print(miClub.prices);
+
     } else {
       throw Exception('Error al obtener las playlists');
     }
@@ -250,7 +165,6 @@ class editClubPageState extends State<editClub_page> {
       print(e);
     }
   }
-
 
   Widget addPhoto(BuildContext context) {
     return Row(
@@ -544,7 +458,7 @@ class editClubPageState extends State<editClub_page> {
             Row(
               children: [
                 Text(
-                  "Time",
+                  "Description",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -579,8 +493,8 @@ class editClubPageState extends State<editClub_page> {
                 if (ticketControllerMatrix.length <= rowIndex) {
                   ticketControllerMatrix.add([
                     TextEditingController(text: ticketInfo['description']),
-                    TextEditingController(text: ticketInfo['price']),
-                    TextEditingController(text: ticketInfo['drinksNumber']),
+                    TextEditingController(text: ticketInfo['price'].toString()),
+                    TextEditingController(text: ticketInfo['drinksNumber'].toString()),
                   ]);
                 }
 
@@ -599,9 +513,9 @@ class editClubPageState extends State<editClub_page> {
                             border: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                             ),
-                            hintText: 'Time',
+                            hintText: 'Description',
                             hintStyle: TextStyle(
-                              color: Colors.white,
+                              color: Colors.grey,
                             ),
                           ),
                           controller: ticketControllerMatrix[rowIndex][0],
@@ -622,7 +536,7 @@ class editClubPageState extends State<editClub_page> {
                             ),
                             hintText: 'Price',
                             hintStyle: TextStyle(
-                              color: Colors.white,
+                              color: Colors.grey,
                             ),
                           ),
                           controller: ticketControllerMatrix[rowIndex][1],
@@ -643,7 +557,7 @@ class editClubPageState extends State<editClub_page> {
                             ),
                             hintText: 'Drink number',
                             hintStyle: TextStyle(
-                              color: Colors.white,
+                              color: Colors.grey,
                             ),
                           ),
                           controller: ticketControllerMatrix[rowIndex][2],
