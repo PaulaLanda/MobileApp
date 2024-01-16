@@ -62,6 +62,7 @@ class editClubPageState extends State<editClub_page> {
       final dynamic club = jsonDecode(response.body);
       setState(() {
         miClub = Club(
+          name: club["name"],
           photo: club["photo"],
           address: club["address"],
           m: club["mondaySchedule"],

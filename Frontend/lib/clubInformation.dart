@@ -27,13 +27,13 @@ class clubPageState extends State<club_page> {
 
   Future<void> obtenerClub(int id) async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
+        await http.get(Uri.parse('http://192.168.1.2:8082/discos/get/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       setState(() {
         miClub = Club(
           photo: club["photoUrl"],
-          name: club['name'],
+          name: club["name"],
           address: club["address"],
           m: club["mondaySchedule"],
           t: club["tuesdaySchedule"],
@@ -45,18 +45,8 @@ class clubPageState extends State<club_page> {
           prices: club["ticketDtos"],
         );
       });
-      /*photo = club["photo"];
-      address = club["address"];
-      m = club["mondaySchedule"];
-      t = club["tuesdaySchedule"];
-      w = club["wednesdaySchedule"];
-      th = club["thursdaySchedule"];
-      f = club["fridaySchedule"];
-      s = club["saturdaySchedule"];
-      d = club["sundaySchedule"];
-      prices = club["ticketDtos"];*/
     } else {
-      throw Exception('Error al obtener los clubs');
+      throw Exception('Error getting current club info');
     }
   }
 
@@ -81,16 +71,6 @@ class clubPageState extends State<club_page> {
             fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
           ),
         ),
-        /*Positioned(
-          top: 0,
-          left: 0,
-          child: IconButton(
-            icon: Icon(Icons.close, size: 30, color: Colors.redAccent),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),*/
       ],
     );
   }
@@ -107,7 +87,7 @@ class clubPageState extends State<club_page> {
             children: <Widget>[
               Expanded(
                 child: Text(
-                  GlobalVariables.club,
+                  miClub.name,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 70,
@@ -124,10 +104,23 @@ class clubPageState extends State<club_page> {
                   IconButton(
                     icon: Icon(Icons.favorite, size: 33, color: fav ? Colors.red : Colors.black,),
                     onPressed: () {
-                      /*Navigator.push(
-                        context
-                        //Actualizar base de datos de fav
-                      );*/
+                      String clubId = miClub.id.toString();
+                      String userId = GlobalVariables.idUsuario;
+
+                      if(fav){
+                        fav=false;
+                        final response =
+                         http.put(Uri.parse('http://192.168.1.2:8082/users/add-fav/$clubId/$userId'));
+                      }
+                      else{
+                        fav=true;
+                        final response =
+                        http.put(Uri.parse('http://192.168.1.2:8082/users/delete-fav/$clubId/$userId'));
+
+                      }
+                      setState(() {
+
+                      });
                     },
                   ),
                   IconButton(
@@ -195,7 +188,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Monday",
+                      "Monday: ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -212,7 +205,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Tuesday",
+                      "Tuesday: ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -229,7 +222,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Wednesday",
+                      "Wednesday: ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -246,7 +239,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Thurday",
+                      "Thurday: ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -263,7 +256,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Fiday",
+                      "Friday: ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -280,7 +273,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Saturday",
+                      "Saturday: ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -297,7 +290,7 @@ class clubPageState extends State<club_page> {
                 Row(
                   children: [
                     Text(
-                      "Sunday",
+                      "Sunday: ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,

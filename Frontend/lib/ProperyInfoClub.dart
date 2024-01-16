@@ -20,25 +20,15 @@ class ProperyInfoClub_page extends StatefulWidget {
 class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
 
   Club miClub = Club();
-  /*String photo = "";
-  String address = "";
-  String m = "";
-  String t = "";
-  String w = "";
-  String th = "";
-  String f = "";
-  String s = "";
-  String d = "";
-
-  List<dynamic> prices = [];*/
 
   Future<void> obtenerClub(String id) async {
     final response =
-    await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
+    await http.get(Uri.parse('http://192.168.1.2:8082/discos/get/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       setState(() {
         miClub = Club(
+          name: club["name"],
           photo: club["photo"],
           address: club["address"],
           m: club["mondaySchedule"],
@@ -51,16 +41,6 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
           prices: club["ticketDtos"],
         );
       });
-      /*photo = club["photo"];
-      address = club["address"];
-      m = club["mondaySchedule"];
-      t = club["tuesdaySchedule"];
-      w = club["wednesdaySchedule"];
-      th = club["thursdaySchedule"];
-      f = club["fridaySchedule"];
-      s = club["saturdaySchedule"];
-      d = club["sundaySchedule"];
-      prices = club["ticketDtos"];*/
     } else {
       throw Exception('Error al obtener las playlists');
     }
