@@ -27,13 +27,13 @@ class clubPageState extends State<club_page> {
 
   Future<void> obtenerClub(int id) async {
     final response =
-        await http.get(Uri.parse('http://192.168.56.1:8082/discos/$id'));
+        await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       setState(() {
         miClub = Club(
           photo: club["photoUrl"],
-          name: club['name'],
+          name: club["name"],
           address: club["address"],
           m: club["mondaySchedule"],
           t: club["tuesdaySchedule"],
@@ -56,7 +56,7 @@ class clubPageState extends State<club_page> {
       d = club["sundaySchedule"];
       prices = club["ticketDtos"];*/
     } else {
-      throw Exception('Error al obtener los clubs');
+      throw Exception('Error getting current club info');
     }
   }
 
@@ -124,10 +124,23 @@ class clubPageState extends State<club_page> {
                   IconButton(
                     icon: Icon(Icons.favorite, size: 33, color: fav ? Colors.red : Colors.black,),
                     onPressed: () {
-                      /*Navigator.push(
-                        context
-                        //Actualizar base de datos de fav
-                      );*/
+                      String clubId = miClub.id.toString();
+                      String userId = GlobalVariables.idUsuario;
+
+                      if(fav){
+                        fav=false;
+                        final response =
+                         http.put(Uri.parse('http://192.168.1.2:8082/users/add-fav/$clubId/$userId'));
+                      }
+                      else{
+                        fav=true;
+                        final response =
+                        http.put(Uri.parse('http://192.168.1.2:8082/users/delete-fav/$clubId/$userId'));
+
+                      }
+                      setState(() {
+
+                      });
                     },
                   ),
                   IconButton(

@@ -36,14 +36,13 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
 
   Future<void> obtenerClub(String id) async {
     final response =
-    await http.get(Uri.parse('http://192.168.56.1:8082/discos/get/${GlobalVariables.idDisco}'));
+    await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
-      print(club);
       setState(() {
         miClub = Club(
-          name: club['name'],
-          photo: club["photoUrl"],
+          name: club["name"],
+          photo: club["photo"],
           address: club["address"],
           m: club["mondaySchedule"],
           t: club["tuesdaySchedule"],
@@ -55,17 +54,6 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
           prices: club["ticketDtos"],
         );
       });
-      print(miClub.m);
-      /*photo = club["photo"];
-      address = club["address"];
-      m = club["mondaySchedule"];
-      t = club["tuesdaySchedule"];
-      w = club["wednesdaySchedule"];
-      th = club["thursdaySchedule"];
-      f = club["fridaySchedule"];
-      s = club["saturdaySchedule"];
-      d = club["sundaySchedule"];
-      prices = club["ticketDtos"];*/
     } else {
       throw Exception('Error al obtener las playlists');
     }
@@ -329,8 +317,6 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
       ),
     );
   }
-
-
 
 
   Widget addAReview(BuildContext context) {

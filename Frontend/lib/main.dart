@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'RomeDance',
       debugShowCheckedModeBanner: false,
-      home: gradiente(),
+      home: club_page(),
     );
   }
 }

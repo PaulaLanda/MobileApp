@@ -1,6 +1,5 @@
 package com.DanceRoma.dtos;
 
-import java.time.LocalDate;
 
 public class MessageInDto{
 
@@ -8,7 +7,7 @@ public class MessageInDto{
     private Long id;
     private Long senderId;
     private Long receptorId;
-    private LocalDate date;
+    private String date;
 
     public String getMessage() {
         return message;
@@ -26,11 +25,11 @@ public class MessageInDto{
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
