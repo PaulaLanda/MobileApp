@@ -1,7 +1,7 @@
 package com.DanceRoma.dtos;
 
 public class LoginDto {
-
+    //flag
     private String user;
     private String password;
 

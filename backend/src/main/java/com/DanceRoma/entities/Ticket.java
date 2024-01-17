@@ -11,7 +11,7 @@ public class Ticket {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
+  //flag
   @Column(name = "description")
   private String description;
 

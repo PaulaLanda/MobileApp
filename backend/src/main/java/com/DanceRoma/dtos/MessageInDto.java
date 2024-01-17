@@ -2,7 +2,7 @@ package com.DanceRoma.dtos;
 
 
 public class MessageInDto{
-
+    //flag
     private String message;
     private Long id;
     private Long senderId;

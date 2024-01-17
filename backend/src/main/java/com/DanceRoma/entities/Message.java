@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "messages")
 public class Message {
-
+    //flag
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -3,7 +3,7 @@ package com.DanceRoma.dtos;
 import java.time.LocalDateTime;
 
 public class MessageDto {
-
+    //flag
     private String message;
     private Long id;
     private UserDto sender;
