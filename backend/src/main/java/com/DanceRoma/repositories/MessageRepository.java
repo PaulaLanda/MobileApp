@@ -13,3 +13,4 @@ public interface MessageRepository extends CrudRepository<Message,Long> {
     List<Message> findAllBySender_id(Long senderId);
     List<Message> findAllByReceptor_id(Long receptorId);
 }
+//flag
