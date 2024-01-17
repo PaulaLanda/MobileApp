@@ -15,7 +15,7 @@ public class File {
     @OneToOne
     @JoinColumn(name = "disco_id")
     private Disco disco;
-
+    //flag
     public Long getId() {
         return id;
     }

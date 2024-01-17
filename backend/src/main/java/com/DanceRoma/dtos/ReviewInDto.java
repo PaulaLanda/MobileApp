@@ -1,7 +1,7 @@
 package com.DanceRoma.dtos;
 
 public class ReviewInDto {
-
+    //flag
     private Long id;
     private Long userId;
     private Long discoId;

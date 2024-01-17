@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public class DiscoDto {
-
+    //flag
     private Long id;
     private String name;
     private String address;

@@ -90,7 +90,7 @@ public class UserController {
         }
         return toReturn;
     }
-
+//flag
     @GetMapping("/add-fav/{discoId}/{userId}")
     public ResponseEntity<?> addToFavs(@PathVariable Long userId, @PathVariable Long discoId) {
         ResponseEntity<?> toReturn;

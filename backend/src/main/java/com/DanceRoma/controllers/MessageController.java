@@ -18,11 +18,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/messages")
 @CrossOrigin
 public class MessageController {
+
     @Autowired
     private EntityToDtoConverter entitytoDtoConverter;
     @Autowired
     private MessageService messageService;
-
+    //flag
     @PostMapping("/create")
     public ResponseEntity<?> createMessage(@RequestBody MessageInDto messageDto){
         ResponseEntity<?> toReturn;
