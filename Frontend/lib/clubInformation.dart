@@ -51,18 +51,7 @@ class clubPageState extends State<club_page> {
           prices: club["ticketDtos"],
         );
       });
-      print("My club" );
-      print(miClub.toString());
-      /*photo = club["photo"];
-      address = club["address"];
-      m = club["mondaySchedule"];
-      t = club["tuesdaySchedule"];
-      w = club["wednesdaySchedule"];
-      th = club["thursdaySchedule"];
-      f = club["fridaySchedule"];
-      s = club["saturdaySchedule"];
-      d = club["sundaySchedule"];
-      prices = club["ticketDtos"];*/
+
     } else {
       throw Exception('Error getting current club info');
     }

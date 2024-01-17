@@ -72,7 +72,7 @@ public class DiscoController {
         return toReturn;
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody DiscoInDto discoDto,
                                     @RequestPart("file") MultipartFile file) {
         ResponseEntity<?> toReturn;
