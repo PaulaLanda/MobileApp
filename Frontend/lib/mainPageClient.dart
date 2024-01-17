@@ -6,12 +6,12 @@ import 'package:frontend/editProfile.dart';
 import 'package:frontend/favs.dart';
 import 'clubInformation.dart';
 import 'colors.dart';
-
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
+import 'package:geolocator/geolocator.dart';
 import 'globals.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 
 class mainPage_page extends StatefulWidget {
   static String id = 'mainPage';
@@ -19,7 +19,6 @@ class mainPage_page extends StatefulWidget {
   @override
   mainPageState createState() => mainPageState();
 }
-
 
 
 
@@ -31,14 +30,35 @@ class mainPageState extends State<mainPage_page> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       obtenerUsuario();
       obtenerClubsFav();
+      await obtenerUserCoordinates();
     });
   }
 
   String _usuario = "";
   String _surname = "";
+  String _userCoordinates = "";
   List<dynamic> clubFavs = [];
 
+  Future<void> obtenerUserCoordinates() async {
+    // Solicitar permisos de ubicación
+    var status = await Permission.location.request();
 
+    if (status.isGranted) {
+      print("Cojo cordenadas");
+      try {
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        setState(() {
+          _userCoordinates =
+          'Latitud: ${position.latitude}, Longitud: ${position.longitude}';
+        });
+      } catch (error) {
+        print('Error al obtener las coordenadas del usuario: $error');
+      }
+    } else {
+      print('Permiso de ubicación denegado');
+    }
+  }
 
   Future<void> obtenerUsuario() async {
     try {
@@ -78,6 +98,7 @@ class mainPageState extends State<mainPage_page> {
         Uri.parse('http://192.168.56.1:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
+      print("Club " + club);
       return club;
     } else {
       throw Exception('Error al obtener el club');
@@ -88,7 +109,9 @@ class mainPageState extends State<mainPage_page> {
     final response = await http
         .get(Uri.parse('http://192.168.56.1:8082/discos'));
     if (response.statusCode == 200) {
+      print("Llego a coger clubs");
       final List<dynamic> clubs = jsonDecode(response.body);
+      print(clubs);
       return clubs;
     } else {
       throw Exception('Error al obtener los clubs');
@@ -153,6 +176,7 @@ class mainPageState extends State<mainPage_page> {
 
                   ],
                 ),
+
               ],
             ),
             Text(
@@ -162,94 +186,20 @@ class mainPageState extends State<mainPage_page> {
                 fontSize: 20,
               ),
             ),
+            Text(
+              'User Coordinates: $_userCoordinates',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  /*Widget club(BuildContext context, String photo, String name, String address, int id) {
-    return GestureDetector(
-      onTap: () {
-        GlobalVariables.idDisco = id;
-        GlobalVariables.club=name;
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => club_page()),
-          );
-
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: Container(
-          padding: EdgeInsets.all(15.0),
-          decoration: BoxDecoration(
-            color: AppColors.greenApp,
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Image.network(
-                        photo,
-                        width: 50,
-                        height: 50,
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: 150, // Ajusta el ancho máximo de la dirección
-                          child: Text(
-                            name,
-                            style: TextStyle(
-                              fontSize: 35,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Container(
-                          width: 150, // Ajusta el ancho máximo de la dirección
-                          child: Text(
-                            address,
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: Colors.black,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Icon(Icons.favorite, size: 50, color: Colors.redAccent),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }*/
-
-  Widget club(BuildContext context, String photo, String name, String address, int id) {
+  Widget club(BuildContext context,  String name, String address, int id) {
     bool isFavorited = clubFavs.contains(id);
 
 
@@ -281,7 +231,7 @@ class mainPageState extends State<mainPage_page> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
                       child: Image.network(
-                        photo,
+                        "photo",
                         width: 50,
                         height: 50,
                       ),
@@ -355,10 +305,9 @@ class mainPageState extends State<mainPage_page> {
     );
   }
 
-  Widget buildClubWidget(BuildContext context, String photoUrl, String name, String address, int id) {
+  Widget buildClubWidget(BuildContext context, String name, String address, int id) {
     return club(
         context,
-        photoUrl,
         name,
         address,
         id
@@ -390,7 +339,7 @@ class mainPageState extends State<mainPage_page> {
                         GestureDetector(
                           child: buildClubWidget(
                             context,
-                            clubData['photoUrl'],
+                            //clubData['photoUrl'],
                             clubData['name'],
                             clubData['address'],
                             clubData['id']
