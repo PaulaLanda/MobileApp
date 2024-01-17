@@ -48,7 +48,13 @@ public class DiscoService {
         if (user.isEmpty()) {
             throw new Exception("There is not any user with id <" + id + ">");
         }
-        return user.get().getFavoriteDiscos();
+        List<Disco> toReturn;
+        if (user.get().getUserType().equals(User.UserType.OWNER)) {
+            toReturn = discoRepository.findAllByUser_id(id);
+        } else {
+            toReturn = user.get().getFavoriteDiscos();
+        }
+        return toReturn;
     }
 //flag
 
