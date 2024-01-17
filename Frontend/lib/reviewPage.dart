@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:frontend/clubInformation.dart';
 import 'package:frontend/globals.dart';
 import 'Club.dart';
 import 'Review.dart';
@@ -80,33 +82,32 @@ class reviewPageState extends State<review_page> {
     }
   }
 
-  Future<List<Review>> addReview(Club d, Review r) async {
-    const String apiUrl = 'http://192.168.56.1:8082/discos/addReview';
+  Future<void> addReview(Review r, XFile? imageFile) async {
+    final String apiUrl = 'http://192.168.56.1:8082/discos/add-review';
 
-    final Map<String, dynamic> data = {
-      'name': d.name,
-      'review': {
-        'user': r.userId,
-        'club': r.clubId,
-        'text':r.text,
+    var request = http.MultipartRequest('PUT', Uri.parse(apiUrl));
 
-      },
-    };
+    request.fields['userId'] = r.userId;
+    request.fields['discoId'] = r.clubId.toString();
+    request.fields['message'] = r.text;
 
-    final response = await http.post(
-      Uri.parse('$apiUrl/addReview'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(data),
-    );
+    if (imageFile != null) {
+      request.files.add(await http.MultipartFile.fromPath('photo', imageFile.path));
+    }
 
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonResponse = jsonDecode(response.body);
-      final List<Review> reviews = jsonResponse.map((data) => Review.fromJson(data)).toList();
-      return reviews;
-    } else {
-      throw Exception('Failed to add review');
+    try {
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => club_page()),
+        );
+      } else {
+        throw Exception('Failed to add review');
+      }
+    } catch (e) {
+      print('Error adding review: $e');
     }
   }
 
@@ -114,20 +115,19 @@ class reviewPageState extends State<review_page> {
     String reviewText = _reviewController.text;
 
     Review newReview = Review(
-      userId: GlobalVariables.user,
+      userId: GlobalVariables.idUsuario,
       clubId: c.id,
       text: reviewText,
-      photo: _image?.path ?? '', // Utiliza la ruta de la imagen si está presente, de lo contrario, usa una cadena vacía
     );
 
     try {
-      List<Review> reviews = await addReview(c, newReview);
-
-      print('Review added successfully: $reviews');
+      await addReview(newReview, _image);
     } catch (e) {
       print('Error adding review: $e');
     }
   }
+
+
 
   Widget Photo(BuildContext context) {
     return Stack(
@@ -258,7 +258,7 @@ class reviewPageState extends State<review_page> {
                 ),
                 controller: _reviewController,
               ),
-            ), // Mover este paréntesis al final del TextFormField
+            ),
           ),
 
           SizedBox(height: 10), // Espacio entre el campo de entrada y el botón
