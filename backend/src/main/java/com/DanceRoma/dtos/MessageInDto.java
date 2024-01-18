@@ -2,7 +2,7 @@ package com.DanceRoma.dtos;
 
 
 public class MessageInDto{
-
+    //flag
     private String message;
     private Long id;
     private Long senderId;
@@ -33,19 +33,19 @@ public class MessageInDto{
         this.date = date;
     }
 
-    public Long getSenderMail() {
+    public Long getSenderId() {
         return senderId;
     }
 
-    public void setSenderMail(Long senderMail) {
+    public void setSenderId(Long senderMail) {
         this.senderId = senderMail;
     }
 
-    public Long getReceptorMail() {
+    public Long getReceptorId() {
         return receptorId;
     }
 
-    public void setReceptorMail(Long receptorMail) {
+    public void setReceptorId(Long receptorMail) {
         this.receptorId = receptorMail;
     }
 }

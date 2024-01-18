@@ -13,7 +13,7 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
+    //flag
     @ManyToOne
     @JoinColumn(name = "disco_id")
     private Disco disco;

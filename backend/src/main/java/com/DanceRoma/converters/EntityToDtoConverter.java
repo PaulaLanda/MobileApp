@@ -54,6 +54,7 @@ public class EntityToDtoConverter {
         dto.setFridaySchedule(disco.getFridaySchedule());
         dto.setSaturdaySchedule(disco.getSaturdaySchedule());
         dto.setSundaySchedule(disco.getSundaySchedule());
+        dto.setPhotoUrl(disco.getPhotoUrl());
 
         List<TicketDto> ticketDtos = new ArrayList<>();
         for (Ticket ticket : disco.getTickets()) {

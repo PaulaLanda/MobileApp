@@ -4,7 +4,7 @@ package com.DanceRoma.dtos;
 import java.util.List;
 
 public class DiscoInDto {
-
+    //flag
     private Long id;
     private String name;
     private String address;
@@ -17,7 +17,7 @@ public class DiscoInDto {
     private String saturdaySchedule;
     private String sundaySchedule;
     private List<TicketDto> ticketDtos;
-
+    private String photoUrl;
 
     public Long getId() {
         return id;
@@ -113,5 +113,13 @@ public class DiscoInDto {
 
     public void setTicketDtos(List<TicketDto> ticketDtos) {
         this.ticketDtos = ticketDtos;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

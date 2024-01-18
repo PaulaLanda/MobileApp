@@ -10,7 +10,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "users")
 public class User {
-
+    //flag
     public enum UserType {
         CLIENT,
         OWNER
