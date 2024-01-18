@@ -16,7 +16,6 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:http/http.dart' as http;
 
-//Falta añadir la foto a la base de datps
 
 class review_page extends StatefulWidget {
   static String id = 'reviewPage';
@@ -48,7 +47,7 @@ class reviewPageState extends State<review_page> {
       c = Club(id: club["id"], name: club["name"], address: club["address"], userP: club["user_id"], m: club["monday_schedule"], t:club["tuesday_schedule"], w: club["wednesday_schedule"], th: club["thuesday_schedule"], f: club["friday_schedule"], s: club["saturday_schedule"], d: club["sunday_schedule"]);
 
     } else {
-      throw Exception('Error al obtener el club');
+      throw Exception('Error getting the club');
     }
   }
 
@@ -94,11 +93,13 @@ class reviewPageState extends State<review_page> {
     }
   }
 
+
+
   Widget review(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // Alineación horizontal a la izquierda
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Write a Review',
@@ -106,7 +107,7 @@ class reviewPageState extends State<review_page> {
               fontSize: 24,
             ),
           ),
-          SizedBox(height: 10), // Espacio entre el texto y el campo de entrada
+          SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
@@ -124,7 +125,7 @@ class reviewPageState extends State<review_page> {
             ),
           ),
 
-          SizedBox(height: 10), // Espacio entre el campo de entrada y el botón
+          SizedBox(height: 10),
           Center(
             child: ElevatedButton(
               onPressed: submitReview,
@@ -160,6 +161,7 @@ class reviewPageState extends State<review_page> {
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
+
                   SizedBox(height: 20),
                   review(context)
                 ],

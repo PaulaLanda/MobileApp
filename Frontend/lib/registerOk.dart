@@ -17,7 +17,7 @@ Widget textSuccesfully(){
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min, // Establece el tamaño mínimo verticalmente
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Text(
           'Registered Successfully',

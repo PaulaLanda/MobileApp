@@ -32,7 +32,6 @@ class _RegisterPageState extends State<Register_page> {
     String name = _nameController.text;
     String surname = _surnameController.text;
     final url = Uri.parse('http://192.168.56.1:8082/users/register');
-    print("Llegó aquí");
 
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -50,13 +49,10 @@ class _RegisterPageState extends State<Register_page> {
       final response =
           await http.post(url, headers: headers, body: json.encode(data));
 
-      print(response.statusCode);
-
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         String userId = jsonResponse['id'].toString();
 
-        // Almacena el id en la variable global
         GlobalVariables.idUsuario = userId;
 
         GlobalVariables.user = username;
@@ -106,7 +102,6 @@ class _RegisterPageState extends State<Register_page> {
       }
     } catch (e) {
       print('Error: $e');
-      // Manejar errores de conexión, etc.
     }
   }
 

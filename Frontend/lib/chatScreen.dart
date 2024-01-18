@@ -315,9 +315,9 @@ class GlowingActionButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onPressed,
-          splashColor: Colors.white, // Color del resplandor
+          splashColor: Colors.white,
           borderRadius:
-              BorderRadius.circular(30.0), // Ajusta según tus necesidades
+              BorderRadius.circular(30.0),
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(

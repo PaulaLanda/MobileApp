@@ -51,10 +51,10 @@ class _editarPerfil extends State<editarPerfil_page> {
         });
         print('object');
       } else {
-        throw Exception('Error al obtener el usuario');
+        throw Exception('Error getting the user');
       }
     } catch (error) {
-      print('Error al obtener el usuario : $error');
+      print('Error getting the user : $error');
     }
   }
 
@@ -93,10 +93,10 @@ class _editarPerfil extends State<editarPerfil_page> {
           );
         }
       } else {
-        throw Exception('Error al actualizar el nombre de usuario');
+        throw Exception('Error updating the user name');
       }
     } catch (error) {
-      print('Error al actualizar el nombre de usuario: $error');
+      print('Error updating the user name: $error');
     }
   }
 
@@ -263,8 +263,6 @@ class _editarPerfil extends State<editarPerfil_page> {
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
-                  //SizedBox(height: 10),
-                  //atras(context),
                   SizedBox(height: 40),
                   cambiarNom(),
                   SizedBox(height: 10),

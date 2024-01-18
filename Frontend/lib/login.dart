@@ -26,31 +26,24 @@ class _LoginPageState extends State<Login_page> {
   Future<void> _login() async {
     String username = _emailController.text;
     String password = _passwordController.text;
-    final url = Uri.parse('http://192.168.56.1:8082/users/login');
-    print("Llegó aquí");
+    final url = Uri.parse('http://192.168.1.2:8082/users/login');
 
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
     };
-    print("e");
     final Map<String, dynamic> data = {
       'user': username,
       'password': password,
     };
-    print(data);
     try {
-      print(username);
       final response =
       await http.post(url, headers: headers, body: json.encode(data));
-      print("hola");
-      print(response.statusCode);
 
       if (response.statusCode == 200) {
 
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         String userId = jsonResponse['id'].toString();
 
-        // Almacena el id en la variable global
         GlobalVariables.idUsuario = userId;
 
         GlobalVariables.user = username;
@@ -90,7 +83,6 @@ class _LoginPageState extends State<Login_page> {
       }
     } catch (e) {
       print('Error: $e');
-      // Manejar errores de conexión, etc.
     }
   }
 
@@ -186,7 +178,7 @@ class _LoginPageState extends State<Login_page> {
       padding: EdgeInsets.symmetric(horizontal: 30.0),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: _login, // Llamar a la función _login al presionar el botón
+        onPressed: _login,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.greenApp,
           shape: RoundedRectangleBorder(

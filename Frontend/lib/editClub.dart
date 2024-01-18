@@ -46,7 +46,7 @@ class editClubPageState extends State<editClub_page> {
 
   @override
   void initState() {
-    print("Hola" + GlobalVariables.idDisco.toString());
+    print("Hi" + GlobalVariables.idDisco.toString());
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       obtenerClub(GlobalVariables.idDisco.toString());
@@ -82,18 +82,16 @@ class editClubPageState extends State<editClub_page> {
       var response = await http.put(url, headers: headers, body: jsonEncode(body));
 
       if (response.statusCode == 200) {
-        print('Datos actualizados con éxito');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => mainPageOwner_page()),
         );
       } else {
-        print('Error al actualizar los datos: ${response.statusCode}');
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Error en la actualización del club'),
-            content: Text('Algo salió mal, inténtalo de nuevo'),
+            title: Text('Error in club update'),
+            content: Text('Something went wrong, try again'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -104,7 +102,6 @@ class editClubPageState extends State<editClub_page> {
         );
       }
     } catch (error) {
-      // Maneja errores de red u otros errores aquí.
       print('Error: $error');
     }
   }
@@ -114,7 +111,6 @@ class editClubPageState extends State<editClub_page> {
     await http.get(Uri.parse('http://192.168.56.1:8082/discos/get/${GlobalVariables.idDisco}'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
-      print(club);
       setState(() {
         miClub = Club(
           name: club['name'],
@@ -129,10 +125,9 @@ class editClubPageState extends State<editClub_page> {
           prices: club["ticketDtos"],
         );
       });
-      print(miClub.prices);
 
     } else {
-      throw Exception('Error al obtener las playlists');
+      throw Exception('Error getting the clubs');
     }
   }
 
@@ -392,7 +387,6 @@ class editClubPageState extends State<editClub_page> {
               itemBuilder: (context, rowIndex) {
                 Map<String, dynamic> ticketInfo = miClub.prices[rowIndex];
 
-                // Agregar una nueva fila a la matriz de controladores de texto
                 if (ticketControllerMatrix.length <= rowIndex) {
                   ticketControllerMatrix.add([
                     TextEditingController(text: ticketInfo['description']),
@@ -505,21 +499,18 @@ class editClubPageState extends State<editClub_page> {
                             controller: newTimeController,
                             decoration: InputDecoration(labelText: 'Description'),
                             onChanged: (value) {
-                              // Puedes realizar acciones adicionales si es necesario
-                            },
+                             },
                           ),
                           TextField(
                             controller: newPriceController,
                             decoration: InputDecoration(labelText: 'Price'),
                             onChanged: (value) {
-                              // Puedes realizar acciones adicionales si es necesario
                             },
                           ),
                           TextField(
                             controller: drinkController,
                             decoration: InputDecoration(labelText: 'Drinks Number'),
                             onChanged: (value) {
-                              // Puedes realizar acciones adicionales si es necesario
                             },
                           ),
                         ],
@@ -528,7 +519,6 @@ class editClubPageState extends State<editClub_page> {
                         ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              // Agregar un nuevo objeto a la lista de precios solo si ambos campos tienen contenido
                               String description = newTimeController.text;
                               String price = newPriceController.text;
                               String driks = drinkController.text;
@@ -540,7 +530,6 @@ class editClubPageState extends State<editClub_page> {
                                   'drinksNumber': driks
                                 });
 
-                                // Agregar una nueva fila a la matriz de controladores de texto
                                 ticketControllerMatrix.add([
                                   TextEditingController(text: description),
                                   TextEditingController(text: price),

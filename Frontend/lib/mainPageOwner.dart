@@ -35,7 +35,7 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
   Future<void> obtenerUsuario() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.56.1:8082/users/${GlobalVariables.idUsuario}'));
+          'http://192.168.1.2:8082/users/${GlobalVariables.idUsuario}'));
       if (response.statusCode == 200) {
         final dynamic user = jsonDecode(response.body);
 
@@ -46,22 +46,21 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
 
       }
       else {
-        throw Exception('Error al obtener el usuario');
+        throw Exception('Error getting the user');
       }
     } catch (error) {
-      print('Error al obtener el usuario : $error');
+      print('Error getting the user : $error');
     }
   }
 
   Future<List<dynamic>> obtenerClubs() async {
     final response = await http
-        .get(Uri.parse('http://192.168.56.1:8082/discos/${GlobalVariables.idUsuario}'));
-    print('http://192.168.56.1:8082/discos/${GlobalVariables.idUsuario}');
+        .get(Uri.parse('http://192.168.1.2:8082/discos/${GlobalVariables.idUsuario}'));
     if (response.statusCode == 200) {
       final List<dynamic> clubs = jsonDecode(response.body);
       return clubs;
     } else {
-      throw Exception('Error al obtener los clubs');
+      throw Exception('Error getting the clubs');
     }
   }
 
@@ -169,7 +168,7 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        width: 150, // Ajusta el ancho máximo de la dirección
+                        width: 150,
                         child:Text(
                           name,
                           style: TextStyle(
@@ -182,7 +181,7 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
                       ),
                       SizedBox(height: 5),
                       Container(
-                        width: 150, // Ajusta el ancho máximo de la dirección
+                        width: 150,
                         child: Text(
                           address,
                           style: TextStyle(
@@ -215,9 +214,9 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
             } else if (snapshot.hasError) {
-              return Text('Error al obtener los clubs');
+              return Text('Error getting the clubs');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No hay clubs disponibles');
+              return Text('No clubs available');
             } else {
               return Container(
                 margin: EdgeInsets.only(bottom: 20.0),

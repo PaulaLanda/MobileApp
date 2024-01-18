@@ -48,10 +48,10 @@ class _recPswdPageState extends State<recup_pswd> {
           _userType = user['body']['userType'];
         });
       } else {
-        throw Exception('Error al obtener el usuario');
+        throw Exception('Error getting the user');
       }
     } catch (error) {
-      print('Error al obtener el usuario : $error');
+      print('Error getting the user : $error');
     }
   }
 
@@ -83,10 +83,10 @@ class _recPswdPageState extends State<recup_pswd> {
           );
         }
       } else {
-        throw Exception('Error al actualizar la contraseña');
+        throw Exception('Error updating the password');
       }
     } catch (error) {
-      print('Error al actualizar la contraseña: $error');
+      print('Error updating the password: $error');
     }
   }
 

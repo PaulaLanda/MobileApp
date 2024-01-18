@@ -31,12 +31,8 @@ class clubPageState extends State<club_page> {
   Future<void> obtenerClub(int id) async {
     final response =
         await http.get(Uri.parse('http://192.168.56.1:8082/discos/get/$id'));
-    print("llego aquo");
-    print(response.statusCode);
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
-      print("My club" );
-      print(club);
       setState(() {
         miClub = Club(
           name: club["name"],
@@ -67,7 +63,7 @@ class clubPageState extends State<club_page> {
       isFavorited = clubFavs.contains(GlobalVariables.idDisco);
       print(clubFavs);
     } else {
-      throw Exception('Error al obtener los clubs');
+      throw Exception('Error getting the clubs');
     }
   }
 
@@ -79,6 +75,7 @@ class clubPageState extends State<club_page> {
       obtenerClub(GlobalVariables.idDisco);
     });
   }
+
 
 
   Widget mainText() {
@@ -113,19 +110,13 @@ class clubPageState extends State<club_page> {
                   GestureDetector(
                     onTap: () async {
                       if (isFavorited) {
-                        print('http://192.168.56.1:8082/users/delete-fav/${GlobalVariables.idDisco}/${GlobalVariables.idUsuario}');
                         await http.get(Uri.parse('http://192.168.56.1:8082/users/delete-fav/${GlobalVariables.idDisco}/${GlobalVariables.idUsuario}'));
-                        print("object");
                         isFavorited = false;
                       } else {
-                        print('http://192.168.56.1:8082/users/add-fav/${GlobalVariables.idDisco}/${GlobalVariables.idUsuario}');
                         await http.get(Uri.parse('http://192.168.56.1:8082/users/add-fav/${GlobalVariables.idDisco}/${GlobalVariables.idUsuario}'));
-                        print("object");
                         isFavorited = true;
                       }
-                      // Actualizar la lista de favoritos después de agregar/quitar
                       await obtenerClubsFav();
-                      // Actualizar el estado para reflejar cambios en la interfaz de usuario
                       setState(() {});
                     },
                     child: Column(
