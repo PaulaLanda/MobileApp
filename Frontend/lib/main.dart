@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:frontend/MessageData.dart';
 import 'package:frontend/chat.dart';
 import 'package:frontend/gradiente.dart';
+import 'package:frontend/mainPageClient.dart';
+import 'package:frontend/mainPageOwner.dart';
 import 'addNewClub.dart';
 import 'camera.dart';
 import 'changePassword.dart';
@@ -23,7 +25,8 @@ void main() {
 
 class MyApp extends StatelessWidget {
 
-  MessageData messageData = MessageData(senderName: "Paula", message: "Hola", messageDate: DateTime.now());
+  MessageData messageData = MessageData(senderName: "Paula", message: "HI",
+      messageDate: DateTime.now());
 
   @override
   Widget build(BuildContext context) {

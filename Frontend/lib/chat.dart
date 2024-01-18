@@ -41,7 +41,7 @@ class chatPageState extends State<chat_page> {
         );
       });
     } else {
-      throw Exception('Error al obtener las playlists');
+      throw Exception('Error getting the chats');
     }
   }
 
@@ -86,9 +86,9 @@ class chatPageState extends State<chat_page> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        width: 150, // Ajusta el ancho máximo de la dirección
+                        width: 150,
                         child: Text(
-                          "Nombre",
+                          "Name",
                           style: TextStyle(
                             fontSize: 35,
                             color: Colors.black,

@@ -17,23 +17,16 @@ class _CameraScreenState extends State<CameraScreen> {
   late Future<void> _initializeControllerFuture;
 
   _CameraScreenState() {
-    // Constructor
-    // Obtén la lista de cámaras disponibles
     availableCameras().then((cameras) {
-      // Selecciona la cámara trasera por defecto
       _controller = CameraController(cameras[0], ResolutionPreset.medium);
-      // Inicializa el controlador de la cámara
       _initializeControllerFuture = _controller.initialize();
     });
   }
   @override
   void initState() {
     super.initState();
-    // Obtén la lista de cámaras disponibles
     availableCameras().then((cameras) {
-      // Selecciona la cámara trasera por defecto
       _controller = CameraController(cameras[0], ResolutionPreset.medium);
-      // Inicializa el controlador de la cámara
       _initializeControllerFuture = _controller.initialize();
     });
   }
@@ -48,10 +41,8 @@ class _CameraScreenState extends State<CameraScreen> {
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            // Si la inicialización está completa, muestra la vista de la cámara
             return CameraPreview(_controller);
           } else {
-            // Muestra un indicador de carga mientras se inicializa la cámara
             return Center(child: CircularProgressIndicator());
           }
         },
@@ -60,7 +51,6 @@ class _CameraScreenState extends State<CameraScreen> {
         child: Icon(Icons.camera_alt),
         onPressed: () async {
           try {
-            // Captura una foto y guarda el archivo en la galería
             final XFile file = await _controller.takePicture();
             Navigator.push(
               context,
@@ -78,21 +68,20 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   void dispose() {
-    // Asegúrate de liberar los recursos del controlador de la cámara al salir de la pantalla
     _controller.dispose();
     super.dispose();
   }
 }
 
 class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;  // Usa XFile en lugar de String
+  final String imagePath;
 
   const DisplayPictureScreen({Key? key, required this.imagePath}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Vista previa de la imagen')),
+      appBar: AppBar(title: Text('Image preview')),
       body: Image.file(File(imagePath)),
     );
   }

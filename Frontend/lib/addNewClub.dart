@@ -12,6 +12,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -66,68 +67,85 @@ class addClubPageState extends State<addClub_page> {
   Future<void> _takePhoto() async {
     try {
       XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
+      // if (image != null) {
+      //   setState(() {
+      //     _image = image;
+      //   });
+      // }
       if (image != null) {
-        setState(() {
-          _image = image;
-        });
+        File file = File(image.path);
+        await saveImage(file);
+      } else {
+        print('No se seleccionó ninguna imagen.');
       }
     } catch (e) {
       print(e);
     }
   }
 
+  Future<void> saveImage(File image) async {
+    try {
+      Directory directory = await getApplicationDocumentsDirectory();
+
+      String folderPath = '${directory.path}/android/app/src/main/res/images';
+
+      String fileName = 'foto_${DateTime.now().millisecondsSinceEpoch}.png';
+      String filePath = '$folderPath/$fileName';
+
+      // Mueve la foto al directorio específico
+      image.copySync(filePath);
+
+      print('Foto guardada en: $filePath');
+    } catch (e) {
+      print('Error al guardar la foto: $e');
+    }
+  }
+
   Future<void> addDisco(BuildContext context) async {
-    final url = Uri.parse('http://192.168.56.1:8082/discos/create');
+    final url = Uri.parse('http://192.168.1.2:8082/discos/create');
 
     try {
-      var headers = {'Content-Type': 'multipart/form-data'};
-      var request = http.MultipartRequest('POST', url)
-        ..headers.addAll(headers)
-        ..fields.addAll({
-          'name': _nombreController.text,
-          'address': _addressController.text,
-          'userEmail': GlobalVariables.user,
-          'mondaySchedule': mController.text,
-          'tuesdaySchedule': tController.text,
-          'wednesdaySchedule': wController.text,
-          'thursdaySchedule': thController.text,
-          'fridaySchedule': fController.text,
-          'saturdaySchedule': sController.text,
-          'sundaySchedule': dController.text,
-        });
+      var headers = {'Content-Type': 'application/json'};
+      var body = {
+        'name': _nombreController.text,
+        'address': _addressController.text,
+        'userEmail': GlobalVariables.user,
+        'mondaySchedule': mController.text,
+        'tuesdaySchedule': tController.text,
+        'wednesdaySchedule': wController.text,
+        'thursdaySchedule': thController.text,
+        'fridaySchedule': fController.text,
+        'saturdaySchedule': sController.text,
+        'sundaySchedule': dController.text,
+        'ticketDtos': ticketControllerMatrix.map((rowControllers) {
+          return {
+            'description': rowControllers[0].text,
+            'price': rowControllers[1].text,
+            'drinksNumber': rowControllers[2].text,
+          };
+        }).toList(),
+        //'photoUrl': 'https://via.placeholder.com/200', // Puedes ajustar esto según tus necesidades
 
-      if (_image != null) {
-        File file = File(_image!.path);
-        String fileName = file.path.split('/').last;
-        http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
-          'photo',
-          file.path,
-          filename: fileName,
-        );
+      };
 
-        // Agregar la imagen al cuerpo de la solicitud
-        request.files.add(multipartFile);
-      }
+      print('Cuerpo de la solicitud: $body');
 
-      // Agregar los tickets al cuerpo de la solicitud
-      for (int i = 0; i < ticketControllerMatrix.length; i++) {
-        request.fields['ticketDtos[$i][description]'] = ticketControllerMatrix[i][0].text;
-        request.fields['ticketDtos[$i][price]'] = ticketControllerMatrix[i][1].text;
-        request.fields['ticketDtos[$i][drinksNumber]'] = ticketControllerMatrix[i][2].text;
-      }
-
-      var response = await request.send();
+      var response = await http.post(url, headers: headers, body: jsonEncode(body));
 
       if (response.statusCode == 200) {
+        // La solicitud fue exitosa, puedes manejar la respuesta según sea necesario.
         print('Datos actualizados con éxito');
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => mainPageOwner_page()),
         );
+        // Puedes agregar lógica adicional aquí, como navegar a otra pantalla o mostrar un mensaje de éxito.
       } else {
+        // La solicitud no fue exitosa, maneja el error según sea necesario.
         print('Error al actualizar los datos: ${response.statusCode}');
       }
     } catch (error) {
+      // Maneja errores de red u otros errores aquí.
       print('Error: $error');
     }
   }
@@ -552,9 +570,9 @@ class addClubPageState extends State<addClub_page> {
                   context: context,
                   builder: (BuildContext context) {
                     TextEditingController newTimeController =
-                        TextEditingController();
+                    TextEditingController();
                     TextEditingController newPriceController =
-                        TextEditingController();
+                    TextEditingController();
                     TextEditingController drinkController =
                     TextEditingController();
                     return AlertDialog(
@@ -645,10 +663,12 @@ class addClubPageState extends State<addClub_page> {
       child: ElevatedButton(
         onPressed: () async {
           addDisco(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => mainPageOwner_page()),
-          );
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => mainPageOwner_page()),
+            );
+          };
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.greenApp,

@@ -24,7 +24,7 @@ class favPageState extends State<fav_page> {
       final List<dynamic> clubs = jsonDecode(response.body);
       return clubs;
     } else {
-      throw Exception('Error al obtener los clubs');
+      throw Exception('Error getting the clubs');
     }
   }
 
@@ -154,9 +154,9 @@ class favPageState extends State<fav_page> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
             } else if (snapshot.hasError) {
-              return Text('Error al obtener los clubs');
+              return Text('Error getting clubs');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No hay clubs disponibles');
+              return Text('No available clubs');
             } else {
               return Container(
                 margin: EdgeInsets.only(bottom: 20.0),

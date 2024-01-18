@@ -20,9 +20,6 @@ class mainPage_page extends StatefulWidget {
   mainPageState createState() => mainPageState();
 }
 
-
-
-
 class mainPageState extends State<mainPage_page> {
 
   @override
@@ -30,6 +27,7 @@ class mainPageState extends State<mainPage_page> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       obtenerUsuario();
+      print("success");
       obtenerClubsFav();
     });
   }
@@ -38,12 +36,10 @@ class mainPageState extends State<mainPage_page> {
   String _surname = "";
   List<dynamic> clubFavs = [];
 
-
-
   Future<void> obtenerUsuario() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.56.1:8082/users/${GlobalVariables.idUsuario}'));
+          'http://192.168.1.2:8082/users/${GlobalVariables.idUsuario}'));
       if (response.statusCode == 200) {
         final dynamic user = jsonDecode(response.body);
         setState(() {
@@ -53,7 +49,7 @@ class mainPageState extends State<mainPage_page> {
         print("object" + _usuario + _surname);
       }
       else {
-        throw Exception('Error al obtener el usuario');
+        throw Exception('Error getting the user');
       }
     } catch (error) {
       print('Error al obtener el usuario : $error');
@@ -62,36 +58,38 @@ class mainPageState extends State<mainPage_page> {
 
   Future<void> obtenerClubsFav() async {
     final response = await http
-        .get(Uri.parse('http://192.168.56.1:8082/discos/${GlobalVariables.idUsuario}'));
+        .get(Uri.parse('http://192.168.1.2:8082/discos/${GlobalVariables.idUsuario}'));
     if (response.statusCode == 200) {
       final List<dynamic> favs = jsonDecode(response.body);
       print(favs);
       clubFavs = favs.map((fav) => fav['id']).toList();
       print(clubFavs);
     } else {
-      throw Exception('Error al obtener los clubs');
+      throw Exception('1: Error getting the clubs');
     }
   }
 
   Future<dynamic> obtenerClub(String id) async {
     final response = await http.get(
-        Uri.parse('http://192.168.56.1:8082/discos/$id'));
+        Uri.parse('http://192.168.1.2:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       return club;
     } else {
-      throw Exception('Error al obtener el club');
+      throw Exception('Error getting the club');
     }
   }
 
   Future<List<dynamic>> obtenerClubs() async {
     final response = await http
-        .get(Uri.parse('http://192.168.56.1:8082/discos'));
+        .get(Uri.parse('http://192.168.1.2:8082/discos'));
+    print('http://192.168.1.2:8082/discos');
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final List<dynamic> clubs = jsonDecode(response.body);
       return clubs;
     } else {
-      throw Exception('Error al obtener los clubs');
+      throw Exception('Error getting the clubs');
     }
   }
 
@@ -168,87 +166,6 @@ class mainPageState extends State<mainPage_page> {
     );
   }
 
-  /*Widget club(BuildContext context, String photo, String name, String address, int id) {
-    return GestureDetector(
-      onTap: () {
-        GlobalVariables.idDisco = id;
-        GlobalVariables.club=name;
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => club_page()),
-          );
-
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: Container(
-          padding: EdgeInsets.all(15.0),
-          decoration: BoxDecoration(
-            color: AppColors.greenApp,
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Image.network(
-                        photo,
-                        width: 50,
-                        height: 50,
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: 150, // Ajusta el ancho máximo de la dirección
-                          child: Text(
-                            name,
-                            style: TextStyle(
-                              fontSize: 35,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Container(
-                          width: 150, // Ajusta el ancho máximo de la dirección
-                          child: Text(
-                            address,
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: Colors.black,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Icon(Icons.favorite, size: 50, color: Colors.redAccent),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }*/
-
   Widget club(BuildContext context, String photo, String name, String address, int id) {
     bool isFavorited = clubFavs.contains(id);
 
@@ -322,19 +239,13 @@ class mainPageState extends State<mainPage_page> {
               GestureDetector(
                 onTap: () async {
                   if (isFavorited) {
-                    print('http://192.168.56.1:8082/users/delete-fav/${id}/${GlobalVariables.idUsuario}');
-                    await http.get(Uri.parse('http://192.168.56.1:8082/users/delete-fav/${id}/${GlobalVariables.idUsuario}'));
-                    print("object");
+                    await http.get(Uri.parse('http://192.168.1.2:8082/users/delete-fav/${id}/${GlobalVariables.idUsuario}'));
                     isFavorited = false;
                   } else {
-                    print('http://192.168.56.1:8082/users/add-fav/${id}/${GlobalVariables.idUsuario}');
-                    await http.get(Uri.parse('http://192.168.56.1:8082/users/add-fav/${id}/${GlobalVariables.idUsuario}'));
-                    print("object");
+                    await http.get(Uri.parse('http://192.168.1.2:8082/users/add-fav/${id}/${GlobalVariables.idUsuario}'));
                     isFavorited = true;
                   }
-                  // Actualizar la lista de favoritos después de agregar/quitar
                   await obtenerClubsFav();
-                  // Actualizar el estado para reflejar cambios en la interfaz de usuario
                   setState(() {});
                 },
                 child: Column(
@@ -376,9 +287,9 @@ class mainPageState extends State<mainPage_page> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
             } else if (snapshot.hasError) {
-              return Text('Error al obtener los clubs');
+              return Text('${snapshot.error}');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No hay clubs disponibles');
+              return Text('No clubs available');
             } else {
               return Container(
                 margin: EdgeInsets.only(bottom: 20.0),

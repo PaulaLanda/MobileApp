@@ -31,7 +31,6 @@ class _RegisterOwnerPageState extends State<RegisterOwner_page> {
     String name = _emailController.text;
     String surname = _passwordController.text;
     final url = Uri.parse('http://192.168.56.1:8082/users/register');
-    print("Llegó aquí");
 
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -49,14 +48,11 @@ class _RegisterOwnerPageState extends State<RegisterOwner_page> {
       final response =
       await http.post(url, headers: headers, body: json.encode(data));
 
-      print(response.statusCode);
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         String userId = jsonResponse['id'].toString();
-
-        // Almacena el id en la variable global
-        GlobalVariables.idUsuario = userId;
+         GlobalVariables.idUsuario = userId;
 
         GlobalVariables.user = username;
         GlobalVariables.type = "OWNER";
@@ -105,7 +101,6 @@ class _RegisterOwnerPageState extends State<RegisterOwner_page> {
       }
     } catch (e) {
       print('Error: $e');
-      // Manejar errores de conexión, etc.
     }
   }
 

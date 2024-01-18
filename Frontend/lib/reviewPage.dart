@@ -16,7 +16,6 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:http/http.dart' as http;
 
-//Falta añadir la foto a la base de datps
 
 class review_page extends StatefulWidget {
   static String id = 'reviewPage';
@@ -78,7 +77,7 @@ class reviewPageState extends State<review_page> {
       c = Club(photo: club["photo"], id: club["id"], name: club["name"], address: club["address"], userP: club["user_id"], m: club["monday_schedule"], t:club["tuesday_schedule"], w: club["wednesday_schedule"], th: club["thuesday_schedule"], f: club["friday_schedule"], s: club["saturday_schedule"], d: club["sunday_schedule"]);
 
     } else {
-      throw Exception('Error al obtener el club');
+      throw Exception('Error getting the club');
     }
   }
 
@@ -135,12 +134,12 @@ class reviewPageState extends State<review_page> {
         Container(
           height: 150,
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20), // Padding horizontal de 20
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(20), // Bordes curvos de radio 20
+            borderRadius: BorderRadius.circular(20),
             child: Image.network(
-              c.photo, // URL de la imagen
-              fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
+              c.photo,
+              fit: BoxFit.cover,
             ),
           ),
         ),
@@ -235,7 +234,7 @@ class reviewPageState extends State<review_page> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // Alineación horizontal a la izquierda
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Write a Review',
@@ -243,7 +242,7 @@ class reviewPageState extends State<review_page> {
               fontSize: 24,
             ),
           ),
-          SizedBox(height: 10), // Espacio entre el texto y el campo de entrada
+          SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
@@ -261,7 +260,7 @@ class reviewPageState extends State<review_page> {
             ),
           ),
 
-          SizedBox(height: 10), // Espacio entre el campo de entrada y el botón
+          SizedBox(height: 10),
           Center(
             child: ElevatedButton(
               onPressed: submitReview,
@@ -301,7 +300,7 @@ class reviewPageState extends State<review_page> {
                   Photo(context),
                   SizedBox(height: 20),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20), // Agregando padding a la izquierda
+                    padding: const EdgeInsets.only(left: 20),
                     child: Text(
                       'Post a photo',
                       style: TextStyle(

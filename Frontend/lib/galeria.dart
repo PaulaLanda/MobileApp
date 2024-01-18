@@ -40,12 +40,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: _image == null
-            ? Text('Seleccione una imagen')
+            ? Text('Pick a picture')
             : Image.file(File(_image!.path)),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _pickImage,
-        tooltip: 'Seleccionar imagen',
+        tooltip: 'Pick a picture',
         child: Icon(Icons.add_a_photo),
       ),
     );

@@ -14,8 +14,8 @@ class gradiente extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFFFFFFFF), // Color verde con cierta transparencia
-              Color(0xFFFFFFFF), // Color blanco sólido
+              Color(0xFFFFFFFF),
+              Color(0xFFFFFFFF),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -23,9 +23,9 @@ class gradiente extends StatelessWidget {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch, // Añade esta línea
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded( // Usa Expanded para que el contenedor ocupe todo el espacio disponible
+            Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
