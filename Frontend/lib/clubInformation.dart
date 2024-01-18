@@ -1,4 +1,6 @@
 
+ 
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +39,6 @@ class clubPageState extends State<club_page> {
       print(club);
       setState(() {
         miClub = Club(
-          photo: club["photoUrl"],
           name: club["name"],
           address: club["address"],
           m: club["mondaySchedule"],
@@ -79,32 +80,6 @@ class clubPageState extends State<club_page> {
     });
   }
 
-  Widget Photo(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context)
-              .size
-              .width, // Ancho igual al de la pantalla
-          height: 250,
-          child: Image.network(
-            miClub.photo,
-            fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
-          ),
-        ),
-        /*Positioned(
-          top: 0,
-          left: 0,
-          child: IconButton(
-            icon: Icon(Icons.close, size: 30, color: Colors.redAccent),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),*/
-      ],
-    );
-  }
 
   Widget mainText() {
 
@@ -408,7 +383,6 @@ class clubPageState extends State<club_page> {
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
-                  Photo(context),
                   SizedBox(height: 5),
                   mainText(),
                   SizedBox(height: 5),

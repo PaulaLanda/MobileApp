@@ -28,7 +28,6 @@ class chatPageState extends State<chat_page> {
       setState(() {
         miClub = Club(
           name: club["name"],
-          photo: club["photo"],
           address: club["address"],
           m: club["mondaySchedule"],
           t: club["tuesdaySchedule"],

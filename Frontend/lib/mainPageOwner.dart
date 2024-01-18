@@ -138,8 +138,18 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
     );
   }
 
-  Widget club(BuildContext context, String photo, String name, String address, int id) {
-    return Container(
+  Widget club(BuildContext context, String name, String address, int id) {
+    return GestureDetector(
+        onTap: () {
+      GlobalVariables.idDisco = id;
+      GlobalVariables.club = name;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ProperyInfoClub_page()),
+      );
+    },
+    child: Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Container(
         padding: EdgeInsets.all(15.0),
@@ -154,15 +164,7 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: Image.network(
-                      photo,
-                      width: 50,
-                      height: 50,
-                    ),
-                  ),
-                  SizedBox(width: 20),
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -198,6 +200,7 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
           ],
         ),
       ),
+    ),
     );
   }
 
@@ -226,7 +229,6 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
                         GestureDetector(
                           child: buildClubWidget(
                               context,
-                              clubData['photoUrl'],
                               clubData['name'],
                               clubData['address'],
                               clubData['id']
@@ -245,10 +247,9 @@ class mainPageOwnerState extends State<mainPageOwner_page> {
     );
   }
 
-  Widget buildClubWidget(BuildContext context, String photoUrl, String name, String address, int id) {
+  Widget buildClubWidget(BuildContext context, String name, String address, int id) {
     return club(
         context,
-        photoUrl,
         name,
         address,
         id

@@ -51,7 +51,7 @@ class favPageState extends State<fav_page> {
   }
 
   Widget club(
-      BuildContext context, String photo, String name, String address, int id) {
+      BuildContext context, String name, String address, int id) {
     return GestureDetector(
       onTap: () {
         GlobalVariables.idDisco = id;
@@ -77,14 +77,7 @@ class favPageState extends State<fav_page> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Image.network(
-                        photo,
-                        width: 50,
-                        height: 50,
-                      ),
-                    ),
+
                     SizedBox(width: 20),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +161,6 @@ class favPageState extends State<fav_page> {
                         GestureDetector(
                           child: buildClubWidget(
                               context,
-                              clubData['photoUrl'],
                               clubData['name'],
                               clubData['address'],
                               clubData['id']),
@@ -186,11 +178,10 @@ class favPageState extends State<fav_page> {
     );
   }
 
-  Widget buildClubWidget(BuildContext context, String photoUrl, String name,
+  Widget buildClubWidget(BuildContext context, String name,
       String address, int id) {
     return club(
       context,
-      photoUrl,
       name,
       address,
       id,

@@ -39,11 +39,10 @@ class editClubPageState extends State<editClub_page> {
   final TextEditingController dController = TextEditingController();
   final List<List<TextEditingController>> ticketControllerMatrix = [];
 
-  late ImagePicker _imagePicker;
-  XFile? _image;
 
   Club miClub = Club();
   bool fav = false;
+  String imagen = 'C:/Users/34651/Desktop/AppMovil/Frontend/android/app/src/main/res/drawable/trasera.png';
 
   @override
   void initState() {
@@ -119,7 +118,6 @@ class editClubPageState extends State<editClub_page> {
       setState(() {
         miClub = Club(
           name: club['name'],
-          photo: club["photoUrl"],
           address: club["address"],
           m: club["mondaySchedule"],
           t: club["tuesdaySchedule"],
@@ -138,100 +136,7 @@ class editClubPageState extends State<editClub_page> {
     }
   }
 
-  Future<void> _pickImage() async {
-    try {
-      XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() {
-          _image = image;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
 
-  Future<void> _takePhoto() async {
-    try {
-      XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image != null) {
-        setState(() {
-          _image = image;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Widget addPhoto(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          height: _image == null ? 20.0 : 150.0,
-          width: _image == null ? 150.0 : 150.0,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white),
-          ),
-
-          child: Center(
-            child: _image == null
-                ? Text('No Image Selected')
-                : Stack(
-              children: [
-                Image.file(File(_image!.path)),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _image = null;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(4),
-                      color: Colors.red,
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Spacer(),
-        Row(
-          children: [
-            FloatingActionButton(
-              onPressed: _pickImage,
-              tooltip: 'Select Image',
-              child: Icon(
-                Icons.add_photo_alternate_outlined,
-                color: AppColors.greenApp,
-                size: 40,
-              ),
-            ),
-            SizedBox(width: 10),
-            FloatingActionButton(
-              onPressed: _takePhoto,
-              tooltip: 'Take Photo',
-              child: Icon(
-                Icons.camera_alt,
-                color: AppColors.greenApp,
-                size: 40,
-              ),
-            ),
-            SizedBox(width: 20),
-          ],
-        ),
-      ],
-    );
-
-  }
 
   Widget mainText() {
     return Align(
@@ -708,8 +613,6 @@ class editClubPageState extends State<editClub_page> {
                 children: [
                   SizedBox(height: 30),
                   mainText(),
-                  SizedBox(height: 20),
-                  addPhoto(context),
                   SizedBox(height: 20),
                   changeName(),
                   SizedBox(height: 10),

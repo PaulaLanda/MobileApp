@@ -7,7 +7,6 @@ import 'dart:convert';
 import 'User.dart';
 
 class Club {
-  String photo = "";
   int id = 0;
   String name = "";
   String address = "";
@@ -22,7 +21,7 @@ class Club {
   List<dynamic> prices;
 
   Club({
-    String? photo,
+
     int? id,
     String? name,
     String? address,
@@ -35,7 +34,7 @@ class Club {
     String? s,
     String? d,
     List<dynamic>? prices,
-  })  : photo = photo ?? "",
+  })  :
         id = id ?? 0,
         name = name ?? "",
         address = address ?? "",

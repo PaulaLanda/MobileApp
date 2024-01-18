@@ -22,27 +22,19 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
 
   Club miClub = Club();
   User prop = User();
-  /*String photo = "";
-  String address = "";
-  String m = "";
-  String t = "";
-  String w = "";
-  String th = "";
-  String f = "";
-  String s = "";
-  String d = "";
 
-  List<dynamic> prices = [];*/
-
-  Future<void> obtenerClub(String id) async {
+  Future<void> obtenerClub(int id) async {
     final response =
-    await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
+    await http.get(Uri.parse('http://192.168.56.1:8082/discos/get/$id'));
+    print("llego aquo");
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
+      print("My club" );
+      print(club);
       setState(() {
         miClub = Club(
           name: club["name"],
-          photo: club["photo"],
           address: club["address"],
           m: club["mondaySchedule"],
           t: club["tuesdaySchedule"],
@@ -54,35 +46,20 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
           prices: club["ticketDtos"],
         );
       });
+
     } else {
-      throw Exception('Error al obtener las playlists');
+      throw Exception('Error getting current club info');
     }
   }
-
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      obtenerClub(GlobalVariables.club);
+      obtenerClub(GlobalVariables.idDisco);
     });
   }
 
-  Widget Photo(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context)
-              .size
-              .width, // Ancho igual al de la pantalla
-          height: 250,
-          child: Image.network(
-            miClub.photo,
-            fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
-          ),
-        ),
-      ],
-    );
-  }
+
 
   Widget mainText() {
     return SingleChildScrollView(
@@ -330,7 +307,6 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
-                  Photo(context),
                   SizedBox(height: 5),
                   mainText(),
                   SizedBox(height: 5),

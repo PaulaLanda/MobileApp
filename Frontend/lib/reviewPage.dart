@@ -27,14 +27,9 @@ class review_page extends StatefulWidget {
 
 class reviewPageState extends State<review_page> {
 
-  late ImagePicker _imagePicker;
-  XFile? _image;
-
-
   @override
   void initState() {
     super.initState();
-    _imagePicker = ImagePicker();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       obtenerClub(GlobalVariables.club);
     });
@@ -44,71 +39,43 @@ class reviewPageState extends State<review_page> {
   
   Club c = Club();
 
-  Future<void> _pickImage() async {
-    try {
-      XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() {
-          _image = image;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> _takePhoto() async {
-    try {
-      XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image != null) {
-        setState(() {
-          _image = image;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
 
   Future<void> obtenerClub(String id) async {
     final response =
     await http.get(Uri.parse('http://192.168.56.1:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
-      c = Club(photo: club["photo"], id: club["id"], name: club["name"], address: club["address"], userP: club["user_id"], m: club["monday_schedule"], t:club["tuesday_schedule"], w: club["wednesday_schedule"], th: club["thuesday_schedule"], f: club["friday_schedule"], s: club["saturday_schedule"], d: club["sunday_schedule"]);
+      c = Club(id: club["id"], name: club["name"], address: club["address"], userP: club["user_id"], m: club["monday_schedule"], t:club["tuesday_schedule"], w: club["wednesday_schedule"], th: club["thuesday_schedule"], f: club["friday_schedule"], s: club["saturday_schedule"], d: club["sunday_schedule"]);
 
     } else {
       throw Exception('Error al obtener el club');
     }
   }
 
-  Future<void> addReview(Review r, XFile? imageFile) async {
+  Future<void> addReview(Review r) async {
     final String apiUrl = 'http://192.168.56.1:8082/discos/add-review';
 
-    var request = http.MultipartRequest('PUT', Uri.parse(apiUrl));
 
-    request.fields['userId'] = r.userId;
-    request.fields['discoId'] = r.clubId.toString();
-    request.fields['message'] = r.text;
+      var response = await http.put(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'userId': r.userId,
+          'discoId': r.clubId.toString(),
+          'message': r.text,
+          'photoUrl': "",
+        }),
+      );
 
-    if (imageFile != null) {
-      request.files.add(await http.MultipartFile.fromPath('photo', imageFile.path));
-    }
+      print(response.statusCode);
 
-    try {
-      var response = await request.send();
-
-      if (response.statusCode == 200) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => club_page()),
         );
-      } else {
-        throw Exception('Failed to add review');
-      }
-    } catch (e) {
-      print('Error adding review: $e');
-    }
+
   }
 
   void submitReview() async {
@@ -121,114 +88,10 @@ class reviewPageState extends State<review_page> {
     );
 
     try {
-      await addReview(newReview, _image);
+      await addReview(newReview);
     } catch (e) {
       print('Error adding review: $e');
     }
-  }
-
-
-
-  Widget Photo(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 150,
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20), // Padding horizontal de 20
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20), // Bordes curvos de radio 20
-            child: Image.network(
-              c.photo, // URL de la imagen
-              fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
-            ),
-          ),
-        ),
-        Positioned(
-          top: 50,
-          left: 30,
-          right: 20,
-          child: Text(
-            GlobalVariables.club,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 50,
-              fontWeight: FontWeight.bold,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget addPhoto(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          height: _image == null ? 20.0 : 150.0,
-          width: _image == null ? 150.0 : 150.0,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white),
-          ),
-
-          child: Center(
-            child: _image == null
-                ? Text('No Image Selected')
-                : Stack(
-              children: [
-                Image.file(File(_image!.path)),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _image = null;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(4),
-                      color: Colors.red,
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Spacer(),
-        Row(
-          children: [
-            FloatingActionButton(
-              onPressed: _pickImage,
-              tooltip: 'Select Image',
-              child: Icon(
-                Icons.add_photo_alternate_outlined,
-                color: AppColors.greenApp,
-                size: 40,
-              ),
-            ),
-            SizedBox(width: 10),
-            FloatingActionButton(
-              onPressed: _takePhoto,
-              tooltip: 'Take Photo',
-              child: Icon(
-                Icons.camera_alt,
-                color: AppColors.greenApp,
-                size: 40,
-              ),
-            ),
-            SizedBox(width: 20),
-          ],
-        ),
-      ],
-    );
-
   }
 
   Widget review(BuildContext context) {
@@ -297,20 +160,6 @@ class reviewPageState extends State<review_page> {
               height: MediaQuery.of(context).size.height,
               child: ListView(
                 children: [
-                  SizedBox(height: 20),
-                  Photo(context),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20), // Agregando padding a la izquierda
-                    child: Text(
-                      'Post a photo',
-                      style: TextStyle(
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  addPhoto(context),
                   SizedBox(height: 20),
                   review(context)
                 ],

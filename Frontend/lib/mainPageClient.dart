@@ -228,14 +228,7 @@ class mainPageState extends State<mainPage_page> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Image.network(
-                        "photo",
-                        width: 50,
-                        height: 50,
-                      ),
-                    ),
+
                     SizedBox(width: 20),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -339,7 +332,6 @@ class mainPageState extends State<mainPage_page> {
                         GestureDetector(
                           child: buildClubWidget(
                             context,
-                            //clubData['photoUrl'],
                             clubData['name'],
                             clubData['address'],
                             clubData['id']

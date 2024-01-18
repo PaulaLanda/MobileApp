@@ -43,7 +43,7 @@ class addClubPageState extends State<addClub_page> {
   Club miClub = Club();
 
   late ImagePicker _imagePicker;
-  XFile? _image;
+  String imagen = "";
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class addClubPageState extends State<addClub_page> {
       XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
       if (image != null) {
         setState(() {
-          _image = image;
+          imagen = 'C:/Users/34651/Desktop/AppMovil/Frontend/android/app/src/main/res/drawable/trasera.png';
         });
       }
     } catch (e) {
@@ -69,7 +69,7 @@ class addClubPageState extends State<addClub_page> {
       XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
       if (image != null) {
          setState(() {
-          _image = image;
+           imagen = 'C:/Users/34651/Desktop/AppMovil/Frontend/android/app/src/main/res/drawable/trasera.png';
          });
        }
 
@@ -77,7 +77,6 @@ class addClubPageState extends State<addClub_page> {
       print(e);
     }
   }
-
 
 
   Future<void> addDisco(BuildContext context) async {
@@ -103,7 +102,7 @@ class addClubPageState extends State<addClub_page> {
             'drinksNumber': rowControllers[2].text,
           };
         }).toList(),
-        //'photoUrl': 'https://via.placeholder.com/200', // Puedes ajustar esto según tus necesidades
+        'photoUrl': imagen, // Puedes ajustar esto según tus necesidades
 
       };
 
@@ -131,28 +130,33 @@ class addClubPageState extends State<addClub_page> {
 
 
   Widget addPhoto(BuildContext context) {
+
+    String imagePath = imagen;
     return Row(
       children: [
         Container(
-          height: _image == null ? 20.0 : 150.0,
-          width: _image == null ? 150.0 : 150.0,
+          height: imagePath.isEmpty ? 20.0 : 150.0,
+          width: imagePath.isEmpty ? 150.0 : 150.0,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.white),
           ),
-
           child: Center(
-            child: _image == null
+            child: imagePath.isEmpty
                 ? Text('No Image Selected')
                 : Stack(
               children: [
-                Image.file(File(_image!.path)),
+                Image.file(
+                  File(imagePath),
+                  fit: BoxFit.cover,
+                ),
                 Positioned(
                   top: 0,
                   right: 0,
                   child: GestureDetector(
                     onTap: () {
+                      // Puedes implementar lógica para eliminar la imagen aquí
                       setState(() {
-                        _image = null;
+                        // imagen = "";
                       });
                     },
                     child: Container(
@@ -196,8 +200,8 @@ class addClubPageState extends State<addClub_page> {
         ),
       ],
     );
-
   }
+
 
   Widget mainText() {
     return Align(
