@@ -6,12 +6,12 @@ import 'package:frontend/editProfile.dart';
 import 'package:frontend/favs.dart';
 import 'clubInformation.dart';
 import 'colors.dart';
-
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
+import 'package:geolocator/geolocator.dart';
 import 'globals.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 
 class mainPage_page extends StatefulWidget {
   static String id = 'mainPage';
@@ -20,6 +20,8 @@ class mainPage_page extends StatefulWidget {
   mainPageState createState() => mainPageState();
 }
 
+
+
 class mainPageState extends State<mainPage_page> {
 
   @override
@@ -27,19 +29,41 @@ class mainPageState extends State<mainPage_page> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       obtenerUsuario();
-      print("success");
       obtenerClubsFav();
+      await obtenerUserCoordinates();
     });
   }
 
   String _usuario = "";
   String _surname = "";
+  String _userCoordinates = "";
   List<dynamic> clubFavs = [];
+
+  Future<void> obtenerUserCoordinates() async {
+    // Solicitar permisos de ubicación
+    var status = await Permission.location.request();
+
+    if (status.isGranted) {
+      print("Cojo cordenadas");
+      try {
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        setState(() {
+          _userCoordinates =
+          'Latitud: ${position.latitude}, Longitud: ${position.longitude}';
+        });
+      } catch (error) {
+        print('Error al obtener las coordenadas del usuario: $error');
+      }
+    } else {
+      print('Permiso de ubicación denegado');
+    }
+  }
 
   Future<void> obtenerUsuario() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.1.2:8082/users/${GlobalVariables.idUsuario}'));
+          'http://192.168.56.1:8082/users/${GlobalVariables.idUsuario}'));
       if (response.statusCode == 200) {
         final dynamic user = jsonDecode(response.body);
         setState(() {
@@ -49,7 +73,7 @@ class mainPageState extends State<mainPage_page> {
         print("object" + _usuario + _surname);
       }
       else {
-        throw Exception('Error getting the user');
+        throw Exception('Error al obtener el usuario');
       }
     } catch (error) {
       print('Error al obtener el usuario : $error');
@@ -58,38 +82,39 @@ class mainPageState extends State<mainPage_page> {
 
   Future<void> obtenerClubsFav() async {
     final response = await http
-        .get(Uri.parse('http://192.168.1.2:8082/discos/${GlobalVariables.idUsuario}'));
+        .get(Uri.parse('http://192.168.56.1:8082/discos/${GlobalVariables.idUsuario}'));
     if (response.statusCode == 200) {
       final List<dynamic> favs = jsonDecode(response.body);
       print(favs);
       clubFavs = favs.map((fav) => fav['id']).toList();
       print(clubFavs);
     } else {
-      throw Exception('1: Error getting the clubs');
+      throw Exception('Error al obtener los clubs');
     }
   }
 
   Future<dynamic> obtenerClub(String id) async {
     final response = await http.get(
-        Uri.parse('http://192.168.1.2:8082/discos/$id'));
+        Uri.parse('http://192.168.56.1:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
+      print("Club " + club);
       return club;
     } else {
-      throw Exception('Error getting the club');
+      throw Exception('Error al obtener el club');
     }
   }
 
   Future<List<dynamic>> obtenerClubs() async {
     final response = await http
-        .get(Uri.parse('http://192.168.1.2:8082/discos'));
-    print('http://192.168.1.2:8082/discos');
-    print(response.statusCode);
+        .get(Uri.parse('http://192.168.56.1:8082/discos'));
     if (response.statusCode == 200) {
+      print("Llego a coger clubs");
       final List<dynamic> clubs = jsonDecode(response.body);
+      print(clubs);
       return clubs;
     } else {
-      throw Exception('Error getting the clubs');
+      throw Exception('Error al obtener los clubs');
     }
   }
 
@@ -151,6 +176,7 @@ class mainPageState extends State<mainPage_page> {
 
                   ],
                 ),
+
               ],
             ),
             Text(
@@ -160,13 +186,20 @@ class mainPageState extends State<mainPage_page> {
                 fontSize: 20,
               ),
             ),
+            Text(
+              'User Coordinates: $_userCoordinates',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget club(BuildContext context, String photo, String name, String address, int id) {
+  Widget club(BuildContext context,  String name, String address, int id) {
     bool isFavorited = clubFavs.contains(id);
 
 
@@ -198,7 +231,7 @@ class mainPageState extends State<mainPage_page> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
                       child: Image.network(
-                        photo,
+                        "photo",
                         width: 50,
                         height: 50,
                       ),
@@ -239,13 +272,19 @@ class mainPageState extends State<mainPage_page> {
               GestureDetector(
                 onTap: () async {
                   if (isFavorited) {
-                    await http.get(Uri.parse('http://192.168.1.2:8082/users/delete-fav/${id}/${GlobalVariables.idUsuario}'));
+                    print('http://192.168.56.1:8082/users/delete-fav/${id}/${GlobalVariables.idUsuario}');
+                    await http.get(Uri.parse('http://192.168.56.1:8082/users/delete-fav/${id}/${GlobalVariables.idUsuario}'));
+                    print("object");
                     isFavorited = false;
                   } else {
-                    await http.get(Uri.parse('http://192.168.1.2:8082/users/add-fav/${id}/${GlobalVariables.idUsuario}'));
+                    print('http://192.168.56.1:8082/users/add-fav/${id}/${GlobalVariables.idUsuario}');
+                    await http.get(Uri.parse('http://192.168.56.1:8082/users/add-fav/${id}/${GlobalVariables.idUsuario}'));
+                    print("object");
                     isFavorited = true;
                   }
+                  // Actualizar la lista de favoritos después de agregar/quitar
                   await obtenerClubsFav();
+                  // Actualizar el estado para reflejar cambios en la interfaz de usuario
                   setState(() {});
                 },
                 child: Column(
@@ -266,10 +305,9 @@ class mainPageState extends State<mainPage_page> {
     );
   }
 
-  Widget buildClubWidget(BuildContext context, String photoUrl, String name, String address, int id) {
+  Widget buildClubWidget(BuildContext context, String name, String address, int id) {
     return club(
         context,
-        photoUrl,
         name,
         address,
         id
@@ -287,9 +325,9 @@ class mainPageState extends State<mainPage_page> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
             } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              return Text('Error al obtener los clubs');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No clubs available');
+              return Text('No hay clubs disponibles');
             } else {
               return Container(
                 margin: EdgeInsets.only(bottom: 20.0),
@@ -301,7 +339,7 @@ class mainPageState extends State<mainPage_page> {
                         GestureDetector(
                           child: buildClubWidget(
                             context,
-                            clubData['photoUrl'],
+                            //clubData['photoUrl'],
                             clubData['name'],
                             clubData['address'],
                             clubData['id']

@@ -2,7 +2,9 @@ package com.DanceRoma.services;
 
 import com.DanceRoma.dtos.MessageInDto;
 import com.DanceRoma.entities.Message;
+import com.DanceRoma.entities.User;
 import com.DanceRoma.repositories.MessageRepository;
+import com.DanceRoma.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.DanceRoma.converters.DtoToEntityConverter;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class MessageService {
     //flag
     @Autowired
     private DtoToEntityConverter converterDto;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public Optional<Message> getMessageById(Long id) throws Exception {
         Optional<Message> message = messageRepository.findById(id);
@@ -44,8 +49,18 @@ public class MessageService {
     }
 
 
-    public Message create(MessageInDto message) {
+    public Message create(MessageInDto message) throws Exception {
+        Optional<User> sender = userRepository.findById(message.getSenderId());
+        if (sender.isEmpty()) {
+            throw new Exception("There is not any user with id <" + message.getSenderId() + ">");
+        }
+        Optional<User> receptor = userRepository.findById(message.getReceptorId());
+        if (receptor.isEmpty()) {
+            throw new Exception("There is not any user with id <" + message.getReceptorId() + ">");
+        }
         Message messagetoCreate = converterDto.convert(message);
+        messagetoCreate.setSender(sender.get());
+        messagetoCreate.setReceptor(receptor.get());
         return messageRepository.save(messagetoCreate);
 
     }

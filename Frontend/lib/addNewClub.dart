@@ -67,42 +67,21 @@ class addClubPageState extends State<addClub_page> {
   Future<void> _takePhoto() async {
     try {
       XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
-      // if (image != null) {
-      //   setState(() {
-      //     _image = image;
-      //   });
-      // }
       if (image != null) {
-        File file = File(image.path);
-        await saveImage(file);
-      } else {
-        print('No se seleccionó ninguna imagen.');
-      }
+         setState(() {
+          _image = image;
+         });
+       }
+
     } catch (e) {
       print(e);
     }
   }
 
-  Future<void> saveImage(File image) async {
-    try {
-      Directory directory = await getApplicationDocumentsDirectory();
 
-      String folderPath = '${directory.path}/android/app/src/main/res/images';
-
-      String fileName = 'foto_${DateTime.now().millisecondsSinceEpoch}.png';
-      String filePath = '$folderPath/$fileName';
-
-      // Mueve la foto al directorio específico
-      image.copySync(filePath);
-
-      print('Foto guardada en: $filePath');
-    } catch (e) {
-      print('Error al guardar la foto: $e');
-    }
-  }
 
   Future<void> addDisco(BuildContext context) async {
-    final url = Uri.parse('http://192.168.1.2:8082/discos/create');
+    final url = Uri.parse('http://192.168.56.1:8082/discos/create');
 
     try {
       var headers = {'Content-Type': 'application/json'};

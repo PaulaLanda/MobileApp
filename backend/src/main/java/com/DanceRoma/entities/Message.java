@@ -25,7 +25,7 @@ public class Message {
     private User receptor;
 
     @Column(name = "date", nullable = false)
-    private LocalDateTime date;
+    private LocalDate date;
 
     public Long getId() {
         return id;
@@ -59,11 +59,11 @@ public class Message {
         this.receptor = receptor;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }

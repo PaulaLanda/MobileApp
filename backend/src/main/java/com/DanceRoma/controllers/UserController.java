@@ -90,19 +90,13 @@ public class UserController {
         }
         return toReturn;
     }
-//flag
+    //flag
     @GetMapping("/add-fav/{discoId}/{userId}")
     public ResponseEntity<?> addToFavs(@PathVariable Long userId, @PathVariable Long discoId) {
         ResponseEntity<?> toReturn;
         try {
             List<Disco> favDiscos = userService.addToFav(discoId, userId);
-            List<DiscoDto> favDiscosDto = favDiscos.stream().map(favDisco -> {
-                try {
-                    return entityToDtoConverter.convert(favDisco);
-                } catch (Exception e) {
-                    return null;
-                }
-            }).collect(Collectors.toList());
+            List<DiscoDto> favDiscosDto = favDiscos.stream().map(favDisco -> entityToDtoConverter.convert(favDisco)).collect(Collectors.toList());
             toReturn = ResponseEntity.ok(favDiscosDto);
         } catch (Exception e) {
             toReturn = ResponseEntity.internalServerError().body(e.getMessage());
@@ -114,20 +108,8 @@ public class UserController {
     public ResponseEntity<?> deleteFromFavs(@PathVariable Long discoId, @PathVariable Long userId) {
         ResponseEntity<?> toReturn;
         try {
-
             List<Disco> favDiscos = userService.deleteFromFav(discoId, userId);
-            List<DiscoDto> favDiscosDto = favDiscos.stream().map(favDisco -> {
-                try {
-                    return entityToDtoConverter.convert(favDisco);
-                } catch (Exception e) {
-                    return null;
-                }
-            }).collect(Collectors.toList());
-
-            if (favDiscosDto.contains(null)) {
-                return ResponseEntity.internalServerError().body("Error al procesar el archivo");
-            }
-            
+            List<DiscoDto> favDiscosDto = favDiscos.stream().map(favDisco -> entityToDtoConverter.convert(favDisco)).collect(Collectors.toList());
             toReturn = ResponseEntity.ok(favDiscosDto);
         } catch (Exception e) {
             toReturn = ResponseEntity.internalServerError().body(e.getMessage());

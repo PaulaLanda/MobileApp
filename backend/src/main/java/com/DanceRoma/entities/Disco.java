@@ -50,6 +50,8 @@ public class Disco {
   @OneToMany(mappedBy = "disco")
   private List<Review> reviews;
 
+  @Column(name="photoUrl")
+  private String photoUrl;
 
   @ManyToMany
   @JoinTable(
@@ -161,5 +163,13 @@ public class Disco {
 
   public void setReviews(List<Review> reviews) {
     this.reviews = reviews;
+  }
+
+  public String getPhotoUrl() {
+    return photoUrl;
+  }
+
+  public void setPhotoUrl(String photoUrl) {
+    this.photoUrl = photoUrl;
   }
 }

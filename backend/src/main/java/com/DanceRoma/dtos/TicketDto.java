@@ -39,4 +39,3 @@ public class TicketDto {
     this.drinksNumber = drinksNumber;
   }
 }
-
