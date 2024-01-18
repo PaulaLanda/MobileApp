@@ -4,6 +4,7 @@ import com.DanceRoma.dtos.*;
 import com.DanceRoma.entities.*;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class DtoToEntityConverter {
         disco.setFridaySchedule(dto.getFridaySchedule());
         disco.setSaturdaySchedule(dto.getSaturdaySchedule());
         disco.setSundaySchedule(dto.getSundaySchedule());
+        disco.setPhotoUrl(dto.getPhotoUrl());
 
         List<Ticket> tickets = new ArrayList<>();
         for (TicketDto ticketDto : dto.getTicketDtos()) {
@@ -70,8 +72,8 @@ public class DtoToEntityConverter {
         return ticket;
     }
 
-    private LocalDateTime formatDatetime(String inputDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        return LocalDateTime.parse(inputDateTime, formatter);
+    private LocalDate formatDatetime(String inputDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(inputDate, formatter);
     }
 }
