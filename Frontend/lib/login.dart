@@ -26,7 +26,7 @@ class _LoginPageState extends State<Login_page> {
   Future<void> _login() async {
     String username = _emailController.text;
     String password = _passwordController.text;
-    final url = Uri.parse('http://192.168.1.2:8082/users/login');
+    final url = Uri.parse('http://192.168.56.1:8082/users/login');
 
     final Map<String, String> headers = {
       'Content-Type': 'application/json',

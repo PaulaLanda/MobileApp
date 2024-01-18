@@ -22,7 +22,7 @@ class chatPageState extends State<chat_page> {
 
   Future<void> obtenerClub(String id) async {
     final response =
-    await http.get(Uri.parse('http://192.168.1.2:8082/discos/$id'));
+    await http.get(Uri.parse('http://192.168.56.1:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
       setState(() {
