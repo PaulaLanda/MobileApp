@@ -49,7 +49,6 @@ class _editarPerfil extends State<editarPerfil_page> {
           _password = user['body']['password'];
           _userType = user['body']['userType'];
         });
-        print('object');
       } else {
         throw Exception('Error getting the user');
       }

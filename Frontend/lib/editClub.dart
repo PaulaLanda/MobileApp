@@ -46,7 +46,6 @@ class editClubPageState extends State<editClub_page> {
 
   @override
   void initState() {
-    print("Hi" + GlobalVariables.idDisco.toString());
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       obtenerClub(GlobalVariables.idDisco.toString());

@@ -27,12 +27,10 @@ class  ProperyInfoClubPageState extends State< ProperyInfoClub_page> {
 
     final response =
     await http.get(Uri.parse('http://192.168.56.1:8082/discos/get/$id'));
-    print("llego aquo");
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
-      print("My club" );
-      print(club);
+
       setState(() {
         miClub = Club(
           name: club["name"],

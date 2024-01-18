@@ -40,11 +40,9 @@ class mainPageState extends State<mainPage_page> {
   List<dynamic> clubFavs = [];
 
   Future<void> obtenerUserCoordinates() async {
-    // Solicitar permisos de ubicación
     var status = await Permission.location.request();
 
     if (status.isGranted) {
-      print("Cojo cordenadas");
       try {
         Position position = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high);
@@ -70,7 +68,6 @@ class mainPageState extends State<mainPage_page> {
           _usuario = user['body']['name'];
           _surname = user['body']['surname'];
         });
-        print("object" + _usuario + _surname);
       }
       else {
         throw Exception('Error al obtener el usuario');
@@ -85,9 +82,8 @@ class mainPageState extends State<mainPage_page> {
         .get(Uri.parse('http://192.168.56.1:8082/discos/${GlobalVariables.idUsuario}'));
     if (response.statusCode == 200) {
       final List<dynamic> favs = jsonDecode(response.body);
-      print(favs);
+
       clubFavs = favs.map((fav) => fav['id']).toList();
-      print(clubFavs);
     } else {
       throw Exception('Error al obtener los clubs');
     }
@@ -98,7 +94,6 @@ class mainPageState extends State<mainPage_page> {
         Uri.parse('http://192.168.56.1:8082/discos/$id'));
     if (response.statusCode == 200) {
       final dynamic club = jsonDecode(response.body);
-      print("Club " + club);
       return club;
     } else {
       throw Exception('Error al obtener el club');
@@ -109,9 +104,7 @@ class mainPageState extends State<mainPage_page> {
     final response = await http
         .get(Uri.parse('http://192.168.56.1:8082/discos'));
     if (response.statusCode == 200) {
-      print("Llego a coger clubs");
       final List<dynamic> clubs = jsonDecode(response.body);
-      print(clubs);
       return clubs;
     } else {
       throw Exception('Error al obtener los clubs');
@@ -265,19 +258,13 @@ class mainPageState extends State<mainPage_page> {
               GestureDetector(
                 onTap: () async {
                   if (isFavorited) {
-                    print('http://192.168.56.1:8082/users/delete-fav/${id}/${GlobalVariables.idUsuario}');
                     await http.get(Uri.parse('http://192.168.56.1:8082/users/delete-fav/${id}/${GlobalVariables.idUsuario}'));
-                    print("object");
                     isFavorited = false;
                   } else {
-                    print('http://192.168.56.1:8082/users/add-fav/${id}/${GlobalVariables.idUsuario}');
                     await http.get(Uri.parse('http://192.168.56.1:8082/users/add-fav/${id}/${GlobalVariables.idUsuario}'));
-                    print("object");
                     isFavorited = true;
                   }
-                  // Actualizar la lista de favoritos después de agregar/quitar
                   await obtenerClubsFav();
-                  // Actualizar el estado para reflejar cambios en la interfaz de usuario
                   setState(() {});
                 },
                 child: Column(

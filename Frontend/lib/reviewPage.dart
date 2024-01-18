@@ -68,7 +68,6 @@ class reviewPageState extends State<review_page> {
         }),
       );
 
-      print(response.statusCode);
 
         Navigator.push(
           context,

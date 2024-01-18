@@ -43,7 +43,7 @@ class addClubPageState extends State<addClub_page> {
   Club miClub = Club();
 
   late ImagePicker _imagePicker;
-  String imagen = "";
+  XFile? image;
 
   @override
   void initState() {
@@ -53,10 +53,10 @@ class addClubPageState extends State<addClub_page> {
 
   Future<void> _pickImage() async {
     try {
-      XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
+      XFile? pickedImage = await _imagePicker.pickImage(source: ImageSource.gallery);
+      if (pickedImage != null) {
         setState(() {
-          imagen = 'C:/Users/34651/Desktop/AppMovil/Frontend/android/app/src/main/res/drawable/trasera.png';
+          image = pickedImage;
         });
       }
     } catch (e) {
@@ -66,13 +66,12 @@ class addClubPageState extends State<addClub_page> {
 
   Future<void> _takePhoto() async {
     try {
-      XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image != null) {
-         setState(() {
-           imagen = 'C:/Users/34651/Desktop/AppMovil/Frontend/android/app/src/main/res/drawable/trasera.png';
-         });
-       }
-
+      XFile? takenImage = await _imagePicker.pickImage(source: ImageSource.camera);
+      if (takenImage != null) {
+        setState(() {
+          image = takenImage;
+        });
+      }
     } catch (e) {
       print(e);
     }
@@ -102,28 +101,22 @@ class addClubPageState extends State<addClub_page> {
             'drinksNumber': rowControllers[2].text,
           };
         }).toList(),
-        'photoUrl': imagen, // Puedes ajustar esto según tus necesidades
-
+        'photoUrl': "",
       };
 
-      print('Cuerpo de la solicitud: $body');
 
       var response = await http.post(url, headers: headers, body: jsonEncode(body));
 
       if (response.statusCode == 200) {
-        // La solicitud fue exitosa, puedes manejar la respuesta según sea necesario.
         print('Datos actualizados con éxito');
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => mainPageOwner_page()),
         );
-        // Puedes agregar lógica adicional aquí, como navegar a otra pantalla o mostrar un mensaje de éxito.
       } else {
-        // La solicitud no fue exitosa, maneja el error según sea necesario.
         print('Error al actualizar los datos: ${response.statusCode}');
       }
     } catch (error) {
-      // Maneja errores de red u otros errores aquí.
       print('Error: $error');
     }
   }
@@ -131,22 +124,21 @@ class addClubPageState extends State<addClub_page> {
 
   Widget addPhoto(BuildContext context) {
 
-    String imagePath = imagen;
     return Row(
       children: [
         Container(
-          height: imagePath.isEmpty ? 20.0 : 150.0,
-          width: imagePath.isEmpty ? 150.0 : 150.0,
+          height: image == null ? 20.0 : 150.0,
+          width: image == null ? 150.0 : 150.0,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.white),
           ),
           child: Center(
-            child: imagePath.isEmpty
+            child: image == null
                 ? Text('No Image Selected')
                 : Stack(
               children: [
                 Image.file(
-                  File(imagePath),
+                  File(image!.path),
                   fit: BoxFit.cover,
                 ),
                 Positioned(

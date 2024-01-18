@@ -58,10 +58,10 @@ class clubPageState extends State<club_page> {
         .get(Uri.parse('http://192.168.56.1:8082/discos/${GlobalVariables.idUsuario}'));
     if (response.statusCode == 200) {
       final List<dynamic> favs = jsonDecode(response.body);
-      print(favs);
+
       clubFavs = favs.map((fav) => fav['id']).toList();
       isFavorited = clubFavs.contains(GlobalVariables.idDisco);
-      print(clubFavs);
+    
     } else {
       throw Exception('Error getting the clubs');
     }
