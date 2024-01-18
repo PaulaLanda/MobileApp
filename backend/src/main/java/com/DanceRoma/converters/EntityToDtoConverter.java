@@ -2,19 +2,13 @@ package com.DanceRoma.converters;
 
 import com.DanceRoma.dtos.*;
 import com.DanceRoma.entities.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class EntityToDtoConverter {
-
-    @Autowired
-    private ByteToMultipartFileConverter byteToMultipartFileConverter;
 
     public UserDto convert(User user) {
         UserDto dto = new UserDto();
@@ -47,7 +41,7 @@ public class EntityToDtoConverter {
         return dto;
     }
 
-    public DiscoDto convert(Disco disco) throws Exception {
+    public DiscoDto convert(Disco disco) {
         DiscoDto dto = new DiscoDto();
         dto.setId(disco.getId());
         dto.setName(disco.getName());
@@ -73,13 +67,6 @@ public class EntityToDtoConverter {
         }
         dto.setReviewDtos(reviewOutDtos);
 
-        try {
-            MultipartFile photo = byteToMultipartFileConverter.convert(disco.getFile(), "photo");
-            dto.setFile(photo);
-        } catch (IOException e) {
-            throw new Exception("Error al procesar el archivo.");
-        }
-//flag
         return dto;
     }
 

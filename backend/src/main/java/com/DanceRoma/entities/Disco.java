@@ -23,10 +23,6 @@ public class Disco {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @OneToOne
-  @JoinColumn(name = "file_id")
-  private File file;
-
   @Column(name = "monday_schedule", nullable = false)
   private String mondaySchedule;
 
@@ -165,13 +161,5 @@ public class Disco {
 
   public void setReviews(List<Review> reviews) {
     this.reviews = reviews;
-  }
-
-  public File getFile() {
-    return file;
-  }
-
-  public void setFile(File file) {
-    this.file = file;
   }
 }
