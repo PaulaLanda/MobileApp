@@ -7,6 +7,8 @@ import 'colors.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'mainPageClient.dart';
+
 class chat_page extends StatefulWidget {
   static String id = 'chatPage';
 
@@ -129,7 +131,30 @@ class chatPageState extends State<chat_page> {
                   SizedBox(height: 30),
                   mainText(),
                   SizedBox(height: 30),
-                  chat(context)
+                  chat(context),
+                  SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => mainPage_page()),);
+
+                    },
+                    child: Text(
+                      'Main page',
+                      style: TextStyle(
+                        color:Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.greenApp,
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 90, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

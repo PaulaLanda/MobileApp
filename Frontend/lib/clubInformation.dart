@@ -13,6 +13,8 @@ import 'colors.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'mainPageClient.dart';
+
 class club_page extends StatefulWidget {
   static String id = 'clubPage';
 
@@ -61,7 +63,7 @@ class clubPageState extends State<club_page> {
 
       clubFavs = favs.map((fav) => fav['id']).toList();
       isFavorited = clubFavs.contains(GlobalVariables.idDisco);
-    
+
     } else {
       throw Exception('Error getting the clubs');
     }
@@ -383,6 +385,28 @@ class clubPageState extends State<club_page> {
                   SizedBox(height: 8),
                   addAReview(context),
                   SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => mainPage_page()),);
+
+                    },
+                    child: Text(
+                      'Main page',
+                      style: TextStyle(
+                        color:Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.greenApp,
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 90, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -192,7 +192,7 @@ class editClubPageState extends State<editClub_page> {
                 border: InputBorder.none,
                 hintText: miClub.name,
                 hintStyle: TextStyle(
-                  color: Colors.black,
+                  color: Colors.grey,
                 ),
               ),
               controller: _nombreController,
