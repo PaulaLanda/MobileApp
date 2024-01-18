@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/globals.dart';
 import 'package:frontend/mainPageOwner.dart';
-import 'package:frontend/reviewPage.dart';
 import 'Club.dart';
-import 'chat.dart';
 import 'colors.dart';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 
 import 'dart:convert';
 
@@ -108,13 +102,13 @@ class addClubPageState extends State<addClub_page> {
       var response = await http.post(url, headers: headers, body: jsonEncode(body));
 
       if (response.statusCode == 200) {
-        print('Datos actualizados con éxito');
+        print('Success updating');
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => mainPageOwner_page()),
         );
       } else {
-        print('Error al actualizar los datos: ${response.statusCode}');
+        print('Error data updating: ${response.statusCode}');
       }
     } catch (error) {
       print('Error: $error');
